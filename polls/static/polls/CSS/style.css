@@ -1,0 +1,99 @@
+body {
+    /*background-color: #153944;*/
+}
+
+button {
+    font-size: 12px;
+    height: 30px;
+    width: 435px;
+    outline: none;
+    margin: 0px;
+    border: none;
+    border-radius: 5px;
+    background-color: #9cbab4;
+}
+
+.progress {
+    display: none;
+    position: relative;
+    width: 435px;
+    height: 30px;
+    background: #9cbab4;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.progress__fill {
+    width: 0%;
+    height: 100%;
+    background: #009579;
+    transition: all 0.2s;
+}
+
+.progress__text {
+    position: absolute;
+    top: 50%;
+    right: 5px;
+    transform: translateY(-50%);
+    font: bold 14px "Quicksand", sans-serif;
+    color: #ffffff;
+}
+
+
+.forms {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+/*.roster {*/
+/*    padding: 10px;*/
+/*    margin-right: 20px;*/
+/*}*/
+
+.form {
+    padding: 10px;
+    margin-right: 20px;
+
+    border: 1px solid #5d5d5d;
+    border-radius: 5px;
+    background: #f5c6c6;
+    margin-top: 5px;
+    font: bold 12px "Quicksand", sans-serif;
+    color: #ffffff;
+    width: 170px;
+}
+
+hr {
+    background-image: linear-gradient(to right, transparent, rgba(0, 0, 0, 0.2), transparent);
+    border: 0;
+    height: 1px;
+    /*margin: 22px 0 22px 0;*/
+    box-sizing: content-box;
+    display: block;
+}
+
+.ava {
+    border-radius: 99999px;
+}
+
+.separator {
+    border-bottom: solid 1px white;
+}
+
+.header {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.formname {
+    padding: 13px;
+    font: bold 14px "Quicksand", sans-serif;
+    color: #ffffff;
+}
+
+#changeColor {
+    font: bold 14px "Quicksand", sans-serif;
+    color: #ffffff;
+}

@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    {% if latest_test_list %}
+        <div class="forms">
+            {% for test in latest_test_list %}
+                {#        <li><a href="/polls/{{ test.id }}/">{{ test.name }}</a></li>#}
+
+                <div id="{{ test.id }}" class="form">
+                    <div class="header">
+                        <div class="formname">{{ test.name }}</div>
+                    </div>
+                    <!--разделитель мать его-->
+                    {#            <div class="separator"></div>#}
+                    <!--            <div>last 2 weeks:</div>-->
+                    <div>Создано:</div>
+                    <div class="separator"></div>
+                    <div style="margin-left: auto;margin-right: auto;">{{ test.created }}</div>
+                </div>
+
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>No polls are available.</p>
+    {% endif %}
+
+{% endblock %}

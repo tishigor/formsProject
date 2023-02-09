@@ -1,0 +1,355 @@
+/*a, b, blockquote, center, code, div, h1, h2, h3, h4, h5, h6, i, img, p, pre, span, table, td, th, tr, u, video {*/
+/*    margin: 0;*/
+/*    padding: 0;*/
+/*    border: 0;*/
+/*}*/
+
+
+/*!*main -------------------------------- menu*!*/
+
+/*.t-menu {*/
+/*    position: static;*/
+/*    background-color: #000;*/
+/*    z-index: 100;*/
+/*    top: 0;*/
+/*    left: 0;*/
+/*    box-sizing: border-box;*/
+/*    !*font-family: 'tfutura', Arial, serif;*!*/
+/*    font-family: 'Raleway', sans-serif;*/
+/*    font-weight: 400;*/
+/*    font-size: 8px;*/
+/*}*/
+
+/*.t-menu__wrapper {*/
+/*    display: table;*/
+/*    height: 60px;*/
+/*    width: 100%;*/
+/*    min-width: 999px;*/
+/*    white-space: nowrap;*/
+/*}*/
+
+/*.t-menu__waves {*/
+/*    display: table-cell;*/
+/*    width: 25px;*/
+/*}*/
+
+/*.t-menu__logo {*/
+/*    display: table-cell;*/
+/*    width: 35px;*/
+/*    vertical-align: middle;*/
+/*    padding-left: 20px;*/
+/*    padding-right: 15px;*/
+/*}*/
+
+/*.t-menu__leftitems {*/
+/*    display: table-cell;*/
+/*    vertical-align: middle;*/
+/*    width: 380px;*/
+/*}*/
+
+/*.t-menu__rightitems {*/
+/*    display: table-cell;*/
+/*    vertical-align: middle;*/
+/*    text-align: right;*/
+/*    max-width: 100%;*/
+/*    padding: 0 20px;*/
+/*}*/
+
+
+/*.t-menu__item {*/
+/*    display: inline-block;*/
+/*    list-style: none;*/
+/*    color: #ffffff;*/
+/*    font-size: 16px;*/
+/*    text-decoration: none;*/
+/*    margin: 0 15px;*/
+/*    height: 57px;*/
+/*    line-height: 60px;*/
+/*}*/
+
+/*.t-menu__item_active {*/
+/*    border-bottom: 3px solid #f4846b;*/
+/*}*/
+
+/*a:hover {*/
+/*    color: #ff8562;*/
+/*}*/
+/*!*main -------------------------------- menu*!*/
+
+
+/*.td-maincontainer {*/
+/*    -webkit-animation: fadein 0.4s;*/
+/*    -moz-animation: fadein 0.4s;*/
+/*    -ms-animation: fadein 0.4s;*/
+/*    -o-animation: fadein 0.4s;*/
+/*    animation: fadein 0.4s;*/
+/*}*/
+
+/*.td-maincontainer {*/
+/*    background-color: #f0f0f0;*/
+/*    font-family: 'tfutura', Arial;*/
+/*}*/
+
+
+/*!*добавление проекта + корзина*!*/
+/*.td-sites-uppanel {*/
+/*    max-width: 1160px;*/
+/*    width: 100%;*/
+/*    margin: auto;*/
+/*    padding: 50px 0 30px 0;*/
+/*}*/
+
+/**, :after, :before {*/
+/*    -webkit-box-sizing: content-box;*/
+/*    -moz-box-sizing: content-box;*/
+/*    box-sizing: content-box;*/
+/*}*/
+
+/*.td-sites-uppanel__wrapper {*/
+/*    display: table;*/
+/*    width: 100%;*/
+/*}*/
+
+/*.td-sites-uppanel__title {*/
+/*    display: table-cell;*/
+/*    font-size: 18px;*/
+/*    vertical-align: middle;*/
+/*    font-weight: 300;*/
+/*    opacity: .5;*/
+/*    cursor: default;*/
+/*}*/
+
+/*.td-sites-uppanel__rightside {*/
+/*    display: table-cell;*/
+/*    font-size: 18px;*/
+/*    text-align: right;*/
+/*    vertical-align: middle;*/
+/*}*/
+
+/*.td-sites-uppanel__righttable {*/
+/*    display: table;*/
+/*    float: right;*/
+/*}*/
+
+/*.td-sites-uppanel__righttabletd {*/
+/*    display: table-cell;*/
+/*}*/
+
+/*.td-sites-uppanel__rightbtn-table {*/
+/*    margin: 0;*/
+/*    margin-left: auto;*/
+/*    cursor: pointer;*/
+/*}*/
+
+/*.td-sites-uppanel__rightbtn-plus {*/
+/*    display: block;*/
+/*    width: 15px;*/
+/*    height: 15px;*/
+/*    padding: 5px;*/
+/*    background-color: #fa886e;*/
+/*    border-radius: 50%;*/
+/*    -moz-border-radius: 50%;*/
+/*    -webkit-border-radius: 50%;*/
+/*}*/
+
+/*.td-sites-uppanel__rightbtn-title {*/
+/*    padding-left: 10px;*/
+/*    display: inline-block;*/
+/*}*/
+/*!*добавление проекта + корзина*!*/
+
+
+/*!*сетка с проектами*!*/
+
+/*.td-form-col {*/
+/*    margin: 0 auto;*/
+/*    max-width: 1200px;*/
+/*    display: table;*/
+/*    width: 100%;*/
+/*    padding-bottom: 50px;*/
+/*}*/
+
+/*.td-sites-grid__cell {*/
+/*    max-width: 560px;*/
+/*    width: 100%;*/
+/*    height: 265px;*/
+/*    padding: 20px;*/
+/*    float: left;*/
+/*}*/
+
+/*.td-form-col__header {*/
+/*    box-sizing: border-box;*/
+/*    width: 100%;*/
+/*    height: 150px;*/
+/*    background-color: #fff;*/
+/*    border: 1px solid #d9d9d9;*/
+/*    transition: 200ms;*/
+/*    position: relative;*/
+/*}*/
+
+/*.td-sites-grid__more {*/
+/*    display: none;*/
+/*    position: absolute;*/
+/*    right: 6px;*/
+/*    top: 20px;*/
+/*    width: 24px;*/
+/*    height: 24px;*/
+/*    border: none;*/
+/*    background: none;*/
+/*    background-image: url(data:image/svg+xml,%3C%3Fxml version='1.0' encoding='UTF-8'%3F%3E%3Csvg width='24px' height='24px' viewBox='0 0 24 24' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'%3E%3Ctitle%3EArtboard%3C/title%3E%3Cg id='Page-1' stroke='none' stroke-width='1' fill='none' fill-rule='evenodd'%3E%3Cg id='Artboard' fill='%23000000' fill-rule='nonzero'%3E%3Cpath d='M11.75,18 C12.7164983,18 13.5,18.7835017 13.5,19.75 C13.5,20.7164983 12.7164983,21.5 11.75,21.5 C10.7835017,21.5 10,20.7164983 10,19.75 C10,18.7835017 10.7835017,18 11.75,18 Z M11.75,10.5 C12.7164983,10.5 13.5,11.2835017 13.5,12.25 C13.5,13.2164983 12.7164983,14 11.75,14 C10.7835017,14 10,13.2164983 10,12.25 C10,11.2835017 10.7835017,10.5 11.75,10.5 Z M11.75,3 C12.7164983,3 13.5,3.78350169 13.5,4.75 C13.5,5.71649831 12.7164983,6.5 11.75,6.5 C10.7835017,6.5 10,5.71649831 10,4.75 C10,3.78350169 10.7835017,3 11.75,3 Z' id='Shape'%3E%3C/path%3E%3C/g%3E%3C/g%3E%3C/svg%3E);*/
+/*    background-repeat: no-repeat;*/
+/*    background-size: contain;*/
+/*    background-position: center center;*/
+/*    outline: none;*/
+/*    cursor: pointer;*/
+/*    opacity: .3;*/
+/*}*/
+
+/*!*todo крч при наведении на проект активизируй этот класс*!*/
+/*.td-sites-grid__more_visible, .td-sites-more_visible {*/
+/*    display: block;*/
+/*}*/
+
+/*.td-sites-grid__item:hover {*/
+/*    background-color: #eeeeee;*/
+/*}*/
+
+/*.td-sites-more {*/
+/*    padding: 20px 20px 15px 20px;*/
+/*    position: absolute;*/
+/*    z-index: 9999;*/
+/*    display: none;*/
+/*    min-width: 200px;*/
+/*    height: auto;*/
+/*    background-color: #ffffff;*/
+/*    box-shadow: 0 0 10px rgb(0 0 0 / 15%);*/
+/*}*/
+
+/*.td-maincontainer a {*/
+/*    transition: 200ms;*/
+/*    text-decoration: none;*/
+/*}*/
+
+/*.td-site__section-one {*/
+/*    display: block;*/
+/*    box-sizing: border-box;*/
+/*    padding: 30px 40px 0 40px;*/
+/*    height: 180px;*/
+/*    overflow: hidden;*/
+/*}*/
+
+/*.td-site__title {*/
+/*    font-size: 52px;*/
+/*    line-height: 54px;*/
+/*    font-weight: 300;*/
+/*    color: #000;*/
+/*    transition: 200ms;*/
+/*}*/
+
+/*.td-site__descr {*/
+/*    font-size: 18px;*/
+/*    color: #000;*/
+/*    opacity: .5;*/
+/*    padding-top: 10px;*/
+/*}*/
+
+/*.td-site__hr {*/
+/*    margin: 0 30px;*/
+/*    height: 1px;*/
+/*    background-color: #e5e5e5;*/
+/*}*/
+
+/*.td-site__section-two {*/
+/*    box-sizing: border-box;*/
+/*    height: 80px;*/
+/*    padding: 10px 40px;*/
+/*    display: table;*/
+/*    width: 100%;*/
+/*}*/
+
+/*.td-site__section-two-wrapper {*/
+/*    display: table-cell;*/
+/*    vertical-align: middle;*/
+/*    width: 100%;*/
+/*}*/
+
+/*.td-site__settings {*/
+/*    float: left;*/
+/*    margin-left: -5px;*/
+/*}*/
+
+/*.td-site__settings-title {*/
+/*    font-size: 13px;*/
+/*    text-transform: uppercase;*/
+/*    letter-spacing: .5px;*/
+/*    font-weight: 500;*/
+/*    padding-top: 2px;*/
+/*}*/
+
+/*.td-site__url {*/
+/*    text-align: right;*/
+/*    float: right;*/
+/*}*/
+
+/*.td-site__url-link {*/
+/*    font-size: 16px;*/
+/*}*/
+
+
+/*!*если проекта нет то вот такой стиль*!*/
+/*.td-sites-grid__item_null {*/
+/*    border: 1px dashed #ccc;*/
+/*    background-color: transparent;*/
+/*}*/
+
+
+/*!*после сетки*!*/
+/*.td-maincontainer {*/
+/*    background-color: #f0f0f0;*/
+/*    font-family: 'tfutura',Arial;*/
+/*}*/
+
+/*.td-trial {*/
+/*    text-align: center;*/
+/*    width: 100%;*/
+/*    color: #000;*/
+/*    padding: 80px 0;*/
+/*}*/
+
+/*.td-trial__wrapper {*/
+/*    max-width: 740px;*/
+/*    width: 100%;*/
+/*    margin: 0 auto;*/
+/*}*/
+
+/*.td-trial__title {*/
+/*    font-size: 32px;*/
+/*    padding: 30px 0 20px 0;*/
+/*    margin: 0 10px;*/
+/*}*/
+
+/*.td-trial__descr {*/
+/*    font-size: 18px;*/
+/*    font-weight: 300;*/
+/*    margin: 0 10px;*/
+/*}*/
+
+/*.td-trial__button {*/
+/*    padding-top: 40px;*/
+/*    padding-bottom: 0;*/
+/*}*/
+
+/*.td-button {*/
+/*    font-size: 18px;*/
+/*    padding: 12px 40px;*/
+/*    background-color: #fa876b;*/
+/*    border-radius: 55px;*/
+/*    color: #fff;*/
+/*    display: inline-block;*/
+/*    text-align: center;*/
+/*}*/
+
+/*.td-button:hover {*/
+/*    color: #fff;*/
+/*    background-color: #fd784c;*/
+/*}*/
