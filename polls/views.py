@@ -2,8 +2,8 @@
 # from django.template import loader
 from django.http import HttpResponse
 from django.http import Http404
-from django.shortcuts import render, get_object_or_404
-from .models import Test, Question, Answer, PartTest
+from django.shortcuts import render, get_object_or_404, get_list_or_404
+from .models import Test, Question, Answer, PartTest, QuestionType
 
 
 # Create your views here.
@@ -18,8 +18,10 @@ def index(request):
 def edit(request, form_id):
     """Получает объект теста для странички"""
     test = get_object_or_404(Test, pk=form_id)
+    types_quest = get_list_or_404(QuestionType)
+
     quest_list = Question.objects.filter(part_test__test_id=test.id)
-    return render(request, 'polls/detail.html', {'test': test})
+    return render(request, 'polls/detail.html', {'test': test, 'types_quest': types_quest})
 
 
 def save_quest(request, form_id, quest_id):
@@ -76,3 +78,10 @@ def add_part(request):
                                    name='Раздел 1')
     part.save()
     return HttpResponse('Ответ "%s" добавлен.' % part)
+
+
+def add_type_quest(request):
+    type_quest = QuestionType.objects.create(name='Текст',
+                                             function='text')
+    type_quest.save()
+    return HttpResponse('Ответ "%s" добавлен.' % type_quest)

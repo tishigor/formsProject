@@ -102,11 +102,6 @@ function delay(callback, ms) {
 // Example usage:
 
 $('.td-quest__name').keyup(delay(function (e) {
-    // let url = '/polls/' + $('.td-form-col__cell').attr('form_id') + '/' + this.getAttribute('quest_id') + '/'
-    // $.post(url, {name: this.innerText})
-    //     .done(function (data) {
-    //         alert("Data Loaded: " + data);
-    //     });
 
     $.ajax({
         url: '/polls/' + $('.td-form-col__cell').attr('form_id') + '/' + this.getAttribute('quest_id') + '/',
@@ -280,7 +275,3 @@ function addQuestionQuery(quest_block) {
 //         $('.page-child__drag-handle', this).fadeOut(0);
 //     }
 // )
-
-
-
-

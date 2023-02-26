@@ -4,44 +4,8 @@
 
     {% load  static %}
 
-
-
     {#{% if latest_test_list %}#}
 {#    <div class="td-form-col ui-sortable" id="projectssortable">#}
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            ItcCustomSelect.create('#select-1', {
-                name: 'car',
-                targetValue: 'ford',
-                options: [
-                    ['volkswagen', 'Volkswagen'],
-                    ['ford', 'Ford'],
-                    ['toyota', 'Toyota'],
-                    ['nissan', 'Nissan']
-                ],
-                onSelected(select, option) {
-                    // выбранное значение
-                    console.log(`Выбранное значение: ${select.value}`);
-                    // индекс выбранной опции
-                    console.log(`Индекс выбранной опции: ${select.selectedIndex}`);
-                    // выбранный текст опции
-                    const text = option ? option.textContent : '';
-                    console.log(`Выбранный текст опции: ${text}`);
-                },
-            });
-            document.querySelector('.itc-select').addEventListener('itc.select.change', (e) => {
-                const btn = e.target.querySelector('.itc-select__toggle');
-                // выбранное значение
-                console.log(`Выбранное значение: ${btn.value}`);
-                // индекс выбранной опции
-                console.log(`Индекс выбранной опции: ${btn.dataset.index}`);
-                // выбранный текст опции
-                const selected = e.target.querySelector('.itc-select__option_selected');
-                const text = selected ? selected.textContent : '';
-                console.log(`Выбранный текст опции: ${text}`);
-            });
-        })
-    </script>
     <div class="td-form-col" id="projectssortable">
 
 
@@ -96,11 +60,15 @@
                                         <div class="td-quest__name" contentEditable style="outline: none"
                                              role="textbox" aria-multiline="true"
                                              quest_id="{{ quest.id }}">{{ quest.name|linebreaks }}</div>
-{#                                        todo тут получаем тип вопроса и в зависимости от него захуячиваем альтернативы#}
-                                        <div class="td-site__descr" contenteditable="true"
-                                             style="outline: none">{{ quest.image|default:"Тип вопроса" }}
-                                            <!-- Кастомный селект -->
-                                            <div id="select-1"></div>
+                                        {#                                        todo тут получаем тип вопроса и в зависимости от него захуячиваем альтернативы#}
+                                        <div class="td-site__descr" contenteditable="true" style="outline: none">
+                                            <select name="select">
+                                                {% for type_quest in types_quest %}
+                                                    <option {% if quest.type_question.name == type_quest.name %}
+                                                        selected {% endif %}
+                                                        value="{{ type_quest.id }}">{{ type_quest.name }}</option>
+                                                {% endfor %}
+                                            </select>
                                         </div>
                                     {% else %}
                                         <div class="td-quest__name" contentEditable style="outline: none"
@@ -108,10 +76,14 @@
                                              quest_id="{{ quest.id }}">Вопрос
                                         </div>
 {#                                        todo тут получаем тип вопроса и в зависимости от него захуячиваем альтернативы#}
-                                        <div class="td-site__descr" contenteditable="true"
-                                             style="outline: none">{{ quest.image|default:"Тип вопроса" }}
-                                            <!-- Кастомный селект -->
-                                            <div id="select-1"></div>
+                                        <div class="td-site__descr" contenteditable="true" style="outline: none">
+                                            <select name="select">
+                                                {% for type_quest in types_quest %}
+                                                    <option {% if quest.type_question.name == type_quest.name %}
+                                                        selected {% endif %}
+                                                        value="{{ type_quest.id }}">{{ type_quest.name }}</option>
+                                                {% endfor %}
+                                            </select>
                                         </div>
                                     {% endif %}
                                 </div>

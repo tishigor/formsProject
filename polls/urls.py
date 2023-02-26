@@ -13,4 +13,5 @@ urlpatterns = [
     path('add_guest', views.add_guest, name='add_guest'),
     path('add_answ', views.add_answ, name='add_answ'),
     path('add_part', views.add_part, name='add_part'),
+    path('add_type_quest', views.add_type_quest, name='add_type_quest'),
 ]

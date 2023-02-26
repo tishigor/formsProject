@@ -115,7 +115,7 @@ class PartTest(models.Model):
 
 class QuestionType(models.Model):
     name = models.CharField(max_length=100, verbose_name='Название типа вопроса')
-    function = models.CharField(max_length=200, **optional_field, verbose_name='Название типа вопроса')
+    function = models.CharField(max_length=200, **optional_field, verbose_name='Функция')
 
     def __str__(self):
         return '{} {}'.format(self.pk, self.name)
