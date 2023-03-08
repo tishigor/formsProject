@@ -3,6 +3,9 @@
 from django.http import HttpResponse
 from django.http import Http404
 from django.shortcuts import render, get_object_or_404, get_list_or_404
+from django.views.decorators.csrf import csrf_exempt
+
+from .forms import QuestionForm
 from .models import Test, Question, Answer, PartTest, QuestionType
 
 
@@ -25,10 +28,34 @@ def edit(request, form_id):
 
 
 def save_quest(request, form_id, quest_id):
-    """сохраняет имя вопроса"""
+    """
+    Сохраняет формулировку вопроса
+
+    :param request:
+    :param form_id: id формы(теста)
+    :param quest_id: id вопроса
+    """
+
     test = get_object_or_404(Test, pk=form_id)
     question = Question.objects.get(pk=quest_id)
     question.name = request.POST['name']
+    question.save()
+    return render(request, 'polls/detail.html', {'test': test})
+
+
+def save_type_quest(request, form_id, quest_id, type_quest_id):
+    """
+    Сохраняет тип вопроса
+
+    :param form_id: -- id формы(теста)
+    :param quest_id: -- id вопроса
+    :param type_quest_id: -- id типа вопроса
+    """
+
+    test = get_object_or_404(Test, pk=form_id)
+    question = Question.objects.get(pk=quest_id)
+    type_quest = get_object_or_404(QuestionType, pk=type_quest_id)
+    question.type_question = type_quest
     question.save()
     return render(request, 'polls/detail.html', {'test': test})
 
@@ -56,11 +83,17 @@ def add_test(request):
     return HttpResponse('Тест "%s" добавлен.' % name)
 
 
-def add_guest(request):
-    name = ''
-    quest = Question.objects.create()
-    quest.save()
-    return HttpResponse('quest "%s" добавлен.' % name)
+# def add_quest(request):
+#     name = ''
+#     quest = Question.objects.create()
+#     quest.save()
+#     return HttpResponse('quest "%s" добавлен.' % name)
+
+# @csrf_exempt
+def add_quest(request):
+    # return HttpResponse('добавление вопроса')
+    form = QuestionForm()
+    return render(request, 'polls/addquest+.html', {'form': form})
 
 
 def add_answ(request):

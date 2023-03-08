@@ -1,0 +1,19 @@
+{% extends "baseNew.html" %}
+
+{% block content %}
+
+    {% load  static %}
+
+    <form class="form1" method="POST" action="{% url 'add_quest' %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+{#        <button type="submit">Submit</button>#}
+    </form>
+
+{#    <form class="form2" method="POST" action="{% url 'form2_submit' %}">#}
+{#        {% csrf_token %}#}
+{#        {{ form2.as_p }}#}
+{#        <button type="submit">Submit</button>#}
+{#    </form>#}
+
+{% endblock %}
