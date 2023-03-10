@@ -41,7 +41,6 @@ $('.block').hover(
         $('.quest_upper', this).css('opacity', '1');
 
     },
-
     function () {
         $('.quest_upper', this).css('opacity', '0');
     }
@@ -49,18 +48,32 @@ $('.block').hover(
 
 // style="display: none"
 
-// td-form-col
 $(function () {
     $(".td-sites-grid").sortable({
         connectWith: ".td-sites-grid",
         handle: ".quest_upper",
         // axis: "y",
         cursor: "n-resize",
-        revert: 400, //плавная анимация возвращения сорт. элемента на свое место
+        revert: 400, // плавная анимация возвращения сорт. элемента на свое место
         // cancel: ".portlet-toggle",
         placeholder: "portlet-placeholder",
-    });
 
+        stop: function (event, ui) {
+            let new_order = $(this).sortable("toArray"); // получаем новую последовательность вопросов
+            $.ajax({
+                type: "POST",
+                url: "/polls/" + $('.td-form-col__cell').attr('form_id') + "/update_order/",
+                data: {
+                    new_order: new_order,
+                    csrfmiddlewaretoken: csrftoken,
+                },
+                success: function () {
+                    // todo сделать индикатор отправки запроса на сохранение и успешное сохранение
+                    // alert("Порядок вопросов изменен!"); // оповещение об успешном изменении порядка
+                }
+            });
+        }
+    })
     // $(".portlet")
     //     .addClass("ui-widget ui-widget-content ui-helper-clearfix ui-corner-all")
     //     .find(".portlet-header")
@@ -73,6 +86,8 @@ $(function () {
     //     icon.closest(".portlet").find(".portlet-content").toggle();
     // });
 });
+
+
 
 
 // $(function () {
@@ -101,16 +116,14 @@ function delay(callback, ms) {
 
 // Example usage:
 
-$('.td-quest__name').keyup(delay(function (e) {
 // $('.td-quest-col__header').keyup(delay(function (e) {
-
+$('.td-quest__name').keyup(delay(function (e) {
     $.ajax({
-        url: '/polls/' + $('.td-form-col__cell').attr('form_id') + '/' + $(this).parent()[0].getAttribute('quest_id') + '/',
         type: 'POST',
+        url: '/polls/' + $('.td-form-col__cell').attr('form_id') + '/' + $(this).parent()[0].getAttribute('quest_id') + '/',
         // $(this).parent().getAttribute('quest_id')
         data: {
             name: this.innerText,
-            // type_quest: this.value,
             csrfmiddlewaretoken: csrftoken,
         },
         beforeSend: function () {
@@ -125,9 +138,7 @@ $('.td-quest__name').keyup(delay(function (e) {
             alert(data);
         }
     });
-
 }, 500));
-
 
 
 $(document).ready(function() {
@@ -154,131 +165,26 @@ $(document).ready(function() {
 });
 
 
-// $(document).ready(function() {
-//     $('form').change(function(e) {
-//         e.preventDefault();
-//         var form = $(this);
-//         var url = form.attr('action');
-//         var data = form.serialize();
-//         $.ajax({
-//             type: 'POST',
-//             url: url,
-//             data: data,
-//             success: function(response) {
-//                 console.log(response);
-//             },
-//             error: function(response) {
-//                 console.log(response);
-//             }
-//         });
-//     });
-// });
-
-// ТЕСТ TYPEWATCH'A
-
-// var options = {
-//     callback: function (value) { console.log('TypeWatch callback: (' + (this.type || this.nodeName) + ') ' + value); },
-//     wait: 750,
-//     highlight: true,
-//     allowSubmit: false,
-//     captureLength: 2
-// }
-// $(".td-quest__name").typeWatch(options);
-
-
-// $(document).ready(function () {
-//     $('.td-quest__name').typeWatch({
-//         captureLength: 2,
-//         callback: function (value) {
-//             console.log(value);
-//             $.ajax({
-//                 url: '/polls/' + $('.td-form-col__cell').attr('form_id') + '/' + this.getAttribute('quest_id') + '/',
-//                 type: 'POST',
-//                 data: {
-//                     name: value,
-//                     csrfmiddlewaretoken: csrftoken,
-//                 },
-//                 beforeSend: function () {
-//                     console.log('beforeSend');
-//                 },
-//                 success: function (data) {
-//                     console.log('success');
-//                     // alert(data);
-//                 },
-//                 onerror: function (data) {
-//                     console.log('onerror');
-//                     alert(data);
-//                 }
-//             });
-//         }
-//     });
-// });
-
-//
-// $.ajax({
-//     url: '/psy/choice_test/' + $('#choice_test').attr('type_test') + '/' + sel.value,  //type_test это про то, для кого тетсирование (преподов или обучающихся)
-//     beforeSend: function () {
-//         progress.addClass('progress');
-//         $('#available_variants').prepend(progress);
-//     },
-//     success: function (data) {
-//         progress.remove();
-//         $('#available_variants').append(data);
-//     },
-//     onerror: function (data) {
-//         progress.remove();
-//         alert(data);
-//     }
-// });
-
-
 //добавление блока с вопросом
-
 $('button').on('click', addQuestBlock);
 
 function addQuestBlock() {
-    // let block_quest = '<div style="display: none" class="td-quest-col__cell" id="question123">\n' +
-    //     '                            <div class="block td-quest-col__header" data-item-kind="">\n' +
-    //     '                                <div class="td-sites-grid__more" role="button"></div>\n' +
-    //     '                                <div class="td-sites-more"></div>\n' +
-    //     '                                <div class="quest_upper"></div>\n' +
-    //     '                                <div class="quest_section">\n' +
-    //     '                                    <div class="td-quest__name" contentEditable style="outline: none"\n' +
-    //     '                                         role="textbox" aria-multiline="true"\n' +
-    //     '                                         quest_id="{{ quest.id }}">Вопрос</div>\n' +
-    //     '                                    <div class="td-site__descr" contenteditable="true"\n' +
-    //     '                                         style="outline: none">Тип вопроса</div>\n' +
-    //     '                                </div>\n' +
-    //     '                            </div>\n' +
-    //     '                        </div>'
-    let $new_block_quest = $('<div class="block td-quest-col__header">\n' +
-        '                                <div class="td-sites-grid__more" role="button"></div>\n' +
-        '                                <div class="td-sites-more"></div>\n' +
-        '                                <div class="quest_upper"></div>\n' +
-        '\n' +
-        '                                <div class="page-child__drag-handle ui-sortable-handle" style="opacity: 0;"><img style="top: 50px; position: relative;" src="data:image/svg+xml,%3Csvg width=\'12\' height=\'16\' fill=\'none\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cpath fill-rule=\'evenodd\' clip-rule=\'evenodd\' d=\'M3.5 2C3.5 2.82843 2.82843 3.5 2 3.5C1.17157 3.5 0.5 2.82843 0.5 2C0.5 1.17157 1.17157 0.5 2 0.5C2.82843 0.5 3.5 1.17157 3.5 2ZM2 9.5C2.82843 9.5 3.5 8.82843 3.5 8C3.5 7.17157 2.82843 6.5 2 6.5C1.17157 6.5 0.5 7.17157 0.5 8C0.5 8.82843 1.17157 9.5 2 9.5ZM2 15.5C2.82843 15.5 3.5 14.8284 3.5 14C3.5 13.1716 2.82843 12.5 2 12.5C1.17157 12.5 0.5 13.1716 0.5 14C0.5 14.8284 1.17157 15.5 2 15.5ZM10 15.5C10.8284 15.5 11.5 14.8284 11.5 14C11.5 13.1716 10.8284 12.5 10 12.5C9.17157 12.5 8.5 13.1716 8.5 14C8.5 14.8284 9.17157 15.5 10 15.5ZM11.5 8C11.5 8.82843 10.8284 9.5 10 9.5C9.17157 9.5 8.5 8.82843 8.5 8C8.5 7.17157 9.17157 6.5 10 6.5C10.8284 6.5 11.5 7.17157 11.5 8ZM10 3.5C10.8284 3.5 11.5 2.82843 11.5 2C11.5 1.17157 10.8284 0.5 10 0.5C9.17157 0.5 8.5 1.17157 8.5 2C8.5 2.82843 9.17157 3.5 10 3.5Z\' fill=\'%23475A80\' fill-opacity=\'.5\'/%3E%3C/svg%3E"></div>\n' +
-        '                                    \n' +
-        '                                    \n' +
-        '                                    \n' +
-        '                                        <div class="td-quest__name" contenteditable="" style="outline: none" role="textbox" aria-multiline="true" quest_id="3">Вопрос\n' +
-        '                                        </div>\n' +
-        '                                        \n' +
-        '                                        <div class="td-site__descr" contenteditable="true" style="outline: none">Тип вопроса</div>\n' +
-        '                                    \n' +
-        '                            </div>').hide();
+    // Находим последний элемент с классом "td-quest-col__header"
+    let lastHeader = $(".td-sites-grid .td-quest-col__header").last();
+    // Клонируем этот элемент
+    let clonedHeader = lastHeader.clone();
+    // Ищем внутри клонированного элемента элемент с классом "td-quest__name" и меняем его текст на "Новый вопрос"
+    clonedHeader.find(".td-quest__name").text("Новый вопрос");
+    // Ищем внутри клонированного элемента элемент с атрибутом "quest_id" и меняем его значение на значение оригинала + 1
+    var originalQuestId = lastHeader.attr("quest_id");
+    clonedHeader.attr("quest_id", parseInt(originalQuestId) + 1);
+    // Ищем внутри клонированного элемента элемент "select" и устанавливаем первый вариант выбора
+    clonedHeader.find("select").prop("selectedIndex", 0);
+    // Вставляем клонированный элемент после оригинала
+    clonedHeader.insertAfter(lastHeader).hide().fadeIn();
 
-
-
-
-
-
-    $('.td-sites-grid').append($new_block_quest)
-    $new_block_quest.fadeIn()
-    //todo вот это было раскомм.
-    addQuestionQuery($new_block_quest)
-
-    // $('#question123').fadeIn()
-    // $(block_quest).hide().append()
+    // todo добавление в базу тут
+    // addQuestionQuery($new_block_quest)
 }
 
 
@@ -287,13 +193,11 @@ function addQuestionQuery(quest_block) {
 
     url = '/polls/' + $('.td-form-col__cell').attr('form_id') + '/' + quest_block.getAttribute('quest_id') + '/'
 
-
     $.ajax({
-        url: '/polls/' + $('.td-form-col__cell').attr('form_id') + '/' + this.getAttribute('quest_id') + '/',
         type: 'POST',
+        url: '/polls/' + $('.td-form-col__cell').attr('form_id') + '/' + this.getAttribute('quest_id') + '/',
         // todo по идее если вопрос пустой то сохраняем только порядковый номер. Если вопрос пустой, то defaultValue="Вопрос"
         data: {
-
             name: quest_block.innerText,
             csrfmiddlewaretoken: csrftoken,
         },

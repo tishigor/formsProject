@@ -1,9 +1,10 @@
 # from django.http import HttpResponse
 # from django.template import loader
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.http import Http404
 from django.shortcuts import render, get_object_or_404, get_list_or_404
 from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_POST
 
 from .forms import QuestionForm
 from .models import Test, Question, Answer, PartTest, QuestionType
@@ -16,6 +17,7 @@ def index(request):
     latest_test_list = Test.objects.order_by('name')
     context = {'latest_test_list': latest_test_list}
     return render(request, 'polls/indexNew.html', context)
+    # return render(request, 'polls/try.html', context)
 
 
 def edit(request, form_id):
@@ -24,6 +26,7 @@ def edit(request, form_id):
     types_quest = get_list_or_404(QuestionType)
 
     quest_list = Question.objects.filter(part_test__test_id=test.id)
+
     return render(request, 'polls/detail.html', {'test': test, 'types_quest': types_quest})
 
 
@@ -58,6 +61,17 @@ def save_type_quest(request, form_id, quest_id, type_quest_id):
     question.type_question = type_quest
     question.save()
     return render(request, 'polls/detail.html', {'test': test})
+
+@require_POST
+def update_order(request, form_id):
+    new_order = request.POST.getlist("new_order[]") # получаем новый порядок вопросов из Ajax-запроса
+    for i, quest in enumerate(new_order):
+        pk = int(quest.split('_')[1])
+        question = Question.objects.get(pk=pk)
+        question.number = i
+        question.save()
+    # return JsonResponse({"status": "success"})
+    return render(request, 'polls/detail.html')
 
 
 # def detail(request, test_id):
