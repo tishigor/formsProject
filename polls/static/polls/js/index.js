@@ -161,6 +161,22 @@ $(document).ready(function() {
                 console.log(response);
             }
         });
+
+        let selectVal = $(this).val();
+        let block = $(this).closest('.td-quest-col__header');
+        let url = '/polls/get_template/';
+
+        $.ajax({
+            method: 'GET',
+            url: url,
+            data: {
+                selectVal: selectVal
+            },
+            success: function (response) {
+                block.find('.template-container').remove();
+                block.find('.td-site__alt').append(response);
+            }
+        });
     });
 });
 
@@ -231,3 +247,28 @@ function addQuestionQuery(quest_block) {
 //         $('.page-child__drag-handle', this).fadeOut(0);
 //     }
 // )
+
+
+// ФУНКЦИЯ ДЛЯ ПЕРЕХОДА ПО ВКЛАДКАМ
+
+$(document).ready(function() {
+  $('.tab').on('click', function(e) {
+    var tabId = $(this).data('tab-id');
+    // Отправляем AJAX-запрос на сервер Django, чтобы получить содержимое вкладки
+    $.ajax({
+      url: '/polls/',
+      type: 'POST',
+      data: {
+        'tab_id': tabId
+      },
+      success: function(response) {
+        // Обновляем содержимое вкладки
+        $('#tab' + tabId).html(response);
+        // Показываем скрытый div и скрываем текущий
+        $('.tabs #tab' + tabId).slideDown(400).addClass('active').siblings().slideUp(400).removeClass('active');
+      }
+    });
+    // Отменяем действие по умолчанию
+    e.preventDefault();
+  });
+});

@@ -135,8 +135,7 @@ class Question(models.Model):
     type_question = models.ForeignKey(QuestionType, verbose_name='Тип вопроса', **optional_field, on_delete=models.CASCADE)
     part_test = models.ForeignKey(PartTest, verbose_name='Часть теста', blank=False, null=False, on_delete=models.CASCADE)
 
-
-    def _get_question_descriprion(self):
+    def _get_question_description(self):
         description = Question.objects.get(id=self.id).name
         return mark_safe(description)
 
@@ -150,11 +149,11 @@ class Question(models.Model):
         except Exception:
             pass
 
-    vopros = property(_get_question_descriprion)
+    vopros = property(_get_question_description)
     type_question_description = property(_get_question_interface)
 
     def __str__(self):
-        return '{}'.format(self._get_question_descriprion())
+        return '{}'.format(self._get_question_description())
 
     class Meta:
         db_table = 'form_question'

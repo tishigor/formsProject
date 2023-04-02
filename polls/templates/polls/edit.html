@@ -4,13 +4,26 @@
 
 {% load  static %}
 
-{#{% if latest_test_list %}#}
-{#    <div class="td-form-col ui-sortable" id="projectssortable">#}
-<div class="td-form-col" id="projectssortable">
+
+<div class="polls_menu">
+    <div class="tabs" role="tablist">
+        <div class="tab active" aria-controls="FormEditor">Вопросы</div>
+        <div class="tab" aria-controls="ResponsesView">Ответы</div>
+        <div class="tab" aria-controls="SettingsView">Настройки</div>
+
+{#todo Forbidden (CSRF token missing.): /polls/ (вот такая штука была, нужно найти решение)#}
+{#            <a class="tab active" href="{% url 'edit' test.id %}">Вопросы</a>#}
+{#            <a class="tab" href="{% url 'responses' test.id %}">Ответы</a>#}
+{#            <a class="tab" href="{% url 'settings' %}">Настройки</a>#}
+    </div>
+</div>
 
 
-    {# шапка #}
-{#        <div class="td-form-col__cell ui-sortable-handle" form_id="{{ test.id }}">#}
+
+<div id="FormEditor" class="td-form-col">
+
+{# шапка #}
+
     <div class="td-form-col__cell" form_id="{{ test.id }}">
         <div class="block td-form-col__header">
             <div class="td-sites-grid__more" role="button"></div>
@@ -49,7 +62,7 @@
                             <div class="td-quest__name" contentEditable style="outline: none"
                                  role="textbox" aria-multiline="true">{{ quest.name|linebreaks }}</div>
                             {# todo тут получаем тип вопроса и в зависимости от него захуячиваем альтернативы#}
-                            <div class="td-site__descr" style="outline: none">
+                            <div class="td-site__alt" style="outline: none">
                                 <select name="select" class="select">
                                     {% for type_quest in types_quest %}
                                         <option {% if quest.type_question.name == type_quest.name %}
@@ -57,13 +70,21 @@
                                             value="{{ type_quest.id }}">{{ type_quest.name }}</option>
                                     {% endfor %}
                                 </select>
+                                {% if quest.type_question_id == 1 %}
+                                    {% include "polls/type_templates/radio.html" %}
+                                {% elif quest.type_question_id == 2 %}
+                                    {% include "polls/type_templates/checkbox.html" %}
+                                {% elif quest.type_question_id == 3 %}
+                                    {% include "polls/type_templates/text.html" %}
+                                {% endif %}
+
                             </div>
                         {% else %}
                             <div class="td-quest__name" contentEditable style="outline: none"
                                  role="textbox" aria-multiline="true">Вопрос
                             </div>
                             {#todo тут получаем тип вопроса и в зависимости от него захуячиваем альтернативы#}
-                            <div class="td-site__descr" contenteditable="true" style="outline: none">
+                            <div class="td-site__alt" contenteditable="true" style="outline: none">
                                 <select name="select">
                                     {% for type_quest in types_quest %}
                                         <option {% if quest.type_question.name == type_quest.name %}
@@ -71,6 +92,15 @@
                                             value="{{ type_quest.id }}">{{ type_quest.name }}</option>
                                     {% endfor %}
                                 </select>
+                                {% if quest.type_question.id == 3 %}
+                                    <p>Option 1 was selected</p>
+                                {% endif %}
+                                {% if request.POST.select == '2' %}
+                                    <p>Option 2 was selected</p>
+                                {% endif %}
+                                {% if request.POST.select == '3' %}
+                                    <p>Option 3 was selected</p>
+                                {% endif %}
                             </div>
                         {% endif %}
                     </div>
@@ -90,7 +120,7 @@
                          role="textbox" aria-multiline="true"
                          quest_id="1" data-placeholder="Введите текст вопроса"></div>
                     {#todo тут получаем тип вопроса и в зависимости от него захуячиваем альтернативы#}
-                    <div class="td-site__descr" contenteditable="true"
+                    <div class="td-site__alt" contenteditable="true"
                          style="outline: none">альтернативы
                     </div>
 {#                    </div>#}
@@ -99,7 +129,7 @@
         </div>
     {% endif %}
     {#todo тут блок с добавлением нового блока с вопросом#}
-{#        крч я ебал тут хуета со стилями блять все самому придется делать#}
+    {# со стилями проблемы#}
     <div class="page__control-buttons">
         <button type="button" class="Button2 Button2_view_dl-light Button2_size_l" autocomplete="off"
                 aria-busy="false"><span class="Icon Icon_type_plus Button2-Icon Button2-Icon_side_left"
@@ -110,14 +140,37 @@
                                         aria-hidden="true"></span><span
                 class="Button2-Text">Добавить страницу</span></button>
     </div>
+</div>
 
-{#    <svg width='24' height='24' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M12 3C11.4477 3 11 3.44772 11 4V11H4C3.44772 11 3 11.4477 3 12C3 12.5523 3.44772 13 4 13H11V20C11 20.5523 11.4477 21 12 21C12.5523 21 13 20.5523 13 20V13H20C20.5523 13 21 12.5523 21 12C21 11.4477 20.5523 11 20 11H13V4C13 3.44772 12.5523 3 12 3Z' fill='%232F3747'/></svg>#}
 
+<div id="ResponsesView" class="td-form-col">
+    <div class="td-form-col__cell" form_id="{{ test.id }}">
+        <div class="block td-form-col__header">
+            <div class="td-site__section-one">
+                <div class="td-site__title" style="outline: none" aria-multiline="true">0 ответов</div>
+                <div class="td-site__descr" style="outline: none">Ответы принимаются</div>
+            </div>
+        </div>
+    </div>
 
 </div>
-{#</div>#}
 
-{#  todo без этой штуки никакой POST не заработает(совместно с первой строчкой в popup)  #}
+
+
+
+<div id="SettingsView" class="td-form-col">
+    <div class="td-form-col__cell" form_id="{{ test.id }}">
+        <div class="block td-form-col__header">
+            <div class="td-site__section-one">
+                <div class="td-site__title" style="outline: none" aria-multiline="true">Настройки</div>
+                <div class="td-site__descr" style="outline: none">Ответы принимаются</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{#  todo без этой штуки никакой POST не заработает(совместно с первой строчкой в index)  #}
 <script type="text/javascript">     window.CSRF_TOKEN = "{{ csrf_token }}"; </script>
 
 

@@ -161,6 +161,74 @@ a:hover {
 /*добавление проекта + корзина*/
 
 
+/* -------------------------------------------вкладки polls*/
+
+/*.p3LqKe {*/
+/*    bottom: 0;*/
+/*    left: 0;*/
+/*    margin: 0 auto;*/
+/*    position: absolute;*/
+/*    right: 0;*/
+/*    width: 770px;*/
+/*}*/
+/*.VZhFab {*/
+/*    padding: 0 12px;*/
+/*}*/
+/*.kx3Hed {*/
+/*    display: inline-block;*/
+/*    white-space: nowrap;*/
+/*}*/
+
+.polls_menu {
+    max-width: 800px;
+    width: 100%;
+    margin: auto;
+    padding: 20px 0 0;
+}
+
+.tabs {
+    bottom: 0;
+    display: -webkit-box;
+    display: -webkit-flex;
+    /*display: flex;*/
+    display: flex;
+    justify-content: center;
+    /*border-bottom: 1px solid rgba(0, 0, 0, .12);*/
+    position: relative;
+    width: 100%;
+
+}
+
+div.tab {
+    cursor: pointer;
+    /*font-weight: 700;*/
+    /*color: white;*/
+    text-decoration: none;
+    padding: 0.8em 1em calc(0.8em + 3px);
+    border-radius: 12px;
+    margin: 0 1px;
+    /*background: rgb(64,199,129);*/
+    /*box-shadow: 0 -3px rgb(53 167 110) inset;*/
+    transition: 0.2s;
+}
+
+div.tab:hover {
+    background: #c2c2c2;
+}
+
+div.tab:active {
+    background: rgb(33, 147, 90);
+}
+
+div.active {
+    background: #d9d9d9;
+}
+
+
+/* -------------------------------------------вкладки polls*/
+
+
+
 /*сетка с проектами*/
 .td-sites-grid {
     margin: 0 auto;
@@ -197,7 +265,7 @@ a:hover {
     height: 24px;
     border: none;
     background: none;
-    background-image: url(data:image/svg+xml,%3C%3Fxml version= '1.0' encoding= 'UTF-8' %3F%3E%3Csvg width= '24px' height= '24px' viewBox= '0 0 24 24' version= '1.1' xmlns= 'http://www.w3.org/2000/svg' xmlns:xlink= 'http://www.w3.org/1999/xlink' %3E%3Ctitle%3EArtboard%3C/title%3E%3Cg id= 'Page-1' stroke= 'none' stroke-width= '1' fill= 'none' fill-rule= 'evenodd' %3E%3Cg id= 'Artboard' fill= '%23000000' fill-rule= 'nonzero' %3E%3Cpath d= 'M11.75,18 C12.7164983,18 13.5,18.7835017 13.5,19.75 C13.5,20.7164983 12.7164983,21.5 11.75,21.5 C10.7835017,21.5 10,20.7164983 10,19.75 C10,18.7835017 10.7835017,18 11.75,18 Z M11.75,10.5 C12.7164983,10.5 13.5,11.2835017 13.5,12.25 C13.5,13.2164983 12.7164983,14 11.75,14 C10.7835017,14 10,13.2164983 10,12.25 C10,11.2835017 10.7835017,10.5 11.75,10.5 Z M11.75,3 C12.7164983,3 13.5,3.78350169 13.5,4.75 C13.5,5.71649831 12.7164983,6.5 11.75,6.5 C10.7835017,6.5 10,5.71649831 10,4.75 C10,3.78350169 10.7835017,3 11.75,3 Z' id= 'Shape' %3E%3C/path%3E%3C/g%3E%3C/g%3E%3C/svg%3E);
+    /*background-image: url(data:image/svg+xml,%3C%3Fxml version= '1.0' encoding= 'UTF-8' %3F%3E%3Csvg width= '24px' height= '24px' viewBox= '0 0 24 24' version= '1.1' xmlns= 'http://www.w3.org/2000/svg' xmlns:xlink= 'http://www.w3.org/1999/xlink' %3E%3Ctitle%3EArtboard%3C/title%3E%3Cg id= 'Page-1' stroke= 'none' stroke-width= '1' fill= 'none' fill-rule= 'evenodd' %3E%3Cg id= 'Artboard' fill= '%23000000' fill-rule= 'nonzero' %3E%3Cpath d= 'M11.75,18 C12.7164983,18 13.5,18.7835017 13.5,19.75 C13.5,20.7164983 12.7164983,21.5 11.75,21.5 C10.7835017,21.5 10,20.7164983 10,19.75 C10,18.7835017 10.7835017,18 11.75,18 Z M11.75,10.5 C12.7164983,10.5 13.5,11.2835017 13.5,12.25 C13.5,13.2164983 12.7164983,14 11.75,14 C10.7835017,14 10,13.2164983 10,12.25 C10,11.2835017 10.7835017,10.5 11.75,10.5 Z M11.75,3 C12.7164983,3 13.5,3.78350169 13.5,4.75 C13.5,5.71649831 12.7164983,6.5 11.75,6.5 C10.7835017,6.5 10,5.71649831 10,4.75 C10,3.78350169 10.7835017,3 11.75,3 Z' id= 'Shape' %3E%3C/path%3E%3C/g%3E%3C/g%3E%3C/svg%3E);*/
     background-repeat: no-repeat;
     background-size: contain;
     background-position: center center;
@@ -336,6 +404,13 @@ a:hover {
     padding-top: 10px;
 }
 
+.td-site__alt {
+    font-size: 18px;
+    color: #000;
+    padding-top: 10px;
+}
+
+
 .td-site__hr {
     margin: 0 30px;
     height: 1px;
@@ -438,7 +513,7 @@ a:hover {
 }
 
 
-/*для detail.html*/
+/*для edit.html*/
 
 
 
@@ -453,7 +528,7 @@ a:hover {
 }
 
 
-/*todo хз зачем это дерьмо, оно прям под копирку как у гугла*/
+/*todo хз зачем это, оно прям под копирку у гугла*/
 
 .quest_upper {
     cursor: move;
@@ -515,7 +590,7 @@ a:hover {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    font-family: var(--button-font-family);
+
     -moz-user-focus: ignore;
     -webkit-user-select: none;
     user-select: none;

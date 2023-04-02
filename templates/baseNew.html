@@ -3,28 +3,17 @@
 <head>
 
     {% load  static %}
-    {#    <title>[{{ settings.APP_NAME }} v{{ settings.APP_VERSION }}] {% block title %}{{ title }}{% endblock %}</title>#}
-    {#    <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>#}
-    {#    <script src="{{ settings.MEDIA_URL }}js/jquery-2.1.1.min.js"></script>#}
-    {#    <script src="{{ settings.MEDIA_URL }}js/add.js" type="text/javascript"></script>#}
-
 
     <link href="{% static 'polls/CSS/styleNew.css' %}" rel="stylesheet" type="text/css"/>
-    <link href="{% static 'polls/CSS/styleNewQuestEdit.css' %}" rel="stylesheet" type="text/css"/>
-    <link href="{% static 'polls/CSS/ggle.css' %}" rel="stylesheet" type="text/css"/>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;800&display=swap" rel="stylesheet">
 
-    <!-- Подключаем CSS файл CustomSelect -->
-    <link rel="stylesheet" href="{% static 'polls/CSS/itc-custom-select.css' %}">
-    <!-- Подключаем JavaScript файл CustomSelect -->
-    <script defer src="{% static 'polls/js/itc-custom-select.js' %}"></script>
 
 
     {#    todo для странички с формами для вопросиков#}
     {#    <script type="text/javascript" src="js/jquery-3.6.1.min.js"></script>#}
-{#    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">#}
+    {#    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">#}
     {#    <link rel="stylesheet" href="/resources/demos/style.css">#}
 
 
@@ -104,8 +93,10 @@
                     href="http://tilda.education" class="t-menu__item t-menu__item-courses" target="_blank">Уроки и
                 статьи</a><a
                     href="https://tilda.cc/identity/" class="t-menu__item"
-                    style="opacity:0.5; margin-right: -10px;">(igor)</a><a href="https://tilda.cc/login/exit/"
+                    style="opacity:0.5; margin-right: -10px;">(igor)</a><a href="{{ settings.LOGOUT_URL }}"
                                                                            class="t-menu__item t-menu__item-exit">Выйти</a>
+{#                    <span id="logout"><a href="{{ settings.LOGOUT_URL }}">Выйти</a></span>#}
+
             </div>
         </div>
     </div><!--/// Fixed main menu --></div>
@@ -124,6 +115,8 @@
     </div>
 </div>
 </div>
+
+{#todo это должно быть не тут#}
 <div class="td-maincontainer-bottom">
     <div class="td-trial">
         <div class="td-trial__wrapper">
@@ -137,14 +130,14 @@
                                              class="td-button"><span>Тарифы и оплата</span></a></div>
         </div>
     </div>
-    <br><br><br><br></div>
+    <br><br><br><br>
 </div>
 
 {#todo где хранить jquery'шные импорты???#}
 <script type="text/javascript" src="{% static 'polls/js/jquery-3.6.1.min.js ' %}"></script>
 {#<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>#}
 <script src="{% static 'polls/js/jquery-ui-1.13.2.js ' %}" rel="stylesheet"></script>
-<script src="{% static 'polls/js/popup.js ' %}" rel="stylesheet"></script>
+<script src="{% static 'polls/js/index.js ' %}" rel="stylesheet"></script>
 {#TypeWatch jQuery plugin. (штука для обработчика сохранения без кнопки сохранения) #}
 {#<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>#}
 <script src="http://js.nicedit.com/nicEdit-latest.js" type="text/javascript"></script>
