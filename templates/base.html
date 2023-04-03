@@ -3,21 +3,140 @@
 <head>
 
     {% load  static %}
-    <title>[{{ settings.APP_NAME }} v{{ settings.APP_VERSION }}] {% block title %}{{ title }}{% endblock %}</title>
-{#    <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>#}
-{#    <script src="{{ settings.MEDIA_URL }}js/jquery-2.1.1.min.js"></script>#}
-{#    <script src="{{ settings.MEDIA_URL }}js/add.js" type="text/javascript"></script>#}
 
-    <script type="text/javascript" src="{% static 'polls/js/jquery-3.6.1.min.js ' %}"></script>
-    <script src="{% static 'polls/js/index.js ' %}" rel="stylesheet"></script>
-    <link href="{% static 'polls/CSS/style.css ' %}" rel="stylesheet" type="text/css"/>
+    <link href="{% static 'polls/CSS/styleNew.css' %}" rel="stylesheet" type="text/css"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;800&display=swap" rel="stylesheet">
+
+
+
+    {#    todo для странички с формами для вопросиков#}
+    {#    <script type="text/javascript" src="js/jquery-3.6.1.min.js"></script>#}
+    {#    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">#}
+    {#    <link rel="stylesheet" href="/resources/demos/style.css">#}
+
 
 </head>
-<body>
+<body style="margin: 0px;background-color: rgb(240, 240, 240);">
 
-{% block content %}
-    Пустая страница! Добавьте в свой шаблон блок <b>content</b>, для замены этого содержимого!
-{% endblock %}
+
+<div class="td-menucontainer"><!-- Fixed main menu -->
+    <div class="t-menu" role="navigation" id="mainmenu">
+        <div id="info-alert" style="position:fixed; width:100%; z-index:10000;"></div>
+        <div class="t-menu__wrapper" role="navigation" id="mainmenu">
+            <div class="t-menu__waves" style="cursor: pointer;">
+                <svg style="display:block; width:23px; height:60px;" enable-background="new 0 0 46 130" version="1.1"
+                     viewBox="0 0 46 130" xml:space="preserve" xmlns="http://www.w3.org/2000/svg"><path style="fill:#fff;" d="m46 73.1c-1 0.7-1.8 2.1-2.8 3.8-1.5 2.7-3.3 5.9-7.1 5.9s-5.6-3.2-7.1-5.9-2.6-4.4-4.5-4.4-3 1.7-4.5 4.4-3.3 5.9-7.1 5.9-5.6-3.2-7.1-5.9-2.9-4.4-4.8-4.4c-0.4 0-0.7 0.1-1 0.2v-3.1c0.3-0.1 0.7-0.1 1-0.1 3.7 0 5.6 3.2 7.1 5.9s2.6 4.4 4.5 4.4 3-1.7 4.5-4.4 3.3-5.9 7.1-5.9 5.6 3.2 7.1 5.9c1.6 2.8 2.6 4.4 4.5 4.4s3-1.7 4.5-4.4c1.3-2.3 2.8-5.1 5.7-5.7v3.4z"></path>
+                    <path
+                            style="fill:#fff;"
+                            d="m46 59.8c-1 0.7-1.8 2.1-2.8 3.8-1.5 2.7-3.3 5.9-7.1 5.9s-5.6-3.2-7.1-5.9-2.6-4.4-4.5-4.4-3 1.7-4.5 4.4-3.3 5.9-7.1 5.9-5.6-3.2-7.1-5.9-2.9-4.4-4.8-4.4c-0.4 0-0.7 0.1-1 0.2v-3.1c0.3-0.1 0.7-0.1 1-0.1 3.7 0 5.6 3.2 7.1 5.9s2.6 4.4 4.5 4.4 3-1.7 4.5-4.4 3.3-5.9 7.1-5.9 5.6 3.2 7.1 5.9c1.6 2.8 2.6 4.4 4.5 4.4s3-1.7 4.5-4.4c1.3-2.3 2.8-5.1 5.7-5.7v3.4z"></path>
+                    <path
+                            style="fill:#fff;"
+                            d="m46 46.5c-1 0.7-1.8 2.1-2.8 3.8-1.5 2.7-3.3 5.9-7.1 5.9s-5.6-3.2-7.1-5.9-2.6-4.4-4.5-4.4-3 1.7-4.5 4.4-3.3 5.9-7.1 5.9-5.6-3.2-7.1-5.9-2.9-4.4-4.8-4.4c-0.4 0-0.7 0.1-1 0.2v-3.1c0.3-0.1 0.7-0.1 1-0.1 3.7 0 5.6 3.1 7.1 5.9s2.6 4.4 4.5 4.4 3-1.7 4.5-4.4 3.3-5.9 7.1-5.9 5.6 3.2 7.1 5.9c1.6 2.8 2.6 4.4 4.5 4.4s3-1.7 4.5-4.4c1.3-2.3 2.8-5.1 5.7-5.7v3.4z"></path>
+                    <path
+                            style="fill:#fff;"
+                            d="m46 33.2c-1 0.7-1.8 2.1-2.8 3.8-1.5 2.7-3.3 5.9-7.1 5.9s-5.6-3.2-7.2-5.9-2.6-4.4-4.5-4.4-3 1.7-4.5 4.4-3.3 5.9-7.1 5.9-5.7-3.1-7.3-5.9-2.6-4.4-4.5-4.4c-0.4 0-0.7 0.1-1 0.2v-3.1c0.3-0.1 0.7-0.1 1-0.1 3.8 0 5.6 3.1 7.1 5.9s2.6 4.4 4.5 4.4 3-1.7 4.5-4.4 3.3-5.9 7.1-5.9 5.6 3.2 7.1 5.9c1.6 2.8 2.6 4.4 4.5 4.4s3-1.7 4.5-4.4c1.3-2.3 2.8-5.1 5.7-5.7v3.4z"></path>
+                    <path
+                            style="fill:#fff;"
+                            d="m39.8 130c0.3-0.4 0.5-0.9 0.8-1.4 1.3-2.3 2.7-4.9 5.4-5.7v3.3c-1 0.7-1.8 2-2.7 3.7l-3.5 0.1z"></path>
+                    <path
+                            style="fill:#fff;"
+                            d="m16.5 130c0.3-0.4 0.5-0.9 0.8-1.4 1.5-2.7 3.3-5.9 7.1-5.9s5.6 3.2 7.1 5.9c0.3 0.5 0.6 1 0.8 1.4h-3.4c-1.5-2.7-2.6-4.3-4.4-4.3-1.9 0-3 1.7-4.4 4.3h-3.6z"></path>
+                    <path
+                            style="fill:#fff;"
+                            d="m0 122.8c0.4-0.1 0.8-0.1 1.2-0.1 3.8 0 5.6 3.2 7.1 5.9 0.3 0.5 0.6 1 0.8 1.4h-3.5c-1.5-2.7-2.6-4.3-4.4-4.3-0.4 0-0.8 0.1-1.2 0.3v-3.2z"></path>
+                    <path
+                            style="fill:#fff;"
+                            d="m46 113c-1 0.7-1.8 2.1-2.8 3.8-1.5 2.7-3.3 5.9-7.1 5.9s-5.6-3.2-7.1-5.9-2.6-4.4-4.5-4.4-3 1.7-4.5 4.4-3.3 5.9-7.1 5.9-5.6-3.2-7.1-5.9-2.6-4.4-4.5-4.4c-0.5 0-0.9 0.1-1.3 0.3v-3.2c0.4-0.1 0.8-0.1 1.3-0.1 3.7 0 5.6 3.2 7.1 5.9s2.6 4.4 4.5 4.4 3-1.7 4.5-4.4 3.3-5.9 7.1-5.9 5.6 3.2 7.1 5.9c1.6 2.8 2.6 4.4 4.5 4.4s3-1.7 4.5-4.4c1.3-2.3 2.7-4.9 5.4-5.7v3.4z"></path>
+                    <path
+                            style="fill:#fff;"
+                            d="m0 96.2c0.3-0.1 0.6-0.1 1-0.1 3.7 0 5.6 3.2 7.1 5.9s2.6 4.4 4.5 4.4 3-1.7 4.5-4.4 3.3-5.9 7.1-5.9 5.6 3.2 7.1 5.9c1.6 2.8 2.6 4.4 4.5 4.4s3-1.7 4.5-4.4c1.3-2.3 2.8-5.1 5.7-5.7v3.4c-1 0.7-1.8 2.1-2.8 3.8-1.5 2.7-3.3 5.9-7.1 5.9s-5.6-3.2-7.1-5.9-2.6-4.4-4.5-4.4-3 1.7-4.5 4.4-3.3 5.9-7.1 5.9-5.6-3.2-7.1-5.9-2.9-4.4-4.8-4.4c-0.4 0-0.7 0.1-1 0.2v-3.1z"></path>
+                    <path
+                            style="fill:#fff;"
+                            d="m46 86.4c-1 0.7-1.8 2.1-2.8 3.8-1.5 2.7-3.3 5.9-7.1 5.9s-5.6-3.1-7.2-5.9-2.6-4.4-4.5-4.4-3 1.7-4.5 4.4-3.3 5.9-7.1 5.9-5.7-3.1-7.3-5.9-2.6-4.4-4.5-4.4c-0.4 0-0.7 0.1-1 0.2v-3.1c0.3-0.1 0.7-0.1 1-0.1 3.8 0 5.6 3.2 7.1 5.9s2.6 4.4 4.5 4.4 3-1.7 4.5-4.4 3.3-5.9 7.1-5.9 5.6 3.2 7.1 5.9c1.6 2.8 2.6 4.4 4.5 4.4s3-1.7 4.5-4.4c1.3-2.3 2.8-5.1 5.7-5.7v3.4z"></path>
+                    <path
+                            style="fill:#fff;"
+                            d="m0 16.4c0.3-0.1 0.7-0.1 1-0.1 3.7 0 5.6 3.1 7.1 5.9s2.6 4.4 4.5 4.4 3-1.7 4.5-4.4 3.3-5.9 7.1-5.9 5.6 3.1 7.1 5.9c1.7 2.8 2.7 4.4 4.7 4.4s3-1.7 4.5-4.4c1.3-2.3 2.8-4.9 5.5-5.7v3.4c-1 0.7-1.8 2.1-2.8 3.8-1.5 2.7-3.3 5.9-7.1 5.9s-5.6-3.1-7.1-5.9-2.6-4.4-4.5-4.4-3 1.7-4.5 4.4-3.3 5.9-7.1 5.9-5.6-3.1-7.1-5.9-2.9-4.4-4.8-4.4c-0.4 0-0.7 0.1-1 0.2v-3.1z"></path>
+                    <path
+                            style="fill:#fff;"
+                            d="M46,6.5c-1,0.7-1.9,2.1-2.9,3.9c-1.5,2.7-3.3,5.9-7.1,5.9s-5.6-3.1-7.1-5.9S26.2,6,24.3,6s-3,1.7-4.5,4.4  s-3.3,5.9-7.1,5.9s-5.6-3.1-7.1-5.9S2.9,6,1,6C0.6,6,0.3,6.1,0,6.2l0-3.1C0.3,3,0.7,3,1,3c3.8,0,5.6,3.1,7.1,5.9s2.6,4.4,4.5,4.4  s3-1.7,4.5-4.4S20.5,3,24.3,3s5.6,3.2,7.1,5.9c1.6,2.8,2.6,4.4,4.5,4.4s3-1.7,4.5-4.4C41.7,6.6,43.2,4,46,3.2L46,6.5z"></path>
+                    <path
+                            style="fill:#fff;" d="m18 0c-1.2 1.7-2.9 3-5.3 3s-4.1-1.3-5.3-3h10.6z"></path>
+                    <path style="fill:#fff;"
+                          d="m41.4 0c-1.3 1.7-2.9 3-5.4 3-2.4 0-4.1-1.3-5.3-3h10.7z"></path></svg>
+            </div>
+            <div class="t-menu__logo"><a href="https://tilda.cc/projects/">
+                <svg viewBox="0 0 70 70" xmlns="http://www.w3.org/2000/svg"
+                     style="display:block;width:35px;height:35px;">
+                    <g>
+                        <path style="fill:#fff;" d="M37,31.1V55.47H32.23V29.4Z"></path>
+                        <path style="fill:#fff;"
+                              d="M18.66,28.95c-.17-6.33,3.17-9.61,7.52-9.61,2.66,0,4.69.85,9,2.88,3.17,1.53,5.48,2.66,7.86,2.66s3.34-1.87,3.39-5.32h3.79c.34,7.07-3.28,9.61-7.24,9.61-2.54,0-4.81-.74-9.16-2.77-3-1.47-5.32-2.77-7.58-2.77s-3.68,1.58-3.73,5.43H18.66Z"></path>
+                        <path style="fill:#fff;"
+                              d="M35,70A35,35,0,1,1,70,35,35,35,0,0,1,35,70ZM35,2.26A32.74,32.74,0,1,0,67.74,35,32.78,32.78,0,0,0,35,2.26Z"></path>
+                    </g>
+                </svg>
+            </a></div>
+            <div class="t-menu__leftitems">
+                <a href="http://127.0.0.1:8000/polls/" class="t-menu__item t-menu__item-dashboard t-menu__item_active">Мои формы</a>
+                <a href="https://tilda.cc/identity/gocrm/" class="t-menu__item t-menu__item-crm">CRM</a>
+                <a href="https://tilda.cc/identity/plan/" class="t-menu__item t-menu__item-plan">Тарифы и оплата</a>
+                <a href="https://tilda.cc/identity/" class="t-menu__item t-menu__item-identity">Профиль</a>
+                <a href="https://experts.tilda.cc/ru/" class="t-menu__item t-menu__item-experts" target="_blank">Найти дизайнера</a>
+            </div>
+            <div class="t-menu__rightitems">
+                <a href="https://help-ru.tilda.cc" class="t-menu__item t-menu__item-help" target="_blank">Справочный центр</a>
+                <a href="http://webinars.tilda.cc/ru" class="t-menu__item t-menu__item-webinars" target="_blank">Вебинары</a>
+                <a href="http://tilda.education" class="t-menu__item t-menu__item-courses" target="_blank">Уроки и статьи</a>
+                <a href="https://tilda.cc/identity/" class="t-menu__item" style="opacity:0.5; margin-right: -10px;">({{ user.get_username }})</a>
+                <a href="{% url 'logout'%}?next={{request.path}}" class="t-menu__item t-menu__item-exit">Выйти</a>
+{#                <a href="{{ settings.LOGOUT_URL }}" class="t-menu__item t-menu__item-exit">Выйти</a>#}
+            </div>
+        </div>
+    </div><!--/// Fixed main menu --></div>
+
+
+<div class="td-maincontainer" style="min-height:calc(100vh - 60px);">
+    <div class="td-maincontainer-up"></div>
+    <div class="td-maincontainer-middle">
+        <div class="td-sites-maincontainer ">
+
+            {% block content %}
+                Пустая страница! Добавьте в свой шаблон блок <b>content</b>, для замены этого содержимого!
+            {% endblock %}
+
+        </div>
+    </div>
+</div>
+{#</div>#}
+
+{#todo это должно быть не тут#}
+<div class="td-maincontainer-bottom">
+    <div class="td-trial">
+        <div class="td-trial__wrapper">
+            <div class="td-trial__icon"><img src="" width="90px"></div>
+            <div class="td-trial__title">Попробуйте тариф Tilda Personal бесплатно</div>
+            <div class="td-trial__descr">Tilda Personal — это доступ к полной коллекции блоков и возможность
+                подключить свой
+                домен. Начните бесплатный пробный период прямо сейчас! Карточка не понадобится.
+            </div>
+            <div class="td-trial__button"><a href="/identity/plan/"
+                                             class="td-button"><span>Тарифы и оплата</span></a></div>
+        </div>
+    </div>
+    <br><br><br><br>
+</div>
+
+{#todo где хранить jquery'шные импорты???#}
+<script type="text/javascript" src="{% static 'polls/js/jquery-3.6.1.min.js ' %}"></script>
+{#<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>#}
+<script src="{% static 'polls/js/jquery-ui-1.13.2.js ' %}" rel="stylesheet"></script>
+<script src="{% static 'polls/js/index.js ' %}" rel="stylesheet"></script>
+{#TypeWatch jQuery plugin. (штука для обработчика сохранения без кнопки сохранения) #}
+{#<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>#}
+<script src="http://js.nicedit.com/nicEdit-latest.js" type="text/javascript"></script>
+<script src="{% static 'polls/js/jquery.typewatch.js' %}"></script>
 
 </body>
 </html>
