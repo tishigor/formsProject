@@ -6,8 +6,9 @@ from django.shortcuts import render, get_object_or_404, get_list_or_404
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required
+from django.views.generic import FormView
 
-from .forms import QuestionForm
+from .forms import QuestionForm, RegisterForm
 from .models import Test, Question, Answer, PartTest, QuestionType
 
 
@@ -19,7 +20,7 @@ from .models import Test, Question, Answer, PartTest, QuestionType
 #         raise Http404("Теста не существует")
 #     return render(request, 'polls/edit.html', {'question': test})
 
-# @login_required
+@login_required
 def index(request):
     """Отображение начальной странички с тестами"""
     latest_test_list = Test.objects.order_by('name')
@@ -28,6 +29,7 @@ def index(request):
     # return render(request, 'polls/try.html', context)
 
 
+@login_required
 def edit(request, form_id):
     """Отображение странички с вопросами для формы"""
     test = get_object_or_404(Test, pk=form_id)
@@ -150,3 +152,18 @@ def responses(request, form_id):
     """Отображение странички с ответами"""
     test = get_object_or_404(Test, pk=form_id)
     return render(request, 'polls/responses.html', {'test': test})
+
+
+@login_required
+def profile(request):
+    return render(request, 'polls/profile.html')
+
+
+class RegisterView(FormView):
+    form_class = RegisterForm
+    template_name = "registration/register.html"
+    success_url = "/polls"
+
+    def form_valid(self, form):
+        form.save()
+        return super().form_valid(form)

@@ -1,4 +1,6 @@
 from django import forms
+from django.contrib.auth.forms import UserCreationForm
+
 from .models import *
 
 
@@ -28,3 +30,9 @@ class AddPostForm(forms.ModelForm):
             'number': forms.TextInput(attrs={'class': 'form-input'}),
             'name': forms.Textarea(attrs={'cols': 50, 'rows': 10}),
         }
+
+
+class RegisterForm(UserCreationForm):
+    model = UserCreationForm
+    # class Meta(UserCreationForm.Meta):
+    #     model = User

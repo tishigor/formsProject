@@ -4,11 +4,18 @@
 
     {% load  static %}
 
-    <link href="{% static 'polls/CSS/styleNew.css' %}" rel="stylesheet" type="text/css"/>
+    <title>[{{ settings.APP_NAME }} v{{ settings.APP_VERSION }}] {% block title %}{{ title }}{% endblock %}</title>
+    <link href="{% static 'polls/CSS/style.css' %}" rel="stylesheet" type="text/css"/>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;800&display=swap" rel="stylesheet">
 
+    <link rel="shortcut icon" href="{% static 'polls/images/favicon.ico' %}"/>
+
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'polls/images/apple-touch-icon.png' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="/{% static 'polls/images/favicon-32x32.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'polls/images/favicon-16x16.png' %}">
+    <link rel="manifest" href="{% static 'polls/images/site.webmanifest' %}">
 
 
     {#    todo для странички с формами для вопросиков#}
@@ -18,8 +25,7 @@
 
 
 </head>
-<body style="margin: 0px;background-color: rgb(240, 240, 240);">
-
+<body style="margin: 0;background-color: rgb(240, 240, 240);">
 
 <div class="td-menucontainer"><!-- Fixed main menu -->
     <div class="t-menu" role="navigation" id="mainmenu">
@@ -79,19 +85,24 @@
                 </svg>
             </a></div>
             <div class="t-menu__leftitems">
-                <a href="http://127.0.0.1:8000/polls/" class="t-menu__item t-menu__item-dashboard t-menu__item_active">Мои формы</a>
+                <a href="http://127.0.0.1:8000/polls/" class="t-menu__item t-menu__item-dashboard t-menu__item_active">Мои
+                    формы</a>
                 <a href="https://tilda.cc/identity/gocrm/" class="t-menu__item t-menu__item-crm">CRM</a>
                 <a href="https://tilda.cc/identity/plan/" class="t-menu__item t-menu__item-plan">Тарифы и оплата</a>
                 <a href="https://tilda.cc/identity/" class="t-menu__item t-menu__item-identity">Профиль</a>
-                <a href="https://experts.tilda.cc/ru/" class="t-menu__item t-menu__item-experts" target="_blank">Найти дизайнера</a>
+                <a href="https://experts.tilda.cc/ru/" class="t-menu__item t-menu__item-experts" target="_blank">Найти
+                    дизайнера</a>
             </div>
             <div class="t-menu__rightitems">
-                <a href="https://help-ru.tilda.cc" class="t-menu__item t-menu__item-help" target="_blank">Справочный центр</a>
+                <a href="https://help-ru.tilda.cc" class="t-menu__item t-menu__item-help" target="_blank">Справочный
+                    центр</a>
                 <a href="http://webinars.tilda.cc/ru" class="t-menu__item t-menu__item-webinars" target="_blank">Вебинары</a>
-                <a href="http://tilda.education" class="t-menu__item t-menu__item-courses" target="_blank">Уроки и статьи</a>
-                <a href="https://tilda.cc/identity/" class="t-menu__item" style="opacity:0.5; margin-right: -10px;">({{ user.get_username }})</a>
-                <a href="{% url 'logout'%}?next={{request.path}}" class="t-menu__item t-menu__item-exit">Выйти</a>
-{#                <a href="{{ settings.LOGOUT_URL }}" class="t-menu__item t-menu__item-exit">Выйти</a>#}
+                <a href="http://tilda.education" class="t-menu__item t-menu__item-courses" target="_blank">Уроки и
+                    статьи</a>
+                <a href="https://tilda.cc/identity/" class="t-menu__item"
+                   style="opacity:0.5; margin-right: -10px;">({{ user.get_username }})</a>
+                <a href="{% url 'logout' %}?next={{ request.path }}" class="t-menu__item t-menu__item-exit">Выйти</a>
+                {#                <a href="{{ settings.LOGOUT_URL }}" class="t-menu__item t-menu__item-exit">Выйти</a>#}
             </div>
         </div>
     </div><!--/// Fixed main menu --></div>
@@ -130,7 +141,6 @@
 
 {#todo где хранить jquery'шные импорты???#}
 <script type="text/javascript" src="{% static 'polls/js/jquery-3.6.1.min.js ' %}"></script>
-{#<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>#}
 <script src="{% static 'polls/js/jquery-ui-1.13.2.js ' %}" rel="stylesheet"></script>
 <script src="{% static 'polls/js/index.js ' %}" rel="stylesheet"></script>
 {#TypeWatch jQuery plugin. (штука для обработчика сохранения без кнопки сохранения) #}

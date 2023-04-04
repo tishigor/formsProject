@@ -1,6 +1,7 @@
 from django.urls import path
 
 from . import views
+from .views import RegisterView
 
 urlpatterns = [
     # начальная страница
@@ -14,6 +15,12 @@ urlpatterns = [
 
     # ответы теста
     path('<int:form_id>/', views.responses, name='responses'),
+
+    # профиль
+    path('profile/', views.profile, name='profile'),
+    path('register/', RegisterView.as_view(), name='register'),
+
+
 
     # todo удалить в релизе
     path('add_quest', views.add_quest, name='add_quest'),
