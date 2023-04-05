@@ -21,40 +21,33 @@ const csrftoken = getCookie('csrftoken');
 
 $('.td-site__section-one').hover(
     function () {
-        // $(this).addClass('td-sites-grid__more_visible')
-        // $(this).addClass('td-sites-more_visible')
         $('.td-site__title', this).css('color', '#f4846b');
     },
 
     function () {
-        // $(this).removeClass('td-sites-grid__more_visible')
-        // $(this).removeClass('td-sites-more_visible')
         $('.td-site__title', this).css('color', 'black');
     }
 )
 
-// для таскалки
-// $('.td-quest-col__cell').hover(
 
 $('.block').hover(
     function () {
         $('.quest_upper', this).css('opacity', '1');
-
     },
     function () {
         $('.quest_upper', this).css('opacity', '0');
     }
 )
 
-// style="display: none"
 
+// Запрос при изменении нумерации(при перетаскивании)
 $(function () {
     $(".td-sites-grid").sortable({
         connectWith: ".td-sites-grid",
         handle: ".quest_upper",
         // axis: "y",
         cursor: "n-resize",
-        revert: 400, // плавная анимация возвращения сорт. элемента на свое место
+        revert: 400, // Плавная анимация возвращения сорт. элемента на свое место
         // cancel: ".portlet-toggle",
         placeholder: "portlet-placeholder",
 
@@ -74,48 +67,10 @@ $(function () {
             });
         }
     })
-    // $(".portlet")
-    //     .addClass("ui-widget ui-widget-content ui-helper-clearfix ui-corner-all")
-    //     .find(".portlet-header")
-    //     .addClass("ui-widget-header ui-corner-all")
-    //     .prepend("<span class='ui-icon ui-icon-minusthick portlet-toggle'></span>");
-
-    // $(".portlet-toggle").on("click", function () {
-    //     var icon = $(this);
-    //     icon.toggleClass("ui-icon-minusthick ui-icon-plusthick");
-    //     icon.closest(".portlet").find(".portlet-content").toggle();
-    // });
 });
 
 
-
-
-// $(function () {
-//     $(".td-sites-grid").sortable({
-//         connectWith: ".td-sites-grid",
-//         // handle: ".page-child__drag-handle",
-//         axis: "y",
-//         cursor: "n-resize",
-//         revert: 400, //плавная анимация возвращения сорт. элемента на свое место
-//         // cancel: ".portlet-toggle",
-//         placeholder: "portlet-placeholder",
-//     });
-// });
-
-
-function delay(callback, ms) {
-    var timer = 0;
-    return function () {
-        var context = this, args = arguments;
-        clearTimeout(timer);
-        timer = setTimeout(function () {
-            callback.apply(context, args);
-        }, ms || 0);
-    };
-}
-
-// Example usage:
-
+// Запрос при изменении кастомного поля для ввода
 // $('.td-quest-col__header').keyup(delay(function (e) {
 $('.td-quest__name').keyup(delay(function (e) {
     $.ajax({
@@ -141,6 +96,20 @@ $('.td-quest__name').keyup(delay(function (e) {
 }, 500));
 
 
+function delay(callback, ms) {
+    var timer = 0;
+    return function () {
+        var context = this, args = arguments;
+        clearTimeout(timer);
+        timer = setTimeout(function () {
+            callback.apply(context, args);
+        }, ms || 0);
+    };
+}
+
+
+// Запрос при изменении select
+// todo не удаляет старый, не добавляет новый. исправить!
 $(document).ready(function() {
     $('select').change(function(e) {
         e.preventDefault();
@@ -192,21 +161,19 @@ function addQuestBlock() {
     // Ищем внутри клонированного элемента элемент с классом "td-quest__name" и меняем его текст на "Новый вопрос"
     clonedHeader.find(".td-quest__name").text("Новый вопрос");
     // Ищем внутри клонированного элемента элемент с атрибутом "quest_id" и меняем его значение на значение оригинала + 1
-    var originalQuestId = lastHeader.attr("quest_id");
+    let originalQuestId = lastHeader.attr("quest_id");
     clonedHeader.attr("quest_id", parseInt(originalQuestId) + 1);
     // Ищем внутри клонированного элемента элемент "select" и устанавливаем первый вариант выбора
     clonedHeader.find("select").prop("selectedIndex", 0);
     // Вставляем клонированный элемент после оригинала
     clonedHeader.insertAfter(lastHeader).hide().fadeIn();
 
-    // todo добавление в базу тут
+    // todo Расскомментить и дописать! добавление в базу
     // addQuestionQuery($new_block_quest)
 }
 
 
-// в функцию принимаем блок с вопросом
 function addQuestionQuery(quest_block) {
-
     url = '/polls/' + $('.td-form-col__cell').attr('form_id') + '/' + quest_block.getAttribute('quest_id') + '/'
 
     $.ajax({
@@ -232,43 +199,16 @@ function addQuestionQuery(quest_block) {
 }
 
 
-// $(".quest_section").on('mouseover', function () {
-//     console.log('qq')
-// })
-
-
-// // для таскалки
-// $('.td-quest-col__cell').hover(
-//     function () {
-//         $('.page-child__drag-handle', this).fadeIn(0);
-//     },
-//
-//     function () {
-//         $('.page-child__drag-handle', this).fadeOut(0);
-//     }
-// )
-
-
-// ФУНКЦИЯ ДЛЯ ПЕРЕХОДА ПО ВКЛАДКАМ
-
-$(document).ready(function() {
-  $('.tab').on('click', function(e) {
-    var tabId = $(this).data('tab-id');
-    // Отправляем AJAX-запрос на сервер Django, чтобы получить содержимое вкладки
-    $.ajax({
-      url: '/polls/',
-      type: 'POST',
-      data: {
-        'tab_id': tabId
-      },
-      success: function(response) {
-        // Обновляем содержимое вкладки
-        $('#tab' + tabId).html(response);
-        // Показываем скрытый div и скрываем текущий
-        $('.tabs #tab' + tabId).slideDown(400).addClass('active').siblings().slideUp(400).removeClass('active');
-      }
+// Вкладки
+$(document).ready(function () {
+    $(".head a").click(function () {
+        // var tab = $(this).data("tab");
+        var tabId = $(this).attr('href');
+        $(".td-form-col").hide();
+        $(tabId).show();
+        $(".head a").removeClass("selected");
+        $(this).addClass("selected");
     });
-    // Отменяем действие по умолчанию
-    e.preventDefault();
-  });
+    $("#FormEditor").show();
+    // $(".head a[href='#FormEditor']").addClass("selected");
 });

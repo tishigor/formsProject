@@ -71,10 +71,6 @@ a, b, blockquote, center, code, div, h1, h2, h3, h4, h5, h6, i, img, p, pre, spa
     border-bottom: 3px solid #f4846b;
 }
 
-a:hover {
-    color: #ff8562;
-}
-
 /*main -------------------------------- menu*/
 
 
@@ -163,22 +159,6 @@ a:hover {
 
 /* -------------------------------------------вкладки polls*/
 
-/*.p3LqKe {*/
-/*    bottom: 0;*/
-/*    left: 0;*/
-/*    margin: 0 auto;*/
-/*    position: absolute;*/
-/*    right: 0;*/
-/*    width: 770px;*/
-/*}*/
-/*.VZhFab {*/
-/*    padding: 0 12px;*/
-/*}*/
-/*.kx3Hed {*/
-/*    display: inline-block;*/
-/*    white-space: nowrap;*/
-/*}*/
-
 .polls_menu {
     max-width: 800px;
     width: 100%;
@@ -186,7 +166,7 @@ a:hover {
     padding: 20px 0 0;
 }
 
-.tabs {
+.head {
     bottom: 0;
     display: -webkit-box;
     display: -webkit-flex;
@@ -199,12 +179,12 @@ a:hover {
 
 }
 
-div.tab {
+.head a {
     cursor: pointer;
     /*font-weight: 700;*/
     /*color: white;*/
     text-decoration: none;
-    padding: 0.8em 1em calc(0.8em + 3px);
+    padding: 0.8em 1em;
     border-radius: 12px;
     margin: 0 1px;
     /*background: rgb(64,199,129);*/
@@ -212,27 +192,28 @@ div.tab {
     transition: 0.2s;
 }
 
-div.tab:hover {
+.head .selected {
+    position: relative;
+    color: #00FF5C;
+    font-weight: 700;
+}
+
+.head a:hover {
     background: #c2c2c2;
 }
 
-div.tab:active {
-    background: rgb(33, 147, 90);
-}
-
-div.active {
+.head a:active {
     background: #d9d9d9;
 }
 
-
 /* -------------------------------------------вкладки polls*/
-
 
 
 /*сетка с проектами*/
 .td-sites-grid {
     margin: 0 auto;
-    max-width: 800px;
+    /*max-width: 800px;*/
+    max-width: 1200px;
     display: table;
     width: 100%;
     padding-bottom: 50px;
@@ -274,35 +255,21 @@ div.active {
     opacity: .3;
 }
 
-/*todo крч при наведении на проект активизируй этот класс*/
-.td-sites-grid__more_visible, .td-sites-more_visible {
-    display: block;
-}
 
 .td-sites-grid__item:hover {
     background-color: #eeeeee;
 }
 
-.td-sites-more {
-    padding: 20px 20px 15px 20px;
-    position: absolute;
-    z-index: 9999;
-    display: none;
-    min-width: 200px;
-    height: auto;
-    background-color: #ffffff;
-    box-shadow: 0 0 10px rgb(0 0 0 / 15%);
-}
 
 /*-------------для ред. форм*/
 .td-form-col {
+    display: none;
     margin: 0 auto;
     max-width: 800px;
     /*display: table;*/
     /*width: 100%;*/
     padding-bottom: 50px;
 }
-
 
 
 /*.block {*/
@@ -467,35 +434,6 @@ div.active {
     font-family: 'tfutura', Arial;
 }
 
-.td-trial {
-    text-align: center;
-    width: 100%;
-    color: #000;
-    padding: 80px 0;
-}
-
-.td-trial__wrapper {
-    max-width: 740px;
-    width: 100%;
-    margin: 0 auto;
-}
-
-.td-trial__title {
-    font-size: 32px;
-    padding: 30px 0 20px 0;
-    margin: 0 10px;
-}
-
-.td-trial__descr {
-    font-size: 18px;
-    font-weight: 300;
-    margin: 0 10px;
-}
-
-.td-trial__button {
-    padding-top: 40px;
-    padding-bottom: 0;
-}
 
 .td-button {
     font-size: 18px;
@@ -514,9 +452,6 @@ div.active {
 
 
 /*для edit.html*/
-
-
-
 
 .portlet-placeholder {
     border: 1px solid rgb(224, 224, 224);
@@ -539,11 +474,6 @@ div.active {
     position: absolute;
     top: -1px;
     width: calc(100% + 2px);
-}
-
-.quest_upper__color {
-    background-color: rgb(103, 58, 183);
-    color: rgba(255, 255, 255, 1);
 }
 
 
@@ -688,7 +618,6 @@ div.active {
 /*    left: -34px;*/
 /*    opacity: 0;*/
 /*}*/
-
 
 
 .page-child__drag-handle {

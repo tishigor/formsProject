@@ -23,7 +23,8 @@ from .models import Test, Question, Answer, PartTest, QuestionType
 @login_required
 def index(request):
     """Отображение начальной странички с тестами"""
-    latest_test_list = Test.objects.order_by('name')
+    # latest_test_list = Test.objects.order_by('name')
+    latest_test_list = Test.objects.filter(user=request.user, trash=False).order_by('name')
     context = {'latest_test_list': latest_test_list}
     return render(request, 'polls/index.html', context)
     # return render(request, 'polls/try.html', context)
@@ -112,7 +113,8 @@ def add_test(request):
     test = Test.objects.create(name=name,
                                type_test=1,
                                anonymous=1,
-                               added_by_ou=1)
+                               added_by_ou=1,
+                               user=request.user)
     test.save()
     return HttpResponse('Тест "%s" добавлен.' % name)
 
@@ -154,6 +156,11 @@ def responses(request, form_id):
     return render(request, 'polls/responses.html', {'test': test})
 
 
+def settings(request, form_id):
+    """Отображение странички с настройками"""
+    return None
+
+
 @login_required
 def profile(request):
     return render(request, 'polls/profile.html')
@@ -167,3 +174,11 @@ class RegisterView(FormView):
     def form_valid(self, form):
         form.save()
         return super().form_valid(form)
+
+@login_required
+def trash(request):
+    """Отображение корзины"""
+    # latest_test_list = Test.objects.order_by('name')
+    latest_test_list = Test.objects.filter(user=request.user, trash=True).order_by('name')
+    context = {'latest_test_list': latest_test_list}
+    return render(request, 'polls/trash.html', context)

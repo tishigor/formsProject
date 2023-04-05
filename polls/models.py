@@ -1,5 +1,4 @@
 # coding: utf-8
-
 from django.db import models
 from django.utils.safestring import mark_safe
 from django.utils import timezone
@@ -84,14 +83,16 @@ class Test(models.Model):
     anonymous = models.SmallIntegerField(verbose_name='Анонимность', choices=ANON_TYPES, default=0, **required_field)  # default-Не анонимный
     added_by_ou = models.BooleanField(verbose_name='Добавлено ОУ', default=True, **required_field)
     variant = models.ManyToManyField('Test', verbose_name='Вариант')
+    user = models.ForeignKey('auth.User', verbose_name='Пользователь', **optional_field, on_delete=models.CASCADE)
+    trash = models.BooleanField(verbose_name='Удалено', default=False, **required_field)
 
     def __str__(self):
         return '{}:{}'.format(self.pk, self.name)
 
     class Meta:
         db_table = 'form_test'
-        verbose_name = 'Психологический тест'
-        verbose_name_plural = 'Психологические тесты'
+        verbose_name = 'Тест'
+        verbose_name_plural = 'Тесты'
 
 
 class PartTest(models.Model):
