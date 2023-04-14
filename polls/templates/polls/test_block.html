@@ -1,0 +1,86 @@
+<div class="td-sites-grid__cell ui-sortable-handle" id="project{{ test.id }}">
+    <div class="td-sites-grid__item" data-item-kind="">
+        <div class="td-sites-grid__more" role="button"></div>
+        <a class="td-site__section-one" href="/polls/{{ test.id }}" data-project-id="{{ test.id }}"
+           alt="Перейти к редактированию">
+            <div class="td-site__title ">{{ test.name }}</div>
+            <div class="td-site__descr">{{ test.desc|default:"" }}</div>
+        </a>
+        <div class="td-site__hr"></div>
+        <div class="td-site__section-two">
+            <div class="td-site__section-two-wrapper">
+                <table class="td-site__settings">
+                    <tbody>
+                    <tr>
+                        <td>
+                            <div style="padding:5px;">
+                                <svg width="14px" height="14px" style="display:block; width:14px;"
+                                     xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28.21 28">
+                                    <g>
+                                        <rect style="fill:#f78369;" x="20.41" y="2.17" width="7.63"
+                                              height="3.63"
+                                              transform="translate(9.91 -15.97) rotate(45)"></rect>
+                                        <rect style="fill:#f78369;" x="11.41" y="3.89" width="7.63"
+                                              height="18.18"
+                                              transform="translate(13.64 -6.97) rotate(45)"></rect>
+                                        <polygon style="fill:#f78369;"
+                                                 points="0 28 4.45 18.36 9.85 23.76 0 28"></polygon>
+                                    </g>
+                                </svg>
+                            </div>
+                        </td>
+                        <td class="td-site__settings-title"><a href="/polls/{{ test.id }}">Редактировать
+                            форму</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <table class="td-site__delete" form_id="{{ test.id }}">
+                    <tbody>
+                    <tr>
+                        <td>
+                            <div style="padding:5px;">
+                                <svg width="14px" height="14px" style="display:block; width:14px;"
+                                     xmlns="http://www.w3.org/2000/svg" viewBox="0 0 26.14 26.14">
+                                    <g>
+                                        <polygon style="fill:#f68269;"
+                                                 points="20.14 23.14 3 23.14 3 6 12.57 6 12.57 3 0 3 0 26.14 23.14 26.14 23.14 13.57 20.14 13.57 20.14 23.14"></polygon>
+                                        <polygon style="fill:#f68269;"
+                                                 points="16.14 0 16.14 3 21.02 3 7.24 16.78 9.36 18.9 23.14 5.12 23.14 10 26.14 10 26.14 0 16.14 0"></polygon>
+                                    </g>
+                                </svg>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <table class="td-site__url">
+                    <tbody>
+                    <tr>
+                        <td>
+                            <div style="padding:5px;">
+                                <svg width="14px" height="14px" style="display:block; width:14px;"
+                                     xmlns="http://www.w3.org/2000/svg" viewBox="0 0 26.14 26.14">
+                                    <g>
+                                        <polygon style="fill:#f68269;"
+                                                 points="20.14 23.14 3 23.14 3 6 12.57 6 12.57 3 0 3 0 26.14 23.14 26.14 23.14 13.57 20.14 13.57 20.14 23.14"></polygon>
+                                        <polygon style="fill:#f68269;"
+                                                 points="16.14 0 16.14 3 21.02 3 7.24 16.78 9.36 18.9 23.14 5.12 23.14 10 26.14 10 26.14 0 16.14 0"></polygon>
+                                    </g>
+                                </svg>
+                            </div>
+                        </td>
+                        <td class="td-site__url-link"><a href="http://form{{ test.id }}"
+                                                         target="_blank"
+                                                         rel="noopener noreferrer">http://project{{ test.id }}</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+</div>

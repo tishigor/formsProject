@@ -109,24 +109,24 @@ function delay(callback, ms) {
 
 
 // Запрос при изменении select
-// todo не удаляет старый, не добавляет новый. исправить!
-$(document).ready(function() {
-    $('select').change(function(e) {
+// todo не удаляет старый, не добавляет новый. Исправить!
+$(document).ready(function () {
+    $('select').change(function (e) {
         e.preventDefault();
         // var form = $(this);
         // var data = form.serialize();
         $.ajax({
             type: 'POST',
-            url: '/polls/' + $('.td-form-col__cell').attr('form_id') + '/' + $(this).parent().parent()[0].getAttribute('quest_id') + '/'+this.value,
+            url: '/polls/' + $('.td-form-col__cell').attr('form_id') + '/' + $(this).parent().parent()[0].getAttribute('quest_id') + '/' + this.value,
             data: {
                 // name: this.innerText,
                 // type_quest: this.value,
                 csrfmiddlewaretoken: csrftoken,
             },
-            success: function(response) {
+            success: function (response) {
                 console.log(response);
             },
-            error: function(response) {
+            error: function (response) {
                 console.log(response);
             }
         });
@@ -150,6 +150,7 @@ $(document).ready(function() {
 });
 
 
+// todo это будет в success после добавления в БД. Переделаю как будет время
 //добавление блока с вопросом
 $('button').on('click', addQuestBlock);
 
@@ -203,12 +204,54 @@ function addQuestionQuery(quest_block) {
 $(document).ready(function () {
     $(".head a").click(function () {
         // var tab = $(this).data("tab");
-        var tabId = $(this).attr('href');
+        let tabId = $(this).attr('href');
         $(".td-form-col").hide();
         $(tabId).show();
         $(".head a").removeClass("selected");
         $(this).addClass("selected");
     });
-    $("#FormEditor").show();
+    $("#edit").show();
     // $(".head a[href='#FormEditor']").addClass("selected");
+});
+
+
+//добавление теста
+$(document).ready(function () {
+    $('#add-test-button').click(function () {
+        $.ajax({
+            url: '/polls/add_test',
+            type: 'POST',
+            data: {test_name: 'Новый тест'},
+            success: function (response) {
+                // Добавляем новый элемент на страницу с помощью jQuery
+                let last_block = $("#projectssortable .td-sites-grid__cell").last();
+                let block_test = $(response).hide()
+                last_block.before(block_test.fadeIn());
+            },
+            error: function (xhr, status, error) {
+                console.log("Error: " + error);
+            }
+        });
+    });
+});
+
+
+//удаление теста
+$(document).ready(function () {
+    $('.td-sites-grid').on('click', '.td-site__delete', function () {
+        let form_id = $(this).attr('form_id');
+        let del_block = $(this)
+        $.ajax({
+            url: `/polls/${form_id}/delete_test`,
+            type: 'POST',
+            data: {},
+            success: function (response) {
+                // Удаляем блок теста со страницы с помощью jQuery
+                del_block.closest('.td-sites-grid__cell').remove();
+            },
+            error: function (xhr, status, error) {
+                console.log("Error: " + error);
+            }
+        });
+    });
 });

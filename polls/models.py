@@ -82,7 +82,7 @@ class Test(models.Model):
     type_test = models.SmallIntegerField(verbose_name='Тип опроса', choices=TYPE_TEST_CHOICE, **required_field, default=1)  # default-Опрос учащегося
     anonymous = models.SmallIntegerField(verbose_name='Анонимность', choices=ANON_TYPES, default=0, **required_field)  # default-Не анонимный
     added_by_ou = models.BooleanField(verbose_name='Добавлено ОУ', default=True, **required_field)
-    variant = models.ManyToManyField('Test', verbose_name='Вариант')
+    # variant = models.ManyToManyField('Test', verbose_name='Вариант')
     user = models.ForeignKey('auth.User', verbose_name='Пользователь', **optional_field, on_delete=models.CASCADE)
     trash = models.BooleanField(verbose_name='Удалено', default=False, **required_field)
 

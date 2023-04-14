@@ -108,29 +108,41 @@ def update_order(request, form_id):
     return render(request, 'polls/edit.html')
 
 
+# todo решить как обрабатывать ошибки
+@csrf_exempt
 def add_test(request):
-    name = 'Тест3'
-    test = Test.objects.create(name=name,
-                               type_test=1,
-                               anonymous=1,
-                               added_by_ou=1,
-                               user=request.user)
-    test.save()
-    return HttpResponse('Тест "%s" добавлен.' % name)
+    if request.method == 'POST':
+        test_name = request.POST.get('test_name')
+        test = Test(name=test_name, user=request.user)
+        test.save()
+        return render(request, 'polls/test_block.html', {'test': test})
+    else:
+        return JsonResponse({'error': 'Invalid request method'})
+
+# todo решить как обрабатывать ошибки
+@csrf_exempt
+def delete_test(request, form_id):
+    """Удаление теста"""
+    if request.method == 'POST':
+        test = get_object_or_404(Test, pk=form_id)
+        test.delete()
+        return render(request, 'polls/edit.html')
+    else:
+        return JsonResponse({'error': 'Invalid request method'})
+
 
 
 # @csrf_exempt
-def add_quest(request):
+def add_question(request):
     # return HttpResponse('добавление вопроса')
     form = QuestionForm()
     return render(request, 'polls/addquest+.html', {'form': form})
 
 
-def add_answ(request):
+def add_answer(request):
     quest = Question.objects.get(pk=1)
     answ = Answer.objects.create(question=quest,
                                  open_ans='Ответ4')
-    answ.save()
     return HttpResponse('Ответ "%s" добавлен.' % answ)
 
 
@@ -139,14 +151,12 @@ def add_part(request):
     part = PartTest.objects.create(test=test,
                                    number=1,
                                    name='Раздел 1')
-    part.save()
     return HttpResponse('Ответ "%s" добавлен.' % part)
 
 
 def add_type_quest(request):
     type_quest = QuestionType.objects.create(name='Текст',
                                              function='text')
-    type_quest.save()
     return HttpResponse('Ответ "%s" добавлен.' % type_quest)
 
 
@@ -174,6 +184,7 @@ class RegisterView(FormView):
     def form_valid(self, form):
         form.save()
         return super().form_valid(form)
+
 
 @login_required
 def trash(request):

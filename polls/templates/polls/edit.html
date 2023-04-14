@@ -11,15 +11,15 @@
 {#        <a id="responses" data-tab='ResponsesView' href="{% url 'responses' test.id %}">Ответы</a>#}
 {#        <a id="settings" data-tab='SettingsView' href="{% url 'settings' test.id %}">Настройки</a>#}
 
-        <a id="question" href='#FormEditor'>Вопросы</a>
-        <a id="responses" href='#ResponsesView'>Ответы</a>
-        <a id="settings" href='#SettingsView'>Настройки</a>
+        <a href='#edit'>Вопросы</a>
+        <a href='#responses'>Ответы</a>
+        <a href='#settings'>Настройки</a>
     </div>
 </div>
 
 
 {#todo td-form-col хочу переименовать в tabcontent#}
-<div id="FormEditor" class="td-form-col">
+<div id="edit" class="td-form-col">
 
 {# шапка #}
 
@@ -138,7 +138,7 @@
 </div>
 
 
-<div id="ResponsesView" class="td-form-col">
+<div id="responses" class="td-form-col">
     <div class="td-form-col__cell" form_id="{{ test.id }}">
         <div class="block td-form-col__header">
             <div class="td-site__section-one">
@@ -151,7 +151,7 @@
 </div>
 
 
-<div id="SettingsView" class="td-form-col">
+<div id="settings" class="td-form-col">
     <div class="td-form-col__cell" form_id="{{ test.id }}">
         <div class="block td-form-col__header">
             <div class="td-site__section-one">
