@@ -82,12 +82,13 @@
             </a></div>
             <div class="t-menu__leftitems">
                 <a href="{%  url 'index' %}" class="t-menu__item t-menu__item-dashboard t-menu__item_active">Мои формы</a>
+                <a href="" class="t-menu__item t-menu__item-dashboard">Все формы</a>
                 <a href="https://tilda.cc/identity/" class="t-menu__item t-menu__item-identity">Профиль</a>
             </div>
             <div class="t-menu__rightitems">
-                <a href="https://help-ru.tilda.cc" class="t-menu__item t-menu__item-help" target="_blank">Справочный центр</a>
-                <a href="http://tilda.education" class="t-menu__item t-menu__item-courses" target="_blank">Уроки и статьи</a>
-                <a href="https://tilda.cc/identity/" class="t-menu__item" style="opacity:0.5; margin-right: -10px;">({{ user.get_username }})</a>
+                <a href="" class="t-menu__item t-menu__item-help" target="_blank">Справочный центр</a>
+                <a href="" class="t-menu__item t-menu__item-courses" target="_blank">Уроки и статьи</a>
+                <a href="" class="t-menu__item" style="opacity:0.5; margin-right: -10px;">({{ user.get_username }})</a>
                 <a href="{% url 'logout' %}?next={{ request.path }}" class="t-menu__item t-menu__item-exit">Выйти</a>
             </div>
         </div>

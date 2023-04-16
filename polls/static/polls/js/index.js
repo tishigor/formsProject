@@ -150,54 +150,77 @@ $(document).ready(function () {
 });
 
 
-// todo это будет в success после добавления в БД. Переделаю как будет время
-//добавление блока с вопросом
-$('button').on('click', addQuestBlock);
+// todo под доработку
+// я же могу в new_order добавить новый добавляемый блок, а потом его создать в success по факту
+// после получения последовательности вопросов сам , получаю id элемента на котором нажал '+', добавляю в последовательность новую запись и передаю это в бэк
 
-function addQuestBlock() {
-    // Находим последний элемент с классом "td-quest-col__header"
-    let lastHeader = $(".td-sites-grid .td-quest-col__header").last();
-    // Клонируем этот элемент
-    let clonedHeader = lastHeader.clone();
-    // Ищем внутри клонированного элемента элемент с классом "td-quest__name" и меняем его текст на "Новый вопрос"
-    clonedHeader.find(".td-quest__name").text("Новый вопрос");
-    // Ищем внутри клонированного элемента элемент с атрибутом "quest_id" и меняем его значение на значение оригинала + 1
-    let originalQuestId = lastHeader.attr("quest_id");
-    clonedHeader.attr("quest_id", parseInt(originalQuestId) + 1);
-    // Ищем внутри клонированного элемента элемент "select" и устанавливаем первый вариант выбора
-    clonedHeader.find("select").prop("selectedIndex", 0);
-    // Вставляем клонированный элемент после оригинала
-    clonedHeader.insertAfter(lastHeader).hide().fadeIn();
+// добавление вопроса
+$(document).ready(function () {
+    $('.td-sites-grid').on('click','.plus_quest', function () {
+        // находим блок вопроса где нажали на plus
+        let thisBlock = $(this).closest('.block')
+        // Клонируем этот элемент
+        let newBlock = thisBlock.clone();
+        // Ищем внутри клонированного элемента элемент с классом "td-quest__name" и меняем его текст на "Новый вопрос"
+        newBlock.find(".td-quest__name").text("Новый вопрос");
+        // Ищем внутри клонированного элемента элемент с атрибутом "quest_id" и меняем его значение на значение оригинала + 1
+        // let originalQuestId = thisBlock.attr("quest_id");
+        // clonedHeader.attr("quest_id", 'new_id');
+        newBlock.attr("id", 'new_id');
+        // Ищем внутри клонированного элемента элемент "select" и устанавливаем первый вариант выбора
+        newBlock.find("select").prop("selectedIndex", 0);
+        // Вставляем клонированный элемент после оригинала
+        newBlock.insertAfter(thisBlock).hide().fadeIn();
 
-    // todo Расскомментить и дописать! добавление в базу
-    // addQuestionQuery($new_block_quest)
-}
+        let new_order = $(this).closest('#projectssortable').sortable("toArray"); // получаем новую последовательность вопросов
 
+        $.ajax({
+            type: 'POST',
+            url: '/polls/add_question/',
+            data: {
+                quest_name: "Новый вопрос",
+                // todo сюда передаем часть теста к которой добавляется вопрос (пока что закидываю 1)
+                // todo вопросы будут находится в div, у которого будет атрибут = id части теста
+                part_test_id: 4,
+                new_order: new_order,
+                // number: number,
+                // csrfmiddlewaretoken: csrftoken,
+            },
+            beforeSend: function () {
+                // todo имитация загрузки
+                console.log('beforeSend');
+            },
+            success: function (response) {
+                // после успешного добавления нужно менять id у добавленного блока на нормальный
+                // после того как добавится этот блок всем блокам, которые будут идти после него нужно будет обновить атрибут number
+                newBlock.attr("id", 'question_'+response['new_quest_id']);
+                newBlock.attr("quest_id", response['new_quest_id']);
+                newBlock.attr("number", response['new_number']);
 
-function addQuestionQuery(quest_block) {
-    url = '/polls/' + $('.td-form-col__cell').attr('form_id') + '/' + quest_block.getAttribute('quest_id') + '/'
-
-    $.ajax({
-        type: 'POST',
-        url: '/polls/' + $('.td-form-col__cell').attr('form_id') + '/' + this.getAttribute('quest_id') + '/',
-        // todo по идее если вопрос пустой то сохраняем только порядковый номер. Если вопрос пустой, то defaultValue="Вопрос"
-        data: {
-            name: quest_block.innerText,
-            csrfmiddlewaretoken: csrftoken,
-        },
-        beforeSend: function () {
-            console.log('beforeSend');
-        },
-        success: function (data) {
-            console.log('success');
-            // alert(data);
-        },
-        onerror: function (data) {
-            console.log('onerror');
-            alert(data);
-        }
+                // обновление атрибута number у всех нижестоящих блоков после доабвленного
+                newBlock.nextAll('.block.td-quest-col__header').each(function () {
+                    let current_question_number = parseInt($(this).attr('number'));
+                    $(this).attr('number', current_question_number + 1);
+                    console.log('q\n')
+                });
+            },
+            onerror: function (data) {
+                console.log('onerror');
+                alert(data);
+            }
+        });
     });
-}
+});
+
+
+// удаление вопроса
+// $(document).ready(function () {
+//     $(".cross_quest").click(function (){
+//         $.ajax({
+//
+//         });
+//     })
+// })
 
 
 // Вкладки
@@ -224,6 +247,7 @@ $(document).ready(function () {
             data: {test_name: 'Новый тест'},
             success: function (response) {
                 // Добавляем новый элемент на страницу с помощью jQuery
+                // todo использовать td-sites-grid вместо projectssortable???
                 let last_block = $("#projectssortable .td-sites-grid__cell").last();
                 let block_test = $(response).hide()
                 last_block.before(block_test.fadeIn());

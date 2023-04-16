@@ -2,59 +2,64 @@
 
 {% block content %}
 
-{% load  static %}
+    {% load  static %}
 
 
-<div class="polls_menu">
-    <div class="head">
-{#        <a id="question" data-tab='FormEditor' href="{% url 'edit' test.id %}">Вопросы</a>#}
-{#        <a id="responses" data-tab='ResponsesView' href="{% url 'responses' test.id %}">Ответы</a>#}
-{#        <a id="settings" data-tab='SettingsView' href="{% url 'settings' test.id %}">Настройки</a>#}
+    <div class="polls_menu">
+        <div class="head">
+            {#        <a id="question" data-tab='FormEditor' href="{% url 'edit' test.id %}">Вопросы</a>#}
+            {#        <a id="responses" data-tab='ResponsesView' href="{% url 'responses' test.id %}">Ответы</a>#}
+            {#        <a id="settings" data-tab='SettingsView' href="{% url 'settings' test.id %}">Настройки</a>#}
 
-        <a href='#edit'>Вопросы</a>
-        <a href='#responses'>Ответы</a>
-        <a href='#settings'>Настройки</a>
-    </div>
-</div>
-
-
-{#todo td-form-col хочу переименовать в tabcontent#}
-<div id="edit" class="td-form-col">
-
-{# шапка #}
-
-    <div class="td-form-col__cell" form_id="{{ test.id }}">
-        <div class="block td-form-col__header">
-            <div class="td-sites-grid__more" role="button"></div>
-            <div class="td-site__section-one">
-                <div class="td-site__title" style="outline: none" aria-multiline="true">{{ test.name }}</div>
-                <div class="td-site__descr" style="outline: none">{{ test.desc|default:"" }}</div>
-            </div>
+            <a href='#edit'>Вопросы</a>
+            <a href='#responses'>Ответы</a>
+            <a href='#settings'>Настройки</a>
         </div>
     </div>
 
 
-    {#    <div class="column">#}
-    {# todo есть баг когда в базе остается разрыв строки и все пусто остается#}
-    {% if test.parttest_set.all %}
-        {% for parttest in test.parttest_set.all %}
-{#                <div class="td-sites-grid ui-sortable" id="projectssortable">#}
-            <div class="td-sites-grid" id="projectssortable">
-                {% for quest in parttest.question_set.all|dictsort:"number" %}
-                    <div class="block td-quest-col__header" quest_id="{{ quest.id }}" id="question_{{ quest.id }}">
-                        <div class="td-sites-grid__more" role="button"></div>
-                        <div class="quest_upper" style="opacity: 0;">
-                            <img style="top: 2px;left: 400px;position: relative;"
-                                 src="data:image/svg+xml,%3Csvg width='12' height='16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M3.5 2C3.5 2.82843 2.82843 3.5 2 3.5C1.17157 3.5 0.5 2.82843 0.5 2C0.5 1.17157 1.17157 0.5 2 0.5C2.82843 0.5 3.5 1.17157 3.5 2ZM2 9.5C2.82843 9.5 3.5 8.82843 3.5 8C3.5 7.17157 2.82843 6.5 2 6.5C1.17157 6.5 0.5 7.17157 0.5 8C0.5 8.82843 1.17157 9.5 2 9.5ZM2 15.5C2.82843 15.5 3.5 14.8284 3.5 14C3.5 13.1716 2.82843 12.5 2 12.5C1.17157 12.5 0.5 13.1716 0.5 14C0.5 14.8284 1.17157 15.5 2 15.5ZM10 15.5C10.8284 15.5 11.5 14.8284 11.5 14C11.5 13.1716 10.8284 12.5 10 12.5C9.17157 12.5 8.5 13.1716 8.5 14C8.5 14.8284 9.17157 15.5 10 15.5ZM11.5 8C11.5 8.82843 10.8284 9.5 10 9.5C9.17157 9.5 8.5 8.82843 8.5 8C8.5 7.17157 9.17157 6.5 10 6.5C10.8284 6.5 11.5 7.17157 11.5 8ZM10 3.5C10.8284 3.5 11.5 2.82843 11.5 2C11.5 1.17157 10.8284 0.5 10 0.5C9.17157 0.5 8.5 1.17157 8.5 2C8.5 2.82843 9.17157 3.5 10 3.5Z' fill='%23475A80' fill-opacity='.5'/%3E%3C/svg%3E">
-                        </div>
-                        {# todo поправить отображение. по центру#}
-                        <div class="page-child__drag-handle"><img style="top: 50px; position: relative;"
-                                                                  src="data:image/svg+xml,%3Csvg width='12' height='16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M3.5 2C3.5 2.82843 2.82843 3.5 2 3.5C1.17157 3.5 0.5 2.82843 0.5 2C0.5 1.17157 1.17157 0.5 2 0.5C2.82843 0.5 3.5 1.17157 3.5 2ZM2 9.5C2.82843 9.5 3.5 8.82843 3.5 8C3.5 7.17157 2.82843 6.5 2 6.5C1.17157 6.5 0.5 7.17157 0.5 8C0.5 8.82843 1.17157 9.5 2 9.5ZM2 15.5C2.82843 15.5 3.5 14.8284 3.5 14C3.5 13.1716 2.82843 12.5 2 12.5C1.17157 12.5 0.5 13.1716 0.5 14C0.5 14.8284 1.17157 15.5 2 15.5ZM10 15.5C10.8284 15.5 11.5 14.8284 11.5 14C11.5 13.1716 10.8284 12.5 10 12.5C9.17157 12.5 8.5 13.1716 8.5 14C8.5 14.8284 9.17157 15.5 10 15.5ZM11.5 8C11.5 8.82843 10.8284 9.5 10 9.5C9.17157 9.5 8.5 8.82843 8.5 8C8.5 7.17157 9.17157 6.5 10 6.5C10.8284 6.5 11.5 7.17157 11.5 8ZM10 3.5C10.8284 3.5 11.5 2.82843 11.5 2C11.5 1.17157 10.8284 0.5 10 0.5C9.17157 0.5 8.5 1.17157 8.5 2C8.5 2.82843 9.17157 3.5 10 3.5Z' fill='%23475A80' fill-opacity='.5'/%3E%3C/svg%3E">
-                        </div>
-                        {#                            <div class="quest_section">#}
-                        {#                                    todo тут мб и получше можно сделать без условий#}
-                        {#                                    linebreaks для переноса строки#}
-                        {% if quest.name %}
+    {#todo td-form-col хочу переименовать в tabcontent#}
+    <div id="edit" class="td-form-col">
+
+        {# шапка #}
+
+        <div class="td-form-col__cell" form_id="{{ test.id }}">
+            <div class="block td-form-col__header">
+                <div class="td-sites-grid__more" role="button"></div>
+                <div class="td-site__section-one">
+                    <div class="td-site__title" style="outline: none" aria-multiline="true">{{ test.name }}</div>
+                    <div class="td-site__descr" style="outline: none">{{ test.desc|default:"" }}</div>
+                </div>
+            </div>
+        </div>
+
+
+        {#    <div class="column">#}
+        {# todo есть баг когда в базе остается разрыв строки и все пусто остается#}
+
+        {#    если у теста есть что-то внутри#}
+        {% if test.parttest_set.all %}
+            {% for parttest in test.parttest_set.all %}
+                {#                <div class="td-sites-grid ui-sortable" id="projectssortable">#}
+                <div class="td-sites-grid" id="projectssortable">
+                    {% for quest in parttest.question_set.all|dictsort:"number" %}
+                        <div class="block td-quest-col__header" quest_id="{{ quest.id }}" id="question_{{ quest.id }}" number="{{ quest.number }}">
+                            <div class="td-sites-grid__more" role="button"></div>
+                            <div class="quest_upper" style="opacity: 0;">
+                                <img style="top: 2px;left: 400px;position: relative;"
+                                     src="data:image/svg+xml,%3Csvg width='12' height='16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M3.5 2C3.5 2.82843 2.82843 3.5 2 3.5C1.17157 3.5 0.5 2.82843 0.5 2C0.5 1.17157 1.17157 0.5 2 0.5C2.82843 0.5 3.5 1.17157 3.5 2ZM2 9.5C2.82843 9.5 3.5 8.82843 3.5 8C3.5 7.17157 2.82843 6.5 2 6.5C1.17157 6.5 0.5 7.17157 0.5 8C0.5 8.82843 1.17157 9.5 2 9.5ZM2 15.5C2.82843 15.5 3.5 14.8284 3.5 14C3.5 13.1716 2.82843 12.5 2 12.5C1.17157 12.5 0.5 13.1716 0.5 14C0.5 14.8284 1.17157 15.5 2 15.5ZM10 15.5C10.8284 15.5 11.5 14.8284 11.5 14C11.5 13.1716 10.8284 12.5 10 12.5C9.17157 12.5 8.5 13.1716 8.5 14C8.5 14.8284 9.17157 15.5 10 15.5ZM11.5 8C11.5 8.82843 10.8284 9.5 10 9.5C9.17157 9.5 8.5 8.82843 8.5 8C8.5 7.17157 9.17157 6.5 10 6.5C10.8284 6.5 11.5 7.17157 11.5 8ZM10 3.5C10.8284 3.5 11.5 2.82843 11.5 2C11.5 1.17157 10.8284 0.5 10 0.5C9.17157 0.5 8.5 1.17157 8.5 2C8.5 2.82843 9.17157 3.5 10 3.5Z' fill='%23475A80' fill-opacity='.5'/%3E%3C/svg%3E">
+                                <img class="cross_quest" width="20px" style="top: 2px;left: 760px;position: relative; opacity: .5; cursor: pointer;"
+                                     src="{% static 'polls/images/cross.svg' %}">
+                            </div>
+                            {# todo поправить отображение. по центру#}
+                            <div class="page-child__drag-handle"><img style="top: 50px; position: relative;"
+                                                                      src="data:image/svg+xml,%3Csvg width='12' height='16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M3.5 2C3.5 2.82843 2.82843 3.5 2 3.5C1.17157 3.5 0.5 2.82843 0.5 2C0.5 1.17157 1.17157 0.5 2 0.5C2.82843 0.5 3.5 1.17157 3.5 2ZM2 9.5C2.82843 9.5 3.5 8.82843 3.5 8C3.5 7.17157 2.82843 6.5 2 6.5C1.17157 6.5 0.5 7.17157 0.5 8C0.5 8.82843 1.17157 9.5 2 9.5ZM2 15.5C2.82843 15.5 3.5 14.8284 3.5 14C3.5 13.1716 2.82843 12.5 2 12.5C1.17157 12.5 0.5 13.1716 0.5 14C0.5 14.8284 1.17157 15.5 2 15.5ZM10 15.5C10.8284 15.5 11.5 14.8284 11.5 14C11.5 13.1716 10.8284 12.5 10 12.5C9.17157 12.5 8.5 13.1716 8.5 14C8.5 14.8284 9.17157 15.5 10 15.5ZM11.5 8C11.5 8.82843 10.8284 9.5 10 9.5C9.17157 9.5 8.5 8.82843 8.5 8C8.5 7.17157 9.17157 6.5 10 6.5C10.8284 6.5 11.5 7.17157 11.5 8ZM10 3.5C10.8284 3.5 11.5 2.82843 11.5 2C11.5 1.17157 10.8284 0.5 10 0.5C9.17157 0.5 8.5 1.17157 8.5 2C8.5 2.82843 9.17157 3.5 10 3.5Z' fill='%23475A80' fill-opacity='.5'/%3E%3C/svg%3E">
+                            </div>
+                            {#                            <div class="quest_section">#}
+                            {#                                    todo тут мб и получше можно сделать без условий#}
+                            {#                                    linebreaks для переноса строки#}
+
+                            {#                        {% if quest.name %}#}
                             <div class="td-quest__name" contentEditable style="outline: none"
                                  role="textbox" aria-multiline="true">{{ quest.name|linebreaks }}</div>
                             {# todo тут получаем тип вопроса и в зависимости от него захуячиваем альтернативы#}
@@ -75,96 +80,128 @@
                                 {% endif %}
 
                             </div>
-                        {% else %}
-                            <div class="td-quest__name" contentEditable style="outline: none"
-                                 role="textbox" aria-multiline="true">Вопрос
+
+                            <div class="func_quest_buttons">
+
+                                    <img class="plus_quest" width="30px" style="position: relative; opacity: .5; cursor: pointer;"
+                                     src="{% static 'polls/images/plus.svg' %}" title="Добавить вопрос">
+                                    <img class="copy_quest" width="25px" style="position: relative; opacity: .5; cursor: pointer;"
+                                     src="{% static 'polls/images/copy.svg' %}" title="Копировать вопрос">
+                                    <img class="add_part" width="25px" style="position: relative; opacity: .5; cursor: pointer;"
+                                     src="{% static 'polls/images/rows.svg' %}" title="Добавить часть">
+
                             </div>
+                            {#                        {% else %}#}
+                            {#                            <div class="td-quest__name" contentEditable style="outline: none"#}
+                            {#                                 role="textbox" aria-multiline="true">Вопрос#}
+                            {#                            </div>#}
                             {#todo тут получаем тип вопроса и в зависимости от него захуячиваем альтернативы#}
-                            <div class="td-site__alt" contenteditable="true" style="outline: none">
-                                <select name="select">
-                                    {% for type_quest in types_quest %}
-                                        <option {% if quest.type_question.name == type_quest.name %}
-                                            selected {% endif %}
-                                            value="{{ type_quest.id }}">{{ type_quest.name }}</option>
-                                    {% endfor %}
-                                </select>
-                                {% if quest.type_question.id == 3 %}
-                                    <p>Option 1 was selected</p>
-                                {% endif %}
-                                {% if request.POST.select == '2' %}
-                                    <p>Option 2 was selected</p>
-                                {% endif %}
-                                {% if request.POST.select == '3' %}
-                                    <p>Option 3 was selected</p>
-                                {% endif %}
-                            </div>
+                            {#                            <div class="td-site__alt" style="outline: none">#}
+                            {#                                <select name="select">#}
+                            {#                                    {% for type_quest in types_quest %}#}
+                            {#                                        <option {% if quest.type_question.name == type_quest.name %}#}
+                            {#                                            selected {% endif %}#}
+                            {#                                            value="{{ type_quest.id }}">{{ type_quest.name }}</option>#}
+                            {#                                    {% endfor %}#}
+                            {#                                </select>#}
+                            {#                                {% if quest.type_question.id == 3 %}#}
+                            {#                                    <p>Option 1 was selected</p>#}
+                            {#                                {% endif %}#}
+                            {#                                {% if request.POST.select == '2' %}#}
+                            {#                                    <p>Option 2 was selected</p>#}
+                            {#                                {% endif %}#}
+                            {#                                {% if request.POST.select == '3' %}#}
+                            {#                                    <p>Option 3 was selected</p>#}
+                            {#                                {% endif %}#}
+                            {#                            </div>#}
+                            {#                        {% endif %}#}
+
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+        {% else %}
+
+
+            <div class="block td-quest-col__header" quest_id="{{ quest.id }}" id="question_{{ quest.id }}">
+                <div class="td-sites-grid__more" role="button"></div>
+                <div class="quest_upper" style="opacity: 0;">
+                    <img style="top: 2px;left: 400px;position: relative;"
+                         src="data:image/svg+xml,%3Csvg width='12' height='16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M3.5 2C3.5 2.82843 2.82843 3.5 2 3.5C1.17157 3.5 0.5 2.82843 0.5 2C0.5 1.17157 1.17157 0.5 2 0.5C2.82843 0.5 3.5 1.17157 3.5 2ZM2 9.5C2.82843 9.5 3.5 8.82843 3.5 8C3.5 7.17157 2.82843 6.5 2 6.5C1.17157 6.5 0.5 7.17157 0.5 8C0.5 8.82843 1.17157 9.5 2 9.5ZM2 15.5C2.82843 15.5 3.5 14.8284 3.5 14C3.5 13.1716 2.82843 12.5 2 12.5C1.17157 12.5 0.5 13.1716 0.5 14C0.5 14.8284 1.17157 15.5 2 15.5ZM10 15.5C10.8284 15.5 11.5 14.8284 11.5 14C11.5 13.1716 10.8284 12.5 10 12.5C9.17157 12.5 8.5 13.1716 8.5 14C8.5 14.8284 9.17157 15.5 10 15.5ZM11.5 8C11.5 8.82843 10.8284 9.5 10 9.5C9.17157 9.5 8.5 8.82843 8.5 8C8.5 7.17157 9.17157 6.5 10 6.5C10.8284 6.5 11.5 7.17157 11.5 8ZM10 3.5C10.8284 3.5 11.5 2.82843 11.5 2C11.5 1.17157 10.8284 0.5 10 0.5C9.17157 0.5 8.5 1.17157 8.5 2C8.5 2.82843 9.17157 3.5 10 3.5Z' fill='%23475A80' fill-opacity='.5'/%3E%3C/svg%3E">
+                </div>
+                {# todo поправить отображение. по центру#}
+                <div class="page-child__drag-handle"><img style="top: 50px; position: relative;"
+                                                          src="data:image/svg+xml,%3Csvg width='12' height='16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M3.5 2C3.5 2.82843 2.82843 3.5 2 3.5C1.17157 3.5 0.5 2.82843 0.5 2C0.5 1.17157 1.17157 0.5 2 0.5C2.82843 0.5 3.5 1.17157 3.5 2ZM2 9.5C2.82843 9.5 3.5 8.82843 3.5 8C3.5 7.17157 2.82843 6.5 2 6.5C1.17157 6.5 0.5 7.17157 0.5 8C0.5 8.82843 1.17157 9.5 2 9.5ZM2 15.5C2.82843 15.5 3.5 14.8284 3.5 14C3.5 13.1716 2.82843 12.5 2 12.5C1.17157 12.5 0.5 13.1716 0.5 14C0.5 14.8284 1.17157 15.5 2 15.5ZM10 15.5C10.8284 15.5 11.5 14.8284 11.5 14C11.5 13.1716 10.8284 12.5 10 12.5C9.17157 12.5 8.5 13.1716 8.5 14C8.5 14.8284 9.17157 15.5 10 15.5ZM11.5 8C11.5 8.82843 10.8284 9.5 10 9.5C9.17157 9.5 8.5 8.82843 8.5 8C8.5 7.17157 9.17157 6.5 10 6.5C10.8284 6.5 11.5 7.17157 11.5 8ZM10 3.5C10.8284 3.5 11.5 2.82843 11.5 2C11.5 1.17157 10.8284 0.5 10 0.5C9.17157 0.5 8.5 1.17157 8.5 2C8.5 2.82843 9.17157 3.5 10 3.5Z' fill='%23475A80' fill-opacity='.5'/%3E%3C/svg%3E">
+                </div>
+                {#                            <div class="quest_section">#}
+                {#                                    todo тут мб и получше можно сделать без условий#}
+                {#                                    linebreaks для переноса строки#}
+
+                {#                        {% if quest.name %}#}
+                <div class="td-sites-grid" id="projectssortable">
+
+                    <div class="td-quest__name" contentEditable style="outline: none"
+                         role="textbox" aria-multiline="true">Вопрос
+                    </div>
+                    {#        todo тут получаем тип вопроса и в зависимости от него захуячиваем альтернативы#}
+                    <div class="td-site__alt" style="outline: none">
+                        <select name="select">
+                            {% for type_quest in types_quest %}
+                                <option {% if quest.type_question.name == type_quest.name %}
+                                    selected {% endif %}
+                                    value="{{ type_quest.id }}">{{ type_quest.name }}</option>
+                            {% endfor %}
+                        </select>
+                        {% if quest.type_question.id == 3 %}
+                            <p>Option 1 was selected</p>
+                        {% endif %}
+                        {% if request.POST.select == '2' %}
+                            <p>Option 2 was selected</p>
+                        {% endif %}
+                        {% if request.POST.select == '3' %}
+                            <p>Option 3 was selected</p>
                         {% endif %}
                     </div>
-                {% endfor %}
-            </div>
-        {% endfor %}
-    {% else %}
-        <div class="td-sites-grid" id="projectssortable">
-{#                <div class="td-quest-col__cell" id="question_1">#}
-                <div class="td-quest-col__header">
-                    <div class="td-sites-grid__more" role="button"></div>
-                    <div class="quest_upper"></div>
-{#                    <div class="quest_section">#}
-                        {#todo если добавляем пустой вопрос то добавь атрибут data-placeholder="Введите текст вопроса"#}
-                    <div class="td-quest__name" contentEditable style="outline: none"
-                         role="textbox" aria-multiline="true"
-                         quest_id="1" data-placeholder="Введите текст вопроса"></div>
-                    {#todo тут получаем тип вопроса и в зависимости от него захуячиваем альтернативы#}
-                    <div class="td-site__alt" contenteditable="true"
-                         style="outline: none">альтернативы
-                    </div>
-{#                    </div>#}
                 </div>
-{#                </div>#}
-        </div>
-    {% endif %}
-    {#todo тут блок с добавлением нового блока с вопросом#}
-    {# со стилями проблемы#}
-    <div class="page__control-buttons">
-        <button type="button" class="Button2 Button2_view_dl-light Button2_size_l" autocomplete="off"
-                aria-busy="false"><span class="Icon Icon_type_plus Button2-Icon Button2-Icon_side_left"
-                                        aria-hidden="true"></span><span class="Button2-Text">Добавить вопрос</span>
-        </button>
-        <button type="button" class="Button2 Button2_view_dl-light Button2_size_l" autocomplete="off"
-                aria-busy="false"><span class="Icon Icon_type_plus Button2-Icon Button2-Icon_side_left"
-                                        aria-hidden="true"></span><span
-                class="Button2-Text">Добавить страницу</span></button>
+
+
+            </div>
+
+
+
+        {% endif %}
+        {#todo тут блок с добавлением нового блока с вопросом#}
+        {# со стилями проблемы#}
     </div>
-</div>
 
 
-<div id="responses" class="td-form-col">
-    <div class="td-form-col__cell" form_id="{{ test.id }}">
-        <div class="block td-form-col__header">
-            <div class="td-site__section-one">
-                <div class="td-site__title" style="outline: none" aria-multiline="true">0 ответов</div>
-                <div class="td-site__descr" style="outline: none">Ответы принимаются</div>
+    <div id="responses" class="td-form-col">
+        <div class="td-form-col__cell" form_id="{{ test.id }}">
+            <div class="block td-form-col__header">
+                <div class="td-site__section-one">
+                    <div class="td-site__title" style="outline: none" aria-multiline="true">0 ответов</div>
+                    <div class="td-site__descr" style="outline: none">Ответы принимаются</div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <div id="settings" class="td-form-col">
+        <div class="td-form-col__cell" form_id="{{ test.id }}">
+            <div class="block td-form-col__header">
+                <div class="td-site__section-one">
+                    <div class="td-site__title" style="outline: none" aria-multiline="true">Настройки</div>
+                    <div class="td-site__descr" style="outline: none">Ответы принимаются</div>
+                </div>
             </div>
         </div>
     </div>
 
-</div>
 
-
-<div id="settings" class="td-form-col">
-    <div class="td-form-col__cell" form_id="{{ test.id }}">
-        <div class="block td-form-col__header">
-            <div class="td-site__section-one">
-                <div class="td-site__title" style="outline: none" aria-multiline="true">Настройки</div>
-                <div class="td-site__descr" style="outline: none">Ответы принимаются</div>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-{#  todo без этой штуки никакой POST не заработает(совместно с первой строчкой в index)  #}
-<script type="text/javascript">     window.CSRF_TOKEN = "{{ csrf_token }}"; </script>
+    {#  todo без этой штуки никакой POST не заработает(совместно с первой строчкой в index)  #}
+    <script type="text/javascript">     window.CSRF_TOKEN = "{{ csrf_token }}"; </script>
 
 
 {% endblock %}

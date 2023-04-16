@@ -1,4 +1,3 @@
-# from django.http import HttpResponse
 # from django.template import loader
 from django.http import HttpResponse, JsonResponse
 from django.http import Http404
@@ -20,6 +19,11 @@ from .models import Test, Question, Answer, PartTest, QuestionType
 #         raise Http404("Теста не существует")
 #     return render(request, 'polls/edit.html', {'question': test})
 
+# todo разобраться с этим
+# form = QuestionForm()
+# return render(request, 'polls/addquest+.html', {'form': 'form'})
+
+
 @login_required
 def index(request):
     """Отображение начальной странички с тестами"""
@@ -30,17 +34,95 @@ def index(request):
     # return render(request, 'polls/try.html', context)
 
 
+@csrf_exempt
+@require_POST
+def add_test(request):
+    """Добавление теста"""
+    test_name = request.POST.get('test_name')
+    test = Test.objects.create(name=test_name, user=request.user)
+    part = PartTest.objects.create(test=test,
+                                   number=1,
+                                   name='Раздел 1')
+    Question.objects.create(name="Вопрос",
+                            number=1,
+                            type_question_id=3,
+                            part_test=part)
+    return render(request, 'polls/test_block.html', {'test': test})
+
+
+# todo Когда добавлю корзину, эта функция будет удалять тест по истечении времени нахождения в корзине
+# todo И нужно будет добавить функцию, которая будет менять trash на True
+@csrf_exempt
+@require_POST
+def delete_test(request, form_id):
+    """Удаление теста"""
+    test = get_object_or_404(Test, pk=form_id)
+    test.delete()
+    return render(request, 'polls/edit.html')
+
+
 @login_required
 def edit(request, form_id):
     """Отображение странички с вопросами для формы"""
     test = get_object_or_404(Test, pk=form_id)
-    types_quest = get_list_or_404(QuestionType)
-    return render(request, 'polls/edit.html', {'test': test, 'types_quest': types_quest})
+    # todo протестировать без этой строки
+    # types_quest = get_list_or_404(QuestionType)
+    return render(request, 'polls/edit.html', {'test': test})
+    # return render(request, 'polls/edit.html', {'test': test, 'types_quest': types_quest})
 
 
-def save_quest(request, form_id, quest_id):
+@csrf_exempt
+@require_POST
+def add_question(request):
+    """Добавление вопроса"""
+    quest_name = request.POST.get('quest_name')
+    part_test_id = request.POST.get('part_test_id')
+    new_quest = update_order_func(request.POST.getlist("new_order[]"), quest_name, part_test_id)
+
+    # todo почитай про httpResponse. Им тоже мог это сделать, указать просо что используется json
+    return JsonResponse({'new_number': new_quest.number, 'new_quest_id': new_quest.id})
+
+
+@require_POST
+def update_order(request, form_id):
     """
-    Сохраняет формулировку вопроса
+    Обновляет порядок вопросов в базе
+
+    :param request:
+    :param form_id: id формы(теста)
+    :return:
+    """
+    update_order_func(request.POST.getlist("new_order[]"))
+    # return JsonResponse({"status": "success"})
+    return render(request, 'polls/edit.html')
+
+
+def update_order_func(new_order, quest_name=None, part_test_id=None):
+    """Обновление порядка вопросов
+
+    :param new_order: новый порядок вопросов формата {number: 'question_id'}
+    :param quest_name: формулировка вопроса
+    :param part_test_id: формулировка вопроса
+    :return: новый вопрос или None если вопрос не добавлялся
+    """
+    new_quest = None
+    for number, quest in enumerate(new_order):
+        if quest == 'new_id':
+            new_quest = Question.objects.create(name=quest_name,
+                                                number=number,
+                                                part_test_id=part_test_id,
+                                                type_question_id=3, )
+        else:
+            pk = int(quest.split('_')[1])
+            question = Question.objects.get(pk=pk)
+            question.number = number
+            question.save()
+    return new_quest
+
+
+def save_name_quest(request, form_id, quest_id):
+    """
+    Сохранение формулировки вопроса
 
     :param request:
     :param form_id: id формы(теста)
@@ -55,7 +137,7 @@ def save_quest(request, form_id, quest_id):
 
 def save_type_quest(request, form_id, quest_id, type_quest_id):
     """
-    Сохраняет тип вопроса
+    Сохранение типа вопроса
 
     :param request:
     :param form_id: id формы(теста)
@@ -89,56 +171,43 @@ def get_type_template(request):
     return render(request, 'polls/type_templates/{}'.format(template_name), context)
 
 
-@require_POST
-def update_order(request, form_id):
-    """
-    Обновляет порядок вопросов в базе
-
-    :param request:
-    :param form_id: id формы(теста)
-    :return:
-    """
-    new_order = request.POST.getlist("new_order[]")  # получаем новый порядок вопросов из Ajax-запроса
-    for i, quest in enumerate(new_order):
-        pk = int(quest.split('_')[1])
-        question = Question.objects.get(pk=pk)
-        question.number = i
-        question.save()
-    # return JsonResponse({"status": "success"})
-    return render(request, 'polls/edit.html')
+def responses(request, form_id):
+    """Отображение странички с ответами"""
+    test = get_object_or_404(Test, pk=form_id)
+    return render(request, 'polls/responses.html', {'test': test})
 
 
-# todo решить как обрабатывать ошибки
-@csrf_exempt
-def add_test(request):
-    if request.method == 'POST':
-        test_name = request.POST.get('test_name')
-        test = Test(name=test_name, user=request.user)
-        test.save()
-        return render(request, 'polls/test_block.html', {'test': test})
-    else:
-        return JsonResponse({'error': 'Invalid request method'})
-
-# todo решить как обрабатывать ошибки
-@csrf_exempt
-def delete_test(request, form_id):
-    """Удаление теста"""
-    if request.method == 'POST':
-        test = get_object_or_404(Test, pk=form_id)
-        test.delete()
-        return render(request, 'polls/edit.html')
-    else:
-        return JsonResponse({'error': 'Invalid request method'})
+def settings(request, form_id):
+    """Отображение странички с настройками"""
+    return None
 
 
+@login_required
+def trash(request):
+    """Отображение странички корзины"""
+    # latest_test_list = Test.objects.order_by('name')
+    latest_test_list = Test.objects.filter(user=request.user, trash=True).order_by('name')
+    context = {'latest_test_list': latest_test_list}
+    return render(request, 'polls/trash.html', context)
 
-# @csrf_exempt
-def add_question(request):
-    # return HttpResponse('добавление вопроса')
-    form = QuestionForm()
-    return render(request, 'polls/addquest+.html', {'form': form})
+
+@login_required
+def profile(request):
+    """Отображение странички с профилем"""
+    return render(request, 'polls/profile.html')
 
 
+class RegisterView(FormView):
+    form_class = RegisterForm
+    template_name = "registration/register.html"
+    success_url = "/polls"
+
+    def form_valid(self, form):
+        form.save()
+        return super().form_valid(form)
+
+
+# todo эти 3 функции под удаление
 def add_answer(request):
     quest = Question.objects.get(pk=1)
     answ = Answer.objects.create(question=quest,
@@ -158,38 +227,3 @@ def add_type_quest(request):
     type_quest = QuestionType.objects.create(name='Текст',
                                              function='text')
     return HttpResponse('Ответ "%s" добавлен.' % type_quest)
-
-
-def responses(request, form_id):
-    """Отображение странички с ответами"""
-    test = get_object_or_404(Test, pk=form_id)
-    return render(request, 'polls/responses.html', {'test': test})
-
-
-def settings(request, form_id):
-    """Отображение странички с настройками"""
-    return None
-
-
-@login_required
-def profile(request):
-    return render(request, 'polls/profile.html')
-
-
-class RegisterView(FormView):
-    form_class = RegisterForm
-    template_name = "registration/register.html"
-    success_url = "/polls"
-
-    def form_valid(self, form):
-        form.save()
-        return super().form_valid(form)
-
-
-@login_required
-def trash(request):
-    """Отображение корзины"""
-    # latest_test_list = Test.objects.order_by('name')
-    latest_test_list = Test.objects.filter(user=request.user, trash=True).order_by('name')
-    context = {'latest_test_list': latest_test_list}
-    return render(request, 'polls/trash.html', context)

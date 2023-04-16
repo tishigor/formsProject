@@ -74,16 +74,16 @@
 
     {% if latest_test_list %}
 
-            {% for test in latest_test_list %}
-                {% include "polls/test_block.html" %}
-            {% endfor %}
+        {% for test in latest_test_list %}
+            {% include "polls/test_block.html" %}
+        {% endfor %}
 
-            <div class="td-sites-grid__cell ui-sortable-handle">
-                <div class="td-sites-grid__item td-sites-grid__item_null">&nbsp;</div>
-            </div>
+        <div class="td-sites-grid__cell ui-sortable-handle">
+            <div class="td-sites-grid__item td-sites-grid__item_null">&nbsp;</div>
+        </div>
 
     {% else %}
-{#        <p>Нет доступных форм.</p>#}
+    {#<p>Нет доступных форм.</p>#}
         <div class="td-sites-grid__cell ui-sortable-handle">
             <div class="td-sites-grid__item td-sites-grid__item_null">&nbsp;</div>
         </div>

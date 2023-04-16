@@ -4,7 +4,6 @@ a, b, blockquote, center, code, div, h1, h2, h3, h4, h5, h6, i, img, p, pre, spa
     border: 0;
 }
 
-
 /*main -------------------------------- menu*/
 
 .t-menu {
@@ -208,6 +207,27 @@ a, b, blockquote, center, code, div, h1, h2, h3, h4, h5, h6, i, img, p, pre, spa
 
 /* -------------------------------------------вкладки polls*/
 
+/* -------------------------------------------иконки*/
+.func_quest_buttons {
+    display: flex;
+    justify-content: center;
+}
+
+.func_quest_buttons img {
+    cursor: pointer;
+    /* font-weight: 700; */
+    /* color: white; */
+    text-decoration: none;
+    /*padding: 0.8em 1em;*/
+    /*border-radius: 12px;*/
+    margin: 0 20px;
+    /* background: rgb(64,199,129); */
+    /* box-shadow: 0 -3px rgb(53 167 110) inset; */
+    transition: 0.2s;
+}
+/* -------------------------------------------иконки*/
+
+
 
 /*сетка с проектами*/
 .td-sites-grid {
@@ -310,7 +330,7 @@ a, b, blockquote, center, code, div, h1, h2, h3, h4, h5, h6, i, img, p, pre, spa
     /*height: 150px;*/
     background-color: #fff;
     border: 1px solid #d9d9d9;
-    padding: 30px 40px 30px;
+    padding: 30px 40px 15px;
     /*transition: 200ms;*/
     position: relative;
 }
@@ -355,7 +375,7 @@ a, b, blockquote, center, code, div, h1, h2, h3, h4, h5, h6, i, img, p, pre, spa
 
 .td-quest__name {
     /*todo из-за того что значение ширины явное, при уменьшении окошка ширина меняться не будет
-       так  что нужно будет что-то придумать-нагуглить*/
+       так что нужно будет что-то придумать-нагуглить*/
     width: 650px;
     font-size: 24px;
     font-weight: 300;
@@ -487,139 +507,6 @@ a, b, blockquote, center, code, div, h1, h2, h3, h4, h5, h6, i, img, p, pre, spa
     gap: 12px;
 }
 
-.page__control-buttons > .Button2 {
-    flex: 1;
-}
-
-.Button2_view_dl-light.Button2_size_l {
-    height: 52px;
-    font-size: 16px;
-    line-height: 52px;
-    min-width: 52px;
-    padding: 0 20px;
-}
-
-.Button2_view_dl-light {
-    color: #2f3747;
-    background: #fff;
-    border-radius: 14px;
-    transition: transform .1s ease-out, color .15s linear;
-    transform: scale(1);
-}
-
-.Button2_size_l {
-    height: 36px;
-    font-size: 13px;
-    line-height: 36px;
-}
-
-.Button2 {
-    position: relative;
-    display: inline-block;
-    overflow: visible;
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-
-    -moz-user-focus: ignore;
-    -webkit-user-select: none;
-    user-select: none;
-    text-align: center;
-    white-space: nowrap;
-    text-decoration: none;
-    border-width: 0;
-    outline: 0;
-    background: transparent;
-    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-    touch-action: manipulation;
-}
-
-.Button2 {
-    cursor: pointer;
-}
-
-.Button2_view_dl-light.Button2_size_l .Button2-Icon {
-    position: relative;
-}
-
-.Button2 .Button2-Icon_side_left {
-    position: absolute;
-    top: 0;
-    left: 0;
-}
-
-.Button2 .Button2-Icon {
-    position: relative;
-    pointer-events: none;
-}
-
-.Icon_type_plus {
-    background-image: url(data:image/svg+xml,%3Csvg width= '24' height= '24' fill= 'none' xmlns= 'http://www.w3.org/2000/svg' %3E%3Cpath d= 'M12 3C11.4477 3 11 3.44772 11 4V11H4C3.44772 11 3 11.4477 3 12C3 12.5523 3.44772 13 4 13H11V20C11 20.5523 11.4477 21 12 21C12.5523 21 13 20.5523 13 20V13H20C20.5523 13 21 12.5523 21 12C21 11.4477 20.5523 11 20 11H13V4C13 3.44772 12.5523 3 12 3Z' fill= '%232F3747' /%3E%3C/svg%3E);
-}
-
-.Icon {
-    display: inline-block;
-    background-repeat: no-repeat;
-    background-position: 50%;
-}
-
-.Button2-Text {
-    position: relative;
-    display: inline-block;
-    resize: none;
-    white-space: nowrap;
-    pointer-events: none;
-}
-
-.Button2_view_dl-light:before {
-    border: 1px solid #2f3747;
-    background-color: initial;
-    border-radius: 14px;
-    transition: background-color .15s linear;
-}
-
-
-.Button2:after {
-    transform: scale(0);
-}
-
-.Icon:after {
-    visibility: hidden;
-    content: "\00A0";
-}
-
-
-.Button2_view_dl-light:not([aria-disabled=true]):hover:before {
-    border-color: #2f3747;
-    background-color: initial;
-}
-
-
-.Button2:after, .Button2:before {
-    position: absolute;
-    z-index: -1;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    content: "";
-}
-
-
-/*.page-child__drag-handle {*/
-/*    width: 12px;*/
-/*    height: 16px;*/
-/*    cursor: n-resize;*/
-/*    transition: .2s;*/
-/*    -webkit-user-select: none;*/
-/*    user-select: none;*/
-/*    position: absolute;*/
-/*    top: 32px;*/
-/*    left: -34px;*/
-/*    opacity: 0;*/
-/*}*/
-
-
 .page-child__drag-handle {
     width: 32px;
     height: 120px;
@@ -628,10 +515,11 @@ a, b, blockquote, center, code, div, h1, h2, h3, h4, h5, h6, i, img, p, pre, spa
     -webkit-user-select: none;
     user-select: none;
     position: absolute;
-    top: 0px;
+    top: 0;
     left: -34px;
     opacity: 0;
 }
+
 
 
 /*.column {*/
@@ -640,6 +528,8 @@ a, b, blockquote, center, code, div, h1, h2, h3, h4, h5, h6, i, img, p, pre, spa
 /*    padding-bottom: 100px;*/
 /*}*/
 
+
+/*todo УДАЛИТЬ*/
 /*.portlet {*/
 /*    margin: 0 1em 1em 0;*/
 /*    padding: 0.3em;*/
@@ -661,5 +551,6 @@ a, b, blockquote, center, code, div, h1, h2, h3, h4, h5, h6, i, img, p, pre, spa
 /*.portlet-content {*/
 /*    padding: 0.4em;*/
 /*}*/
+/*todo УДАЛИТЬ*/
 
 

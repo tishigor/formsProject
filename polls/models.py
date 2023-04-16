@@ -188,7 +188,7 @@ class Answer(models.Model):
     created = models.DateTimeField(verbose_name='Создана', auto_now_add=True, editable=False, blank=True, null=True)
     changed = models.DateTimeField(verbose_name='Последняя правка', auto_now=True, editable=False, blank=True, null=True)
     question = models.ForeignKey(Question, verbose_name='Вопрос', on_delete=models.CASCADE)  # К удалению
-    alternative = models.ForeignKey(Alternative, verbose_name='Альтарнатива', null=True, on_delete=models.CASCADE)  # Новое
+    alternative = models.ForeignKey(Alternative, verbose_name='Альтернатива', null=True, on_delete=models.CASCADE)  # Новое
     value = models.CharField(max_length=6000, verbose_name='Ответ', blank=True, null=True)  # К удалению
     open_ans = models.CharField(max_length=6000, verbose_name='Ответ на открытый вопрос', blank=True, null=True)  # Новое
 
