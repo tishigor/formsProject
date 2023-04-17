@@ -157,22 +157,36 @@ $(document).ready(function () {
 // добавление вопроса
 $(document).ready(function () {
     $('.td-sites-grid').on('click','.plus_quest', function () {
+
         // находим блок вопроса где нажали на plus
         let thisBlock = $(this).closest('.block')
-        // Клонируем этот элемент
-        let newBlock = thisBlock.clone();
-        // Ищем внутри клонированного элемента элемент с классом "td-quest__name" и меняем его текст на "Новый вопрос"
-        newBlock.find(".td-quest__name").text("Новый вопрос");
-        // Ищем внутри клонированного элемента элемент с атрибутом "quest_id" и меняем его значение на значение оригинала + 1
-        // let originalQuestId = thisBlock.attr("quest_id");
-        // clonedHeader.attr("quest_id", 'new_id');
-        newBlock.attr("id", 'new_id');
-        // Ищем внутри клонированного элемента элемент "select" и устанавливаем первый вариант выбора
-        newBlock.find("select").prop("selectedIndex", 0);
-        // Вставляем клонированный элемент после оригинала
-        newBlock.insertAfter(thisBlock).hide().fadeIn();
-
+        let thisBlockId = thisBlock.attr("id");
         let new_order = $(this).closest('#projectssortable').sortable("toArray"); // получаем новую последовательность вопросов
+
+        // var arr = ["question_13", "question_15"];
+        var index = new_order.indexOf("question_13");
+
+        if (index !== -1) {
+            new_order.splice(index + 1, 0, "new_id");
+        }
+
+
+
+
+
+        // // Клонируем этот элемент
+        // let newBlock = thisBlock.clone();
+        // // Ищем внутри клонированного элемента элемент с классом "td-quest__name" и меняем его текст на "Новый вопрос"
+        // newBlock.find(".td-quest__name").text("Новый вопрос");
+        // newBlock.attr("id", 'new_id');
+        // // Ищем внутри клонированного элемента элемент "select" и устанавливаем первый вариант выбора
+        // newBlock.find("select").prop("selectedIndex", 0);
+        // // Вставляем клонированный элемент после оригинала
+        // newBlock.insertAfter(thisBlock).hide().fadeIn();
+
+        // если другой атрибут кроме айдишника
+        // $(this).closest('#projectssortable').sortable("toArray", {attribute: 'quest_id'})
+        // let new_order = $(this).closest('#projectssortable').sortable("toArray"); // получаем новую последовательность вопросов
 
         $.ajax({
             type: 'POST',
@@ -181,7 +195,7 @@ $(document).ready(function () {
                 quest_name: "Новый вопрос",
                 // todo сюда передаем часть теста к которой добавляется вопрос (пока что закидываю 1)
                 // todo вопросы будут находится в div, у которого будет атрибут = id части теста
-                part_test_id: 4,
+                part_test_id: 2,
                 new_order: new_order,
                 // number: number,
                 // csrfmiddlewaretoken: csrftoken,
@@ -191,11 +205,25 @@ $(document).ready(function () {
                 console.log('beforeSend');
             },
             success: function (response) {
-                // после успешного добавления нужно менять id у добавленного блока на нормальный
-                // после того как добавится этот блок всем блокам, которые будут идти после него нужно будет обновить атрибут number
+
+                // Клонируем этот элемент
+                let newBlock = thisBlock.clone();
+                // Ищем внутри клонированного элемента элемент с классом "td-quest__name" и меняем его текст на "Новый вопрос"
+                newBlock.find(".td-quest__name").text("Новый вопрос");
                 newBlock.attr("id", 'question_'+response['new_quest_id']);
                 newBlock.attr("quest_id", response['new_quest_id']);
                 newBlock.attr("number", response['new_number']);
+                // Ищем внутри клонированного элемента элемент "select" и устанавливаем первый вариант выбора
+                newBlock.find("select").prop("selectedIndex", 0);
+                // Вставляем клонированный элемент после оригинала
+                newBlock.insertAfter(thisBlock).hide().fadeIn();
+
+
+                // после успешного добавления нужно менять id у добавленного блока на нормальный
+                // после того как добавится этот блок всем блокам, которые будут идти после него нужно будет обновить атрибут number
+                // newBlock.attr("id", 'question_'+response['new_quest_id']);
+                // newBlock.attr("quest_id", response['new_quest_id']);
+                // newBlock.attr("number", response['new_number']);
 
                 // обновление атрибута number у всех нижестоящих блоков после доабвленного
                 newBlock.nextAll('.block.td-quest-col__header').each(function () {
