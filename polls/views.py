@@ -73,6 +73,23 @@ def edit(request, form_id):
 
 @csrf_exempt
 @require_POST
+def add_part_test(request):
+    """Добавление части теста (раздела)"""
+    new_part_test = PartTest.objects.create(name=request.POST.get('part_test_name'),
+                                            test_id=request.POST.get('test_id'),
+                                            number=2,  # TODO
+                                            )
+    # todo Возможно буду тут использовать update_order_func()
+    for quest in request.POST.getlist("quest_part_test[]"):
+        pk = int(quest.split('_')[1])
+        question = Question.objects.get(pk=pk)
+        question.part_test = new_part_test
+        question.save()
+    return JsonResponse({'new_number': new_part_test.number, 'new_part_test_id': new_part_test.id})
+
+
+@csrf_exempt
+@require_POST
 def add_question(request):
     """Добавление вопроса"""
     quest_name = request.POST.get('quest_name')
@@ -80,6 +97,19 @@ def add_question(request):
     new_quest = update_order_func(request.POST.getlist("new_order[]"), quest_name, part_test_id)
 
     # todo почитай про httpResponse. Им тоже мог это сделать, указать просо что используется json
+    # return JsonResponse({'new_number': new_quest.number, 'new_quest_id': new_quest.id, 'quest_name': new_quest.name, })
+    return JsonResponse({'new_number': new_quest.number, 'new_quest_id': new_quest.id})
+
+
+def delete_question(request, quest_id):
+    """Удаление вопроса"""
+    # quest_name = request.POST.get('quest_name')
+    # part_test_id = request.POST.get('part_test_id')
+    new_quest = update_order_func(request.POST.getlist("new_order[]"))
+
+    test = get_object_or_404(Question, pk=quest_id)
+    test.delete()
+
     return JsonResponse({'new_number': new_quest.number, 'new_quest_id': new_quest.id})
 
 
@@ -97,6 +127,9 @@ def update_order(request, form_id):
     return render(request, 'polls/edit.html')
 
 
+# todo как-будто эту функцию нужно использовать при любом изменении в вопросах
+# todo в цикле не варик, вспомни bulk_create()
+# todo протестировать на запросы и время. Написать декоратор
 def update_order_func(new_order, quest_name=None, part_test_id=None):
     """Обновление порядка вопросов
 
@@ -112,6 +145,8 @@ def update_order_func(new_order, quest_name=None, part_test_id=None):
                                                 number=number,
                                                 part_test_id=part_test_id,
                                                 type_question_id=3, )
+        # elif quest == 'del_block':
+        #     pass
         else:
             pk = int(quest.split('_')[1])
             question = Question.objects.get(pk=pk)

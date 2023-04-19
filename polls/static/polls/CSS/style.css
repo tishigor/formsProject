@@ -517,10 +517,24 @@ a, b, blockquote, center, code, div, h1, h2, h3, h4, h5, h6, i, img, p, pre, spa
     position: absolute;
     top: 0;
     left: -34px;
-    opacity: 0;
+    /*opacity: 0;*/
 }
 
 
+.background {
+  border-radius: 10px;
+  display: inline-block;
+  background-color: #e6e6e6;
+  padding: 10px;
+  text-align: center;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.number {
+  display: block;
+  height: 100%;
+}
 
 /*.column {*/
 /*    width: 170px;*/

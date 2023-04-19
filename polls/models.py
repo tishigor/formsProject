@@ -96,6 +96,7 @@ class Test(models.Model):
 
 
 class PartTest(models.Model):
+    name = models.CharField(max_length=100, verbose_name='Название части', **required_field)
     created = models.DateTimeField(verbose_name='Создана', auto_now_add=True, editable=False, **optional_field)
     changed = models.DateTimeField(verbose_name='Последняя правка', auto_now=True, editable=False, **optional_field)
     test = models.ForeignKey(Test, verbose_name='Тест', null=False, on_delete=models.CASCADE)
@@ -103,7 +104,6 @@ class PartTest(models.Model):
     method_of_sel = models.IntegerField(verbose_name='Как выбрать нужное кол-во вопросов', choices=METHOD_OF_SEL, default=1)  # default-По порядку
     text = models.TextField(verbose_name='Текст части', **optional_field)
     number = models.IntegerField(verbose_name='Номер части', **required_field, default=0)
-    name = models.CharField(max_length=100, verbose_name='Название части', **required_field)
 
     def __str__(self):
         return '{}: {}'.format(self.pk, self.name)
@@ -131,7 +131,7 @@ class Question(models.Model):
     name = models.TextField(verbose_name='Формулировка вопроса', **optional_field)
     created = models.DateTimeField(verbose_name='Создана', auto_now_add=True, editable=False, **optional_field)
     changed = models.DateTimeField(verbose_name='Последняя правка', auto_now=True, editable=False, **optional_field)
-    number = models.CharField(verbose_name='Номер вопроса', max_length=11)
+    number = models.IntegerField(verbose_name='Номер вопроса', **required_field)
     image = models.ImageField(verbose_name='Изображение к вопросу', upload_to="images\psy_questions\\", default='', **optional_field)
     type_question = models.ForeignKey(QuestionType, verbose_name='Тип вопроса', **optional_field, on_delete=models.CASCADE)
     part_test = models.ForeignKey(PartTest, verbose_name='Часть теста', blank=False, null=False, on_delete=models.CASCADE)

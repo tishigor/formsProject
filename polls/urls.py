@@ -10,7 +10,9 @@ urlpatterns = [
     path('<int:form_id>/delete_test', views.delete_test, name='delete_test'),  # удаление теста
     # редактор теста
     path('<int:form_id>/', views.edit, name='edit'),
+    path('add_part_test/', views.add_part_test, name='add_part_test'),  # добавление вопроса
     path('add_question/', views.add_question, name='add_question'),  # добавление вопроса
+    path('<int:quest_id>/delete_question/', views.delete_question, name='add_question'),  # удаление вопроса
     path('<int:form_id>/update_order/', views.update_order, name='update_order'), # изменение порядка вопросов. Вызывается при перемещении блоков вопросов
     path('<int:form_id>/<int:quest_id>/', views.save_name_quest, name='save_name_quest'),  # сохранение формулировки
     path('<int:form_id>/<int:quest_id>/<int:type_quest_id>', views.save_type_quest, name='save_type_quest'), # сохранение типа вопроса

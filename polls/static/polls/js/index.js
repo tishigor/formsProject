@@ -62,6 +62,7 @@ $(function () {
                 },
                 success: function () {
                     // todo сделать индикатор отправки запроса на сохранение и успешное сохранение
+                    // todo после успешного перемещения менять number!!!
                     // alert("Порядок вопросов изменен!"); // оповещение об успешном изменении порядка
                 }
             });
@@ -150,43 +151,21 @@ $(document).ready(function () {
 });
 
 
-// todo под доработку
-// я же могу в new_order добавить новый добавляемый блок, а потом его создать в success по факту
-// после получения последовательности вопросов сам , получаю id элемента на котором нажал '+', добавляю в последовательность новую запись и передаю это в бэк
-
+// todo после доабвления частей теста пофиксить номера для вопросов. И добавить добавление номера для частей в success
 // добавление вопроса
 $(document).ready(function () {
-    $('.td-sites-grid').on('click','.plus_quest', function () {
-
+    $('.td-sites-grid').on('click', '.plus_quest', function () {
         // находим блок вопроса где нажали на plus
         let thisBlock = $(this).closest('.block')
         let thisBlockId = thisBlock.attr("id");
-        let new_order = $(this).closest('#projectssortable').sortable("toArray"); // получаем новую последовательность вопросов
-
-        // var arr = ["question_13", "question_15"];
-        var index = new_order.indexOf("question_13");
-
+        let new_order = $(this).closest('.td-sites-grid').sortable("toArray"); // получаем новую последовательность вопросов
+        let index = new_order.indexOf(thisBlockId);
+        let new_num = index + 1
         if (index !== -1) {
-            new_order.splice(index + 1, 0, "new_id");
+            new_order.splice(new_num, 0, "new_id");
         }
 
-
-
-
-
-        // // Клонируем этот элемент
-        // let newBlock = thisBlock.clone();
-        // // Ищем внутри клонированного элемента элемент с классом "td-quest__name" и меняем его текст на "Новый вопрос"
-        // newBlock.find(".td-quest__name").text("Новый вопрос");
-        // newBlock.attr("id", 'new_id');
-        // // Ищем внутри клонированного элемента элемент "select" и устанавливаем первый вариант выбора
-        // newBlock.find("select").prop("selectedIndex", 0);
-        // // Вставляем клонированный элемент после оригинала
-        // newBlock.insertAfter(thisBlock).hide().fadeIn();
-
-        // если другой атрибут кроме айдишника
-        // $(this).closest('#projectssortable').sortable("toArray", {attribute: 'quest_id'})
-        // let new_order = $(this).closest('#projectssortable').sortable("toArray"); // получаем новую последовательность вопросов
+        let part_test_id = $(this).closest('.td-sites-grid').attr('part_test_id')
 
         $.ajax({
             type: 'POST',
@@ -195,7 +174,7 @@ $(document).ready(function () {
                 quest_name: "Новый вопрос",
                 // todo сюда передаем часть теста к которой добавляется вопрос (пока что закидываю 1)
                 // todo вопросы будут находится в div, у которого будет атрибут = id части теста
-                part_test_id: 2,
+                part_test_id: part_test_id,
                 new_order: new_order,
                 // number: number,
                 // csrfmiddlewaretoken: csrftoken,
@@ -205,30 +184,30 @@ $(document).ready(function () {
                 console.log('beforeSend');
             },
             success: function (response) {
+                // после успешного добавления нужно менять id у добавленного блока на нормальный
+                // после того как добавится этот блок всем блокам, которые будут идти после него нужно будет обновить атрибут number
+
 
                 // Клонируем этот элемент
                 let newBlock = thisBlock.clone();
                 // Ищем внутри клонированного элемента элемент с классом "td-quest__name" и меняем его текст на "Новый вопрос"
                 newBlock.find(".td-quest__name").text("Новый вопрос");
-                newBlock.attr("id", 'question_'+response['new_quest_id']);
+                newBlock.attr("id", 'question_' + response['new_quest_id']);
                 newBlock.attr("quest_id", response['new_quest_id']);
                 newBlock.attr("number", response['new_number']);
+
                 // Ищем внутри клонированного элемента элемент "select" и устанавливаем первый вариант выбора
                 newBlock.find("select").prop("selectedIndex", 0);
+                newBlock.find("span").text(response['new_number']);
                 // Вставляем клонированный элемент после оригинала
                 newBlock.insertAfter(thisBlock).hide().fadeIn();
-
-
-                // после успешного добавления нужно менять id у добавленного блока на нормальный
-                // после того как добавится этот блок всем блокам, которые будут идти после него нужно будет обновить атрибут number
-                // newBlock.attr("id", 'question_'+response['new_quest_id']);
-                // newBlock.attr("quest_id", response['new_quest_id']);
-                // newBlock.attr("number", response['new_number']);
 
                 // обновление атрибута number у всех нижестоящих блоков после доабвленного
                 newBlock.nextAll('.block.td-quest-col__header').each(function () {
                     let current_question_number = parseInt($(this).attr('number'));
                     $(this).attr('number', current_question_number + 1);
+                    $(this).find("span").text(current_question_number + 1);
+
                     console.log('q\n')
                 });
             },
@@ -241,14 +220,51 @@ $(document).ready(function () {
 });
 
 
-// удаление вопроса
-// $(document).ready(function () {
-//     $(".cross_quest").click(function (){
-//         $.ajax({
-//
-//         });
-//     })
-// })
+// добавление части теста
+$(document).ready(function () {
+    $('.add_part').on('click', function () {
+
+
+        let thisBlock = $(this).closest('.block')
+        // Находим следующий за блоком вопроса элемент с классом "question"
+        let nextQuestion = thisBlock.nextAll('.td-quest-col__header');
+        // список id вопросов которые привязаны к новой части
+        let quest_part_test = nextQuestion.get().map(item => $(item).attr('id'));
+
+        let test_id = $('.td-form-col__cell').attr('form_id')
+        $.ajax({
+            type: 'POST',
+            url: '/polls/add_part_test/',
+            data: {
+                test_id: test_id,
+                part_test_name: "Новая часть",
+                quest_part_test: quest_part_test,
+                // number: number,
+                // csrfmiddlewaretoken: csrftoken,
+            },
+            beforeSend: function () {
+                // todo имитация загрузки
+                console.log('beforeSend');
+            },
+            success: function (response) {
+                // Создаём новый блок раздела
+                let newPartTest = $('<div class="td-sites-grid" id="part_test_123" part_test_id="123"></div>');
+                // Добавляем все вопросы, начиная со следующего, в новый блок
+                newPartTest.insertAfter(thisBlock.parent()).append(nextQuestion);
+
+                newPartTest.attr("id", 'question_' + response['new_quest_id']);
+                newPartTest.attr("part_test_id", response['new_quest_id']);
+                newPartTest.attr("number", response['new_number']);
+            },
+            onerror: function (data) {
+                console.log('onerror');
+                alert(data);
+            }
+        });
+
+
+    });
+});
 
 
 // Вкладки
@@ -275,8 +291,7 @@ $(document).ready(function () {
             data: {test_name: 'Новый тест'},
             success: function (response) {
                 // Добавляем новый элемент на страницу с помощью jQuery
-                // todo использовать td-sites-grid вместо projectssortable???
-                let last_block = $("#projectssortable .td-sites-grid__cell").last();
+                let last_block = $(".td-sites-grid .td-sites-grid__cell").last();
                 let block_test = $(response).hide()
                 last_block.before(block_test.fadeIn());
             },
@@ -303,6 +318,49 @@ $(document).ready(function () {
             },
             error: function (xhr, status, error) {
                 console.log("Error: " + error);
+            }
+        });
+    });
+});
+
+
+// удаление вопроса
+$(document).ready(function () {
+    $('.td-sites-grid').on('click', '.cross_quest', function () {
+        // находим блок вопроса где нажали на cross
+        let thisBlock = $(this).closest('.block')
+        let quest_id = thisBlock.attr("quest_id");
+        // thisBlock.attr("id", 'del_block');
+        let new_order = $(this).closest('.td-sites-grid').sortable("toArray"); // получаем новую последовательность вопросов
+
+        $.ajax({
+            type: 'POST',
+            url: `/polls/${quest_id}/delete_question`,
+            data: {
+                new_order: new_order,
+            },
+            beforeSend: function () {
+                // todo имитация загрузки
+                console.log('beforeSend');
+            },
+            success: function (response) {
+                // после успешного добавления нужно менять id у добавленного блока на нормальный
+                // после того как добавится этот блок всем блокам, которые будут идти после него нужно будет обновить атрибут number
+                // newBlock.attr("id", 'question_'+response['new_quest_id']);
+                // newBlock.attr("quest_id", response['new_quest_id']);
+                // newBlock.attr("number", response['new_number']);
+                thisBlock.remove()
+
+                // обновление атрибута number у всех нижестоящих блоков после добавленного
+                thisBlock.nextAll('.block.td-quest-col__header').each(function () {
+                    let current_question_number = parseInt($(this).attr('number'));
+                    $(this).attr('number', current_question_number + 1);
+                    console.log('q\n')
+                });
+            },
+            onerror: function (data) {
+                console.log('onerror');
+                alert(data);
             }
         });
     });
