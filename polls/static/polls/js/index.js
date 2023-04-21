@@ -32,10 +32,10 @@ $('.td-site__section-one').hover(
 
 $('.block').hover(
     function () {
-        $('.quest_upper', this).css('opacity', '1');
+        $('.quest_upper', this).css('visibility', '');
     },
     function () {
-        $('.quest_upper', this).css('opacity', '0');
+        $('.quest_upper', this).css('visibility', 'hidden');
     }
 )
 
@@ -151,7 +151,8 @@ $(document).ready(function () {
 });
 
 
-// todo после доабвления частей теста пофиксить номера для вопросов. И добавить добавление номера для частей в success
+// todo после добавления частей теста пофиксить номера для вопросов. И добавить добавление номера для частей в success
+// todo мне кажется номера вопросов, и вообще все что меняется у вопросов нужно возвращать с бэка и отображать на страничке, потому что это и легче, и безопаснее
 // добавление вопроса
 $(document).ready(function () {
     $('.td-sites-grid').on('click', '.plus_quest', function () {
@@ -187,7 +188,6 @@ $(document).ready(function () {
                 // после успешного добавления нужно менять id у добавленного блока на нормальный
                 // после того как добавится этот блок всем блокам, которые будут идти после него нужно будет обновить атрибут number
 
-
                 // Клонируем этот элемент
                 let newBlock = thisBlock.clone();
                 // Ищем внутри клонированного элемента элемент с классом "td-quest__name" и меняем его текст на "Новый вопрос"
@@ -202,7 +202,7 @@ $(document).ready(function () {
                 // Вставляем клонированный элемент после оригинала
                 newBlock.insertAfter(thisBlock).hide().fadeIn();
 
-                // обновление атрибута number у всех нижестоящих блоков после доабвленного
+                // обновление атрибута number у всех нижестоящих блоков после добавленного
                 newBlock.nextAll('.block.td-quest-col__header').each(function () {
                     let current_question_number = parseInt($(this).attr('number'));
                     $(this).attr('number', current_question_number + 1);
@@ -220,10 +220,58 @@ $(document).ready(function () {
 });
 
 
+// удаление вопроса
+$(document).ready(function () {
+    $('.td-sites-grid').on('click', '.cross_quest', function () {
+        // находим блок вопроса где нажали на cross
+        let thisBlock = $(this).closest('.block')
+        let thisBlockId = thisBlock.attr("id");
+
+        // thisBlock.attr("id", 'del_block');
+        let new_order = $(this).closest('.td-sites-grid').sortable("toArray"); // получаем новую последовательность вопросов
+        let index = new_order.indexOf(thisBlockId);
+        let new_num = index + 1
+        if (index !== -1) {
+            new_order.splice(index, 1, "del_id");
+        }
+
+        let quest_id = thisBlock.attr("quest_id");
+        $.ajax({
+            type: 'POST',
+            url: `/polls/${quest_id}/delete_question/`,
+            data: {
+                new_order: new_order,
+            },
+            beforeSend: function () {
+                // todo имитация загрузки
+                console.log('beforeSend');
+            },
+            success: function (response) {
+                // обновление атрибута number у всех нижестоящих блоков после удаленного
+                // todo это можно сделать функцией
+                thisBlock.nextAll('.block.td-quest-col__header').each(function () {
+                    let current_question_number = parseInt($(this).attr('number'));
+                    $(this).attr('number', current_question_number - 1);
+                    $(this).find("span").text(current_question_number - 1);
+                    console.log('q\n')
+                });
+                // thisBlock.hide().remove()
+                thisBlock.fadeOut(200, function () {
+                    $(this).remove(); // Удаление элемента после скрытия
+                });
+            },
+            onerror: function (data) {
+                console.log('onerror');
+                alert(data);
+            }
+        });
+    });
+});
+
+
 // добавление части теста
 $(document).ready(function () {
     $('.add_part').on('click', function () {
-
 
         let thisBlock = $(this).closest('.block')
         // Находим следующий за блоком вопроса элемент с классом "question"
@@ -255,6 +303,17 @@ $(document).ready(function () {
                 newPartTest.attr("id", 'question_' + response['new_quest_id']);
                 newPartTest.attr("part_test_id", response['new_quest_id']);
                 newPartTest.attr("number", response['new_number']);
+
+
+                // обновление атрибута number у всех нижестоящих блоков после добавленного
+                // newBlock.nextAll('.block.td-quest-col__header').each(function () {
+                //     let current_question_number = parseInt($(this).attr('number'));
+                //     $(this).attr('number', current_question_number + 1);
+                //     $(this).find("span").text(current_question_number + 1);
+                //
+                //     console.log('q\n')
+                // });
+
             },
             onerror: function (data) {
                 console.log('onerror');
@@ -318,49 +377,6 @@ $(document).ready(function () {
             },
             error: function (xhr, status, error) {
                 console.log("Error: " + error);
-            }
-        });
-    });
-});
-
-
-// удаление вопроса
-$(document).ready(function () {
-    $('.td-sites-grid').on('click', '.cross_quest', function () {
-        // находим блок вопроса где нажали на cross
-        let thisBlock = $(this).closest('.block')
-        let quest_id = thisBlock.attr("quest_id");
-        // thisBlock.attr("id", 'del_block');
-        let new_order = $(this).closest('.td-sites-grid').sortable("toArray"); // получаем новую последовательность вопросов
-
-        $.ajax({
-            type: 'POST',
-            url: `/polls/${quest_id}/delete_question`,
-            data: {
-                new_order: new_order,
-            },
-            beforeSend: function () {
-                // todo имитация загрузки
-                console.log('beforeSend');
-            },
-            success: function (response) {
-                // после успешного добавления нужно менять id у добавленного блока на нормальный
-                // после того как добавится этот блок всем блокам, которые будут идти после него нужно будет обновить атрибут number
-                // newBlock.attr("id", 'question_'+response['new_quest_id']);
-                // newBlock.attr("quest_id", response['new_quest_id']);
-                // newBlock.attr("number", response['new_number']);
-                thisBlock.remove()
-
-                // обновление атрибута number у всех нижестоящих блоков после добавленного
-                thisBlock.nextAll('.block.td-quest-col__header').each(function () {
-                    let current_question_number = parseInt($(this).attr('number'));
-                    $(this).attr('number', current_question_number + 1);
-                    console.log('q\n')
-                });
-            },
-            onerror: function (data) {
-                console.log('onerror');
-                alert(data);
             }
         });
     });

@@ -44,7 +44,7 @@ def add_test(request):
                                    number=1,
                                    name='Раздел 1')
     Question.objects.create(name="Вопрос",
-                            number=1,
+                            number=0,
                             type_question_id=3,
                             part_test=part)
     return render(request, 'polls/test_block.html', {'test': test})
@@ -101,16 +101,13 @@ def add_question(request):
     return JsonResponse({'new_number': new_quest.number, 'new_quest_id': new_quest.id})
 
 
+@csrf_exempt
+@require_POST
 def delete_question(request, quest_id):
     """Удаление вопроса"""
-    # quest_name = request.POST.get('quest_name')
-    # part_test_id = request.POST.get('part_test_id')
-    new_quest = update_order_func(request.POST.getlist("new_order[]"))
-
-    test = get_object_or_404(Question, pk=quest_id)
-    test.delete()
-
-    return JsonResponse({'new_number': new_quest.number, 'new_quest_id': new_quest.id})
+    update_order_func(request.POST.getlist("new_order[]"), None, None, quest_id)
+    return render(request, 'polls/edit.html')
+    # return JsonResponse({'new_number': new_quest.number, 'new_quest_id': new_quest.id})
 
 
 @require_POST
@@ -130,27 +127,34 @@ def update_order(request, form_id):
 # todo как-будто эту функцию нужно использовать при любом изменении в вопросах
 # todo в цикле не варик, вспомни bulk_create()
 # todo протестировать на запросы и время. Написать декоратор
-def update_order_func(new_order, quest_name=None, part_test_id=None):
+
+# todo какой смысл проходить итерацию по вопросам которые идут до добавляемого, удаляемого? Но когда меняется порядок нужно идти по всем
+def update_order_func(new_order, quest_name=None, part_test_id=None, quest_id=None):
     """Обновление порядка вопросов
 
     :param new_order: новый порядок вопросов формата {number: 'question_id'}
     :param quest_name: формулировка вопроса
-    :param part_test_id: формулировка вопроса
+    :param part_test_id:
+    :param quest_id:
     :return: новый вопрос или None если вопрос не добавлялся
     """
     new_quest = None
+    del_quest = False
     for number, quest in enumerate(new_order):
         if quest == 'new_id':
             new_quest = Question.objects.create(name=quest_name,
                                                 number=number,
                                                 part_test_id=part_test_id,
                                                 type_question_id=3, )
-        # elif quest == 'del_block':
-        #     pass
+        elif quest == 'del_id':
+            quest = get_object_or_404(Question, pk=quest_id)
+            quest.delete()
+            number -= 1
+            del_quest = True
         else:
             pk = int(quest.split('_')[1])
             question = Question.objects.get(pk=pk)
-            question.number = number
+            question.number = number - 1 if del_quest else number
             question.save()
     return new_quest
 

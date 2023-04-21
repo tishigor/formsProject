@@ -494,6 +494,8 @@ a, b, blockquote, center, code, div, h1, h2, h3, h4, h5, h6, i, img, p, pre, spa
     position: absolute;
     top: -1px;
     width: calc(100% + 2px);
+    /*opacity: 0;*/
+    visibility: hidden;
 }
 
 
