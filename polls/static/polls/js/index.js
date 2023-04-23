@@ -73,13 +73,36 @@ $(function () {
 
 // Запрос при изменении кастомного поля для ввода
 // $('.td-quest-col__header').keyup(delay(function (e) {
-$('.td-quest__name').keyup(delay(function (e) {
+// $('.td-quest__name').keyup(delay(function (e) {
+//     $.ajax({
+//         type: 'POST',
+//         url: '/polls/' + $('.td-form-col__cell').attr('form_id') + '/' + $(this).parent()[0].getAttribute('quest_id') + '/',
+//         // $(this).parent().getAttribute('quest_id')
+//         data: {
+//             name: this.innerText,
+//             csrfmiddlewaretoken: csrftoken,
+//         },
+//         beforeSend: function () {
+//             console.log('beforeSend');
+//         },
+//         success: function (data) {
+//             console.log('success');
+//             // alert(data);
+//         },
+//         onerror: function (data) {
+//             console.log('onerror');
+//             alert(data);
+//         }
+//     });
+// }, 500));
+
+
+function saveChanges(currentContent, quest_id){
     $.ajax({
         type: 'POST',
-        url: '/polls/' + $('.td-form-col__cell').attr('form_id') + '/' + $(this).parent()[0].getAttribute('quest_id') + '/',
-        // $(this).parent().getAttribute('quest_id')
+        url: '/polls/' + $('.td-form-col__cell').attr('form_id') + '/' + quest_id + '/',
         data: {
-            name: this.innerText,
+            name: currentContent,
             csrfmiddlewaretoken: csrftoken,
         },
         beforeSend: function () {
@@ -94,7 +117,8 @@ $('.td-quest__name').keyup(delay(function (e) {
             alert(data);
         }
     });
-}, 500));
+}
+
 
 
 function delay(callback, ms) {
@@ -328,7 +352,9 @@ $(document).ready(function () {
 
 // Вкладки
 $(document).ready(function () {
-    $(".head a").click(function () {
+    $(".head a").click(function (event) {
+        // чтобы не было якорной ссылки
+        event.preventDefault();
         // var tab = $(this).data("tab");
         let tabId = $(this).attr('href');
         $(".td-form-col").hide();
@@ -381,3 +407,36 @@ $(document).ready(function () {
         });
     });
 });
+
+
+
+// var quill = new Quill('#editor-container', {
+//   modules: {
+//     toolbar: [
+//       [{ header: [1, 2, false] }],
+//       ['bold', 'italic', 'underline'],
+//       ['image', 'code-block']
+//     ]
+//   },
+//   placeholder: 'Введите...',
+//   // theme: 'snow'  // or 'bubble'
+//   theme: 'bubble'  // or 'bubble'
+// });
+
+// $( "#editor-container" ).click(function() {
+//   $( ".ql-toolbar").slideToggle( "middle", function() {
+//     // Animation complete.
+//   });
+// });
+
+
+// quill.on('text-change', function (delta, oldDelta, source) {
+//     var currentContent = '';
+//     if (source === 'user') { // проверяем, что изменение произошло от пользователя, а не программно
+//         let updatedContent = quill.root.innerHTML; // получаем новый контент редактора
+//         if (updatedContent !== currentContent) {  // проверяем, что контент был изменен
+//             currentContent = updatedContent;
+//             saveChanges(currentContent); // отправляем новый контент на сервер для сохранения
+//         }
+//     }
+// });

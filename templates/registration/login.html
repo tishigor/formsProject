@@ -67,8 +67,13 @@
 
     <button>Log In</button>
     <div class="social">
-        <div class="go"><i class="fab fa-google"></i> Google</div>
-        <div class="fb"><i class="fab fa-facebook"></i> Facebook</div>
+        <a href="{% url "social:begin" "google-oauth2" %}">
+            <div class="go"><i class="fab fa-google"></i> Google</div>
+        </a>
+        <a href="{% url "social:begin" "vk-oauth2" %}">
+            <div class="fb"><i class="fab fa-facebook"></i> VK</div>
+        </a>
+
     </div>
     {{ form.errors }}
 </form>

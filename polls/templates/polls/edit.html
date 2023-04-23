@@ -18,6 +18,8 @@
     </div>
 
 
+
+
     {#todo td-form-col хочу переименовать в tabcontent#}
     <div id="edit" class="td-form-col">
 
@@ -39,19 +41,22 @@
         {#    если у теста есть части #}
         {% if test.parttest_set.all %}
             {% for parttest in test.parttest_set.all %}
-                <div class="td-sites-grid" id="part_test_{{ parttest.id }}" part_test_id="{{ parttest.id }}" number="{{ parttest.number }}">
+                <div class="td-sites-grid" id="part_test_{{ parttest.id }}" part_test_id="{{ parttest.id }}"
+                     number="{{ parttest.number }}">
                     {% for quest in parttest.question_set.all|dictsort:"number" %}
-                        <div class="block td-quest-col__header" quest_id="{{ quest.id }}" id="question_{{ quest.id }}" number="{{ quest.number }}">
+                        <div class="block td-quest-col__header" quest_id="{{ quest.id }}" id="question_{{ quest.id }}"
+                             number="{{ quest.number }}">
                             <div class="td-sites-grid__more" role="button"></div>
                             <div class="quest_upper">
                                 <img style="top: 2px;left: 400px;position: relative;"
                                      src="data:image/svg+xml,%3Csvg width='12' height='16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M3.5 2C3.5 2.82843 2.82843 3.5 2 3.5C1.17157 3.5 0.5 2.82843 0.5 2C0.5 1.17157 1.17157 0.5 2 0.5C2.82843 0.5 3.5 1.17157 3.5 2ZM2 9.5C2.82843 9.5 3.5 8.82843 3.5 8C3.5 7.17157 2.82843 6.5 2 6.5C1.17157 6.5 0.5 7.17157 0.5 8C0.5 8.82843 1.17157 9.5 2 9.5ZM2 15.5C2.82843 15.5 3.5 14.8284 3.5 14C3.5 13.1716 2.82843 12.5 2 12.5C1.17157 12.5 0.5 13.1716 0.5 14C0.5 14.8284 1.17157 15.5 2 15.5ZM10 15.5C10.8284 15.5 11.5 14.8284 11.5 14C11.5 13.1716 10.8284 12.5 10 12.5C9.17157 12.5 8.5 13.1716 8.5 14C8.5 14.8284 9.17157 15.5 10 15.5ZM11.5 8C11.5 8.82843 10.8284 9.5 10 9.5C9.17157 9.5 8.5 8.82843 8.5 8C8.5 7.17157 9.17157 6.5 10 6.5C10.8284 6.5 11.5 7.17157 11.5 8ZM10 3.5C10.8284 3.5 11.5 2.82843 11.5 2C11.5 1.17157 10.8284 0.5 10 0.5C9.17157 0.5 8.5 1.17157 8.5 2C8.5 2.82843 9.17157 3.5 10 3.5Z' fill='%23475A80' fill-opacity='.5'/%3E%3C/svg%3E">
-                                <img class="cross_quest" width="20px" style="top: 2px;left: 760px;position: relative; opacity: .5; cursor: pointer;"
+                                <img class="cross_quest" width="20px"
+                                     style="top: 2px;left: 760px;position: relative; opacity: .5; cursor: pointer;"
                                      src="{% static 'polls/images/cross.svg' %}">
                             </div>
                             {# todo поправить отображение. по центру#}
                             <div class="page-child__drag-handle">
-{#                                <b>1</b>#}
+                                {#                                <b>1</b>#}
                                 <div class="background-number">
                                     <span class="number">{{ quest.number }}</span>
                                 </div>
@@ -63,6 +68,31 @@
                             {#                        {% if quest.name %}#}
                             <div class="td-quest__name" contentEditable style="outline: none"
                                  role="textbox" aria-multiline="true">{{ quest.name|linebreaks }}</div>
+                            <div id="editor_{{ quest.id }}"></div>
+                            <script>
+                                {
+                                let editor_{{ quest.id }} = new Quill('#editor_{{ quest.id }}', {
+                                    theme: 'bubble' // настройки темы
+                                });
+
+                                let htmlContent = '{{ quest.name|linebreaks }}';
+                                {#let htmlContent = '<p>Привет, <strong>мир</strong>!</p>';#}
+                                let delta = editor_{{ quest.id }}.clipboard.convert(htmlContent);
+                                editor_{{ quest.id }}.setContents(delta);
+
+                                editor_{{ quest.id }}.on('text-change', function (delta, oldDelta, source) {
+                                    let currentContent = '';
+                                    if (source === 'user') { // проверяем, что изменение произошло от пользователя, а не программно
+                                        let updatedContent = editor_{{ quest.id }}.root.innerHTML; // получаем новый контент редактора
+                                        if (updatedContent !== currentContent) {  // проверяем, что контент был изменен
+                                            currentContent = updatedContent;
+                                            let quest_id = {{ quest.id }}
+                                                saveChanges(currentContent, quest_id); // отправляем новый контент на сервер для сохранения
+                                        }
+                                    }
+                                });
+}
+                            </script>
                             {# todo тут получаем тип вопроса и в зависимости от него захуячиваем альтернативы#}
                             <div class="td-site__alt" style="outline: none">
                                 <select name="select" class="select">
@@ -84,11 +114,14 @@
 
                             <div class="func_quest_buttons">
 
-                                    <img class="plus_quest" width="30px" style="position: relative; opacity: .5; cursor: pointer;"
+                                <img class="plus_quest" width="30px"
+                                     style="position: relative; opacity: .5; cursor: pointer;"
                                      src="{% static 'polls/images/plus.svg' %}" title="Добавить вопрос">
-                                    <img class="copy_quest" width="25px" style="position: relative; opacity: .5; cursor: pointer;"
+                                <img class="copy_quest" width="25px"
+                                     style="position: relative; opacity: .5; cursor: pointer;"
                                      src="{% static 'polls/images/copy.svg' %}" title="Копировать вопрос">
-                                    <img class="add_part" width="25px" style="position: relative; opacity: .5; cursor: pointer;"
+                                <img class="add_part" width="25px"
+                                     style="position: relative; opacity: .5; cursor: pointer;"
                                      src="{% static 'polls/images/rows.svg' %}" title="Добавить часть">
 
                             </div>

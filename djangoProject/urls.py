@@ -20,5 +20,6 @@ urlpatterns = [
     path('polls/', include('polls.urls')),
     path('admin/', admin.site.urls),
     path('accounts/', include('django.contrib.auth.urls')),
+    path('social-auth/', include('social_django.urls', namespace='social')),
     # path('chat/', include('polls.urls')),
 ]

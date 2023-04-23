@@ -27,8 +27,15 @@ SECRET_KEY = 'django-insecure-0_evnw#n6%$)7t-lfq0z1+1hsg2*ozw54v%8edu^br*7urq@bc
 DEBUG = True
 
 # Чтобы можно было подключаться через локальную сеть
-ALLOWED_HOSTS = ["*"]
+# ALLOWED_HOSTS = ["*"]
+#	127.0.0.1       localhost
+ALLOWED_HOSTS = [".mysite.com", "127.0.0.1", "localhost"]
 
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '1089747781936-k1jafsbpifojnsade88nvcofck67k5vf.apps.googleusercontent.com'  # ИД клиента Google
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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'  # Секрет клиента Google
+
+SOCIAL_AUTH_VK_OAUTH2_KEY = '51623564'
+SOCIAL_AUTH_VK_OAUTH2_SECRET = 'R5LtclVaYZi3ZDRyBmZB'
 # Application definition
 
 INSTALLED_APPS = [
@@ -39,6 +46,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'polls.apps.PollsConfig',
+    'social_django',
+    'django_extensions',  # для создания своего доверенного ssl сертификата
 ]
 
 MIDDLEWARE = [
@@ -61,6 +70,16 @@ LOGIN_REDIRECT_URL = '/polls'
 
 # LOGOUT_URL = "/accounts/logout/"
 # PROFILE_URL = "/accounts/profile/"
+
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    # 'account.authentication.EmailAuthBackend',
+    # 'social_core.backends.facebook.FacebookOAuth2',
+    # 'social_core.backends.twitter.TwitterOAuth',
+    'social_core.backends.google.GoogleOAuth2',
+    'social_core.backends.vk.VKOAuth2',
+]
 
 TEMPLATES = [
     {
