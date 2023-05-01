@@ -65,10 +65,10 @@ def delete_test(request, form_id):
 def edit(request, form_id):
     """Отображение странички с вопросами для формы"""
     test = get_object_or_404(Test, pk=form_id)
-    # todo протестировать без этой строки
-    # types_quest = get_list_or_404(QuestionType)
-    return render(request, 'polls/edit.html', {'test': test})
-    # return render(request, 'polls/edit.html', {'test': test, 'types_quest': types_quest})
+    # todo строка для отображения типов вопросов в селекте
+    types_quest = get_list_or_404(QuestionType)
+    # return render(request, 'polls/edit.html', {'test': test})
+    return render(request, 'polls/edit.html', {'test': test, 'types_quest': types_quest})
 
 
 @csrf_exempt
@@ -174,6 +174,8 @@ def save_name_quest(request, form_id, quest_id):
     return render(request, 'polls/edit.html', {'test': test})
 
 
+# @csrf_exempt
+@require_POST
 def save_type_quest(request, form_id, quest_id, type_quest_id):
     """
     Сохранение типа вопроса
@@ -188,26 +190,36 @@ def save_type_quest(request, form_id, quest_id, type_quest_id):
     type_quest = get_object_or_404(QuestionType, pk=type_quest_id)
     question.type_question = type_quest
     question.save()
-    return render(request, 'polls/edit.html', {'test': test})
 
-
-def get_type_template(request):
-    """
-
-    :param request:
-    :return:
-    """
-    select_val = request.GET.get('selectVal')
     template_name = ''
-    if select_val == '1':
+    if type_quest_id == 1:
         template_name = 'radio.html'
-    elif select_val == '2':
+    elif type_quest_id == 2:
         template_name = 'checkbox.html'
-    elif select_val == '3':
+    elif type_quest_id == 3:
         template_name = 'text.html'
+    return render(request, 'polls/type_templates/{}'.format(template_name))
 
-    context = {}
-    return render(request, 'polls/type_templates/{}'.format(template_name), context)
+
+# # @csrf_exempt
+# @require_POST
+# def get_type_template(request):
+#     """
+#
+#     :param request:
+#     :return:
+#     """
+#     select_val = request.GET.get('selectVal')
+#     template_name = ''
+#     if select_val == '1':
+#         template_name = 'radio.html'
+#     elif select_val == '2':
+#         template_name = 'checkbox.html'
+#     elif select_val == '3':
+#         template_name = 'text.html'
+#
+#     context = {}
+#     return render(request, 'polls/type_templates/{}'.format(template_name), context)
 
 
 def responses(request, form_id):

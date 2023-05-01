@@ -32,10 +32,12 @@ $('.td-site__section-one').hover(
 
 $('.block').hover(
     function () {
-        $('.quest_upper', this).css('visibility', '');
+        $('.quest_upper', this).css('opacity', '1');
+        // $('.quest_upper', this).css('visibility', '');
     },
     function () {
-        $('.quest_upper', this).css('visibility', 'hidden');
+        $('.quest_upper', this).css('opacity', '0');
+        // $('.quest_upper', this).css('visibility', 'hidden');
     }
 )
 
@@ -133,44 +135,118 @@ function delay(callback, ms) {
 }
 
 
-// Запрос при изменении select
-// todo не удаляет старый, не добавляет новый. Исправить!
+// Вкладки
 $(document).ready(function () {
-    $('select').change(function (e) {
-        e.preventDefault();
-        // var form = $(this);
-        // var data = form.serialize();
+    $(".head a").click(function (event) {
+        // чтобы не было якорной ссылки
+        event.preventDefault();
+        // var tab = $(this).data("tab");
+        let tabId = $(this).attr('href');
+        $(".td-form-col").hide();
+        $(tabId).show();
+        $(".head a").removeClass("selected");
+        $(this).addClass("selected");
+    });
+    $("#edit").show();
+    // $(".head a[href='#FormEditor']").addClass("selected");
+});
+
+
+//добавление теста
+$(document).ready(function () {
+    $('#add-test-button').click(function () {
+        $.ajax({
+            url: '/polls/add_test',
+            type: 'POST',
+            data: {test_name: 'Новый тест'},
+            success: function (response) {
+                // Добавляем новый элемент на страницу с помощью jQuery
+                let last_block = $(".td-sites-grid .td-sites-grid__cell").last();
+                let block_test = $(response).hide()
+                last_block.before(block_test.fadeIn());
+            },
+            error: function (xhr, status, error) {
+                console.log("Error: " + error);
+            }
+        });
+    });
+});
+
+
+//удаление теста
+$(document).ready(function () {
+    $('.td-sites-grid').on('click', '.td-site__delete', function () {
+        let form_id = $(this).attr('form_id');
+        let del_block = $(this)
+        $.ajax({
+            url: `/polls/${form_id}/delete_test`,
+            type: 'POST',
+            data: {},
+            success: function (response) {
+                // Удаляем блок теста со страницы с помощью jQuery
+                del_block.closest('.td-sites-grid__cell').remove();
+            },
+            error: function (xhr, status, error) {
+                console.log("Error: " + error);
+            }
+        });
+    });
+});
+
+
+// добавление части теста
+$(document).ready(function () {
+    $('.add_part').on('click', function () {
+
+        let thisBlock = $(this).closest('.block')
+        // Находим следующий за блоком вопроса элемент с классом "question"
+        let nextQuestion = thisBlock.nextAll('.td-quest-col__header');
+        // список id вопросов которые привязаны к новой части
+        let quest_part_test = nextQuestion.get().map(item => $(item).attr('id'));
+
+        let test_id = $('.td-form-col__cell').attr('form_id')
         $.ajax({
             type: 'POST',
-            url: '/polls/' + $('.td-form-col__cell').attr('form_id') + '/' + $(this).parent().parent()[0].getAttribute('quest_id') + '/' + this.value,
+            url: '/polls/add_part_test/',
             data: {
-                // name: this.innerText,
-                // type_quest: this.value,
-                csrfmiddlewaretoken: csrftoken,
+                test_id: test_id,
+                part_test_name: "Новая часть",
+                quest_part_test: quest_part_test,
+                // number: number,
+                // csrfmiddlewaretoken: csrftoken,
+            },
+            beforeSend: function () {
+                // todo имитация загрузки
+                console.log('beforeSend');
             },
             success: function (response) {
-                console.log(response);
+                // Создаём новый блок раздела
+                let newPartTest = $('<div class="td-sites-grid" id="part_test_123" part_test_id="123"></div>');
+                // Добавляем все вопросы, начиная со следующего, в новый блок
+                newPartTest.insertAfter(thisBlock.parent()).append(nextQuestion);
+
+                newPartTest.attr("id", 'question_' + response['new_quest_id']);
+                newPartTest.attr("part_test_id", response['new_quest_id']);
+                newPartTest.attr("number", response['new_number']);
+
+
+                // обновление атрибута number у всех нижестоящих блоков после добавленного
+                // newBlock.nextAll('.block.td-quest-col__header').each(function () {
+                //     let current_question_number = parseInt($(this).attr('number'));
+                //     $(this).attr('number', current_question_number + 1);
+                //     $(this).find("span").text(current_question_number + 1);
+                //
+                //     console.log('q\n')
+                // });
+
             },
-            error: function (response) {
-                console.log(response);
+            onerror: function (data) {
+                console.log('onerror');
+                alert(data);
             }
         });
 
-        let selectVal = $(this).val();
-        let block = $(this).closest('.td-quest-col__header');
-        let url = '/polls/get_template/';
 
-        $.ajax({
-            method: 'GET',
-            url: url,
-            data: {
-                selectVal: selectVal
-            },
-            success: function (response) {
-                block.find('.template-container').remove();
-                block.find('.td-site__alt').append(response);
-            }
-        });
     });
 });
 
@@ -293,121 +369,32 @@ $(document).ready(function () {
 });
 
 
-// добавление части теста
+// Сохранение типа вопроса
 $(document).ready(function () {
-    $('.add_part').on('click', function () {
+    $('select').change(function (e) {
+        e.preventDefault();
+        // var form = $(this);
+        // var data = form.serialize();
 
-        let thisBlock = $(this).closest('.block')
-        // Находим следующий за блоком вопроса элемент с классом "question"
-        let nextQuestion = thisBlock.nextAll('.td-quest-col__header');
-        // список id вопросов которые привязаны к новой части
-        let quest_part_test = nextQuestion.get().map(item => $(item).attr('id'));
-
-        let test_id = $('.td-form-col__cell').attr('form_id')
         $.ajax({
             type: 'POST',
-            url: '/polls/add_part_test/',
+            url: '/polls/' + $('.td-form-col__cell').attr('form_id') + '/' + $(this).parent().parent()[0].getAttribute('quest_id') + '/' + this.value,
             data: {
-                test_id: test_id,
-                part_test_name: "Новая часть",
-                quest_part_test: quest_part_test,
-                // number: number,
-                // csrfmiddlewaretoken: csrftoken,
-            },
-            beforeSend: function () {
-                // todo имитация загрузки
-                console.log('beforeSend');
+                // name: this.innerText,
+                // type_quest: this.value,
+                csrfmiddlewaretoken: csrftoken,
             },
             success: function (response) {
-                // Создаём новый блок раздела
-                let newPartTest = $('<div class="td-sites-grid" id="part_test_123" part_test_id="123"></div>');
-                // Добавляем все вопросы, начиная со следующего, в новый блок
-                newPartTest.insertAfter(thisBlock.parent()).append(nextQuestion);
-
-                newPartTest.attr("id", 'question_' + response['new_quest_id']);
-                newPartTest.attr("part_test_id", response['new_quest_id']);
-                newPartTest.attr("number", response['new_number']);
-
-
-                // обновление атрибута number у всех нижестоящих блоков после добавленного
-                // newBlock.nextAll('.block.td-quest-col__header').each(function () {
-                //     let current_question_number = parseInt($(this).attr('number'));
-                //     $(this).attr('number', current_question_number + 1);
-                //     $(this).find("span").text(current_question_number + 1);
-                //
-                //     console.log('q\n')
-                // });
-
+                block.find('.template-container').remove();
+                block.find('.td-site__alt').append(response);
             },
-            onerror: function (data) {
-                console.log('onerror');
-                alert(data);
+            error: function (response) {
+                console.log(response);
             }
         });
-
-
+        let block = $(this).closest('.td-quest-col__header');
     });
 });
-
-
-// Вкладки
-$(document).ready(function () {
-    $(".head a").click(function (event) {
-        // чтобы не было якорной ссылки
-        event.preventDefault();
-        // var tab = $(this).data("tab");
-        let tabId = $(this).attr('href');
-        $(".td-form-col").hide();
-        $(tabId).show();
-        $(".head a").removeClass("selected");
-        $(this).addClass("selected");
-    });
-    $("#edit").show();
-    // $(".head a[href='#FormEditor']").addClass("selected");
-});
-
-
-//добавление теста
-$(document).ready(function () {
-    $('#add-test-button').click(function () {
-        $.ajax({
-            url: '/polls/add_test',
-            type: 'POST',
-            data: {test_name: 'Новый тест'},
-            success: function (response) {
-                // Добавляем новый элемент на страницу с помощью jQuery
-                let last_block = $(".td-sites-grid .td-sites-grid__cell").last();
-                let block_test = $(response).hide()
-                last_block.before(block_test.fadeIn());
-            },
-            error: function (xhr, status, error) {
-                console.log("Error: " + error);
-            }
-        });
-    });
-});
-
-
-//удаление теста
-$(document).ready(function () {
-    $('.td-sites-grid').on('click', '.td-site__delete', function () {
-        let form_id = $(this).attr('form_id');
-        let del_block = $(this)
-        $.ajax({
-            url: `/polls/${form_id}/delete_test`,
-            type: 'POST',
-            data: {},
-            success: function (response) {
-                // Удаляем блок теста со страницы с помощью jQuery
-                del_block.closest('.td-sites-grid__cell').remove();
-            },
-            error: function (xhr, status, error) {
-                console.log("Error: " + error);
-            }
-        });
-    });
-});
-
 
 
 // var quill = new Quill('#editor-container', {

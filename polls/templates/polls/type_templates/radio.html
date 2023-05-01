@@ -1,10 +1,16 @@
-{#<!DOCTYPE html>#}
-{#<html lang="en">#}
-{#<head>#}
-{#    <meta charset="UTF-8">#}
-{#    <title>Title</title>#}
-{#</head>#}
-{#<body>#}
-{##}
-{#</body>#}
-{#</html>#}
+{% load static %}
+<div class="template-container">
+    <br>
+    <div class="alternative">
+        <input type="radio" autocomplete="off" disabled>
+        <input type="text" placeholder='Вариант 1'>
+
+        <img class="plus_alternative" width="25px"
+             style="position: relative; opacity: .5; cursor: pointer;"
+             src="{% static 'polls/images/plus.svg' %}" title="Добавить">
+        <img class="plus_alternative" width="25px"
+             style="position: relative; opacity: .5; cursor: pointer;"
+             src="{% static 'polls/images/minus.svg' %}" title="Удалить">
+    </div>
+    <br>
+</div>
