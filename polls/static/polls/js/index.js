@@ -99,7 +99,7 @@ $(function () {
 // }, 500));
 
 
-function saveChanges(currentContent, quest_id){
+function saveChanges(currentContent, quest_id) {
     $.ajax({
         type: 'POST',
         url: '/polls/' + $('.td-form-col__cell').attr('form_id') + '/' + quest_id + '/',
@@ -120,7 +120,6 @@ function saveChanges(currentContent, quest_id){
         }
     });
 }
-
 
 
 function delay(callback, ms) {
@@ -369,6 +368,7 @@ $(document).ready(function () {
 });
 
 
+// todo пример функции где используется токен. Верно ли?
 // Сохранение типа вопроса
 $(document).ready(function () {
     $('select').change(function (e) {
@@ -393,6 +393,78 @@ $(document).ready(function () {
             }
         });
         let block = $(this).closest('.td-quest-col__header');
+    });
+});
+
+
+// добавление альтернативы
+$(document).ready(function () {
+    $('.td-sites-grid').on('click', '.plus_alternative', function () {
+        // находим блок вопроса где нажали на plus
+        let questBlock = $(this).closest('.block')
+        let quest_id = questBlock.attr('quest_id')
+        let altBlock = $(this).closest('.alternative')
+        $.ajax({
+            type: 'POST',
+            url: '/polls/add_alternative/',
+            data: {
+                alternative_name: "Новый вариант",
+                quest_id: quest_id,
+            },
+            beforeSend: function () {
+                // todo имитация загрузки
+                console.log('beforeSend');
+            },
+            success: function (response) {
+                let newBlock = altBlock.clone();
+                newBlock.attr("alt_id", response['new_alt_id']);
+                // Вставляем клонированный элемент после оригинала
+                newBlock.insertAfter(altBlock).hide().fadeIn();
+            },
+            onerror: function (data) {
+                console.log('onerror');
+                alert(data);
+            }
+        });
+    });
+});
+
+
+// удаление альтернативы
+$(document).ready(function () {
+    $('.td-sites-grid').on('click', '.delete_alternative', function () {
+        if ($('.template-container .alternative').length === 1) {
+            alert('нельзя удалять последнюю альтернативу!')
+            return
+        }
+
+        let altBlock = $(this).closest('.alternative')
+        let alt_id = altBlock.attr("alt_id");
+
+        $.ajax({
+            type: 'POST',
+            url: '/polls/delete_alternative/',
+            data: {
+                alt_id: alt_id,
+            },
+            beforeSend: function () {
+                // todo имитация загрузки
+                console.log('beforeSend');
+            },
+            success: function (response) {
+                altBlock.fadeOut(200, function () {
+                    $(altBlock).remove(); // Удаление элемента после скрытия
+                });
+
+                // if ($('.template-container .alternative').length === 1) {
+                //     $('.alternative').addClass("alt_disabled");
+                // }
+            },
+            onerror: function (data) {
+                console.log('onerror');
+                alert(data);
+            }
+        });
     });
 });
 

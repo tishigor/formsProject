@@ -156,6 +156,12 @@ a, b, blockquote, center, code, div, h1, h2, h3, h4, h5, h6, i, img, p, pre, spa
 /*добавление проекта + корзина*/
 
 
+.view {
+    /*float: right;*/
+    display: flex;
+    justify-content: right;
+}
+
 /* -------------------------------------------вкладки polls*/
 
 .polls_menu {
@@ -557,6 +563,11 @@ a, b, blockquote, center, code, div, h1, h2, h3, h4, h5, h6, i, img, p, pre, spa
 .number {
     display: block;
     height: 100%;
+}
+
+.alt_disabled {
+    cursor: not-allowed!important;
+    opacity: .5;
 }
 
 /*.column {*/

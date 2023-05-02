@@ -15,6 +15,8 @@ urlpatterns = [
     path('<int:quest_id>/delete_question/', views.delete_question, name='add_question'),  # удаление вопроса
     path('<int:form_id>/update_order/', views.update_order, name='update_order'), # изменение порядка вопросов. Вызывается при перемещении блоков вопросов
     path('<int:form_id>/<int:quest_id>/', views.save_name_quest, name='save_name_quest'),  # сохранение формулировки
+    path('add_alternative/', views.add_alternative, name='add_alternative'),  # добавление альтернативы
+    path('delete_alternative/', views.delete_alternative, name='delete_alternative'),  # удаление альтернативы
     path('<int:form_id>/<int:quest_id>/<int:type_quest_id>', views.save_type_quest, name='save_type_quest'), # сохранение типа вопроса
     # path('get_template/', views.get_type_template, name='get_type_template'),  # получение шаблонов для блока вопроса todo еще предстоит повозиться
 

@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.generic import FormView
 
 from .forms import QuestionForm, RegisterForm
-from .models import Test, Question, Answer, PartTest, QuestionType
+from .models import Test, Question, Answer, PartTest, QuestionType, Alternative
 
 
 # todo пока что не удаляю
@@ -43,10 +43,12 @@ def add_test(request):
     part = PartTest.objects.create(test=test,
                                    number=1,
                                    name='Раздел 1')
-    Question.objects.create(name="Вопрос",
-                            number=0,
-                            type_question_id=3,
-                            part_test=part)
+    quest = Question.objects.create(name="Вопрос",
+                                    number=0,
+                                    type_question_id=1,
+                                    part_test=part)
+    Alternative.objects.create(question=quest,
+                               text='Вариант 1')
     return render(request, 'polls/test_block.html', {'test': test})
 
 
@@ -174,6 +176,29 @@ def save_name_quest(request, form_id, quest_id):
     return render(request, 'polls/edit.html', {'test': test})
 
 
+@csrf_exempt
+@require_POST
+def add_alternative(request):
+    """Добавление альтернативы"""
+    quest_id = request.POST.get('quest_id')
+    alternative_name = request.POST.get('alternative_name')
+    new_alternative = Alternative.objects.create(question_id=quest_id,
+                                                 text=alternative_name)
+    # new_quest = update_order_func(request.POST.getlist("new_order[]"), quest_name, part_test_id)
+    return JsonResponse({'new_alt_id': new_alternative.id})
+
+
+@csrf_exempt
+@require_POST
+def delete_alternative(request):
+    """Удаление альтернативы"""
+    alt_id = request.POST.get('alt_id')
+    alt = get_object_or_404(Alternative, pk=alt_id)
+    alt.delete()
+    # update_order_func(request.POST.getlist("new_order[]"), None, None, quest_id)
+    return render(request, 'polls/edit.html')
+
+
 # @csrf_exempt
 @require_POST
 def save_type_quest(request, form_id, quest_id, type_quest_id):
@@ -185,6 +210,8 @@ def save_type_quest(request, form_id, quest_id, type_quest_id):
     :param quest_id: id вопроса
     :param type_quest_id: id типа вопроса
     """
+    # Если меняем чеки на радио или наоборот, то альтернативы оставляем
+
     test = get_object_or_404(Test, pk=form_id)
     question = Question.objects.get(pk=quest_id)
     type_quest = get_object_or_404(QuestionType, pk=type_quest_id)
@@ -198,7 +225,7 @@ def save_type_quest(request, form_id, quest_id, type_quest_id):
         template_name = 'checkbox.html'
     elif type_quest_id == 3:
         template_name = 'text.html'
-    return render(request, 'polls/type_templates/{}'.format(template_name))
+    return render(request, 'polls/type_templates/{}'.format(template_name), {'quest': question})
 
 
 # # @csrf_exempt

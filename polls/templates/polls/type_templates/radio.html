@@ -1,16 +1,34 @@
 {% load static %}
 <div class="template-container">
     <br>
-    <div class="alternative">
-        <input type="radio" autocomplete="off" disabled>
-        <input type="text" placeholder='Вариант 1'>
+{#    {% if quest.alternative_set.all %}#}
+        {% for alternative in quest.alternative_set.all %}
+            <div class="alternative" alt_id="{{ alternative.id }}">
 
-        <img class="plus_alternative" width="25px"
-             style="position: relative; opacity: .5; cursor: pointer;"
-             src="{% static 'polls/images/plus.svg' %}" title="Добавить">
-        <img class="plus_alternative" width="25px"
-             style="position: relative; opacity: .5; cursor: pointer;"
-             src="{% static 'polls/images/minus.svg' %}" title="Удалить">
-    </div>
+                <input type="radio" autocomplete="off" disabled>
+                <input type="text" placeholder='Вариант 1'>
+
+                <img class="plus_alternative" width="25px"
+                     style="position: relative; opacity: .5; cursor: pointer;"
+                     src="{% static 'polls/images/plus.svg' %}" title="Добавить">
+                <img class="delete_alternative" width="25px"
+                     style="position: relative; opacity: .5; cursor: pointer;"
+                     src="{% static 'polls/images/minus.svg' %}" title="Удалить">
+            </div>
+        {% endfor %}
+{#    {% else %}#}
+{#            <div class="alternative">#}
+{#                Альтернатив нет#}
+{#                <input type="radio" autocomplete="off" disabled>#}
+{#                <input type="text" placeholder='Вариант 1'>#}
+{##}
+{#                <img class="plus_alternative" width="25px"#}
+{#                     style="position: relative; opacity: .5; cursor: pointer;"#}
+{#                     src="{% static 'polls/images/plus.svg' %}" title="Добавить">#}
+{#                <img class="delete_alternative" width="25px"#}
+{#                     style="position: relative; opacity: .5; cursor: pointer;"#}
+{#                     src="{% static 'polls/images/minus.svg' %}" title="Удалить">#}
+{#            </div>#}
+{#    {% endif %}#}
     <br>
 </div>

@@ -15,7 +15,9 @@
             <a href='#responses'>Ответы</a>
             <a href='#settings'>Настройки</a>
         </div>
+        <div class="view">Просмотреть</div>
     </div>
+
 
 
 
@@ -38,8 +40,7 @@
         {#    <div class="column">#}
         {# todo есть баг когда в базе остается разрыв строки и все пусто остается#}
 
-{#        todo это условие не нужно, тк часть теста добавляется при создании теста#}
-        {#    если у теста есть части #}
+        {# todo сделать так: если у теста есть вопросы, то условие, а если нет, то кнопка с добавлением первого вопроса. #}
         {% if test.parttest_set.all %}
             {% for parttest in test.parttest_set.all %}
                 <div class="td-sites-grid" id="part_test_{{ parttest.id }}" part_test_id="{{ parttest.id }}"
@@ -110,6 +111,7 @@
                                     });
                                 }
                             </script>
+
                             {# todo тут получаем тип вопроса и в зависимости от него захуячиваем альтернативы#}
                             <div class="td-site__alt" style="outline: none">
                                 <select name="select" class="select">
@@ -126,7 +128,6 @@
                                 {% elif quest.type_question_id == 3 %}
                                     {% include "polls/type_templates/text.html" %}
                                 {% endif %}
-
                             </div>
 
                             <div class="func_quest_buttons">
@@ -142,36 +143,16 @@
                                      src="{% static 'polls/images/rows.svg' %}" title="Добавить часть">
 
                             </div>
-                            {#                        {% else %}#}
-                            {#                            <div class="td-quest__name" contentEditable style="outline: none"#}
-                            {#                                 role="textbox" aria-multiline="true">Вопрос#}
-                            {#                            </div>#}
-                            {#todo тут получаем тип вопроса и в зависимости от него захуячиваем альтернативы#}
-                            {#                            <div class="td-site__alt" style="outline: none">#}
-                            {#                                <select name="select">#}
-                            {#                                    {% for type_quest in types_quest %}#}
-                            {#                                        <option {% if quest.type_question.name == type_quest.name %}#}
-                            {#                                            selected {% endif %}#}
-                            {#                                            value="{{ type_quest.id }}">{{ type_quest.name }}</option>#}
-                            {#                                    {% endfor %}#}
-                            {#                                </select>#}
-                            {#                                {% if quest.type_question.id == 3 %}#}
-                            {#                                    <p>Option 1 was selected</p>#}
-                            {#                                {% endif %}#}
-                            {#                                {% if request.POST.select == '2' %}#}
-                            {#                                    <p>Option 2 was selected</p>#}
-                            {#                                {% endif %}#}
-                            {#                                {% if request.POST.select == '3' %}#}
-                            {#                                    <p>Option 3 was selected</p>#}
-                            {#                                {% endif %}#}
-                            {#                            </div>#}
-                            {#                        {% endif %}#}
-
                         </div>
                     {% endfor %}
                 </div>
             {% endfor %}
+
+
+
         {% else %}
+
+{#            todo тут кнопка для добавления первого вопроса, после нажатия на нее она исчезает и добавляется вопрос#}
 
             <div class="block td-quest-col__header" quest_id="{{ quest.id }}" id="question_{{ quest.id }}">
                 <div class="td-sites-grid__more" role="button"></div>
@@ -212,11 +193,12 @@
                         {% endif %}
                     </div>
                 </div>
-
             </div>
 
 
         {% endif %}
+
+
         {#todo тут блок с добавлением нового блока с вопросом#}
         {# со стилями проблемы#}
     </div>
